@@ -1,0 +1,50 @@
+{
+  "name": "fog-design",
+  "version": "0.0.1",
+  "description": "Light as fog, React UI library.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "webpack serve --config ./scripts/config/webpack.dev.js",
+    "build": "webpack --config ./scripts/config/webpack.prod.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhuangtianyu/fog-design.git"
+  },
+  "keywords": [
+    "fog",
+    "fog-design",
+    "react",
+    "react-component"
+  ],
+  "author": "zhuangtianyu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zhuangtianyu/fog-design/issues"
+  },
+  "homepage": "https://github.com/zhuangtianyu/fog-design#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.7",
+    "@babel/preset-env": "^7.16.7",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/react": "^17.0.38",
+    "@types/react-dom": "^17.0.11",
+    "babel-loader": "^8.2.3",
+    "classnames": "^2.3.1",
+    "css-loader": "^6.5.1",
+    "html-webpack-plugin": "^5.5.0",
+    "less": "^4.1.2",
+    "less-loader": "^10.2.0",
+    "react-router-dom": "^6.2.1",
+    "style-loader": "^3.3.1",
+    "typescript": "^4.5.4",
+    "webpack": "^5.65.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.7.2"
+  },
+  "peerDependencies": {
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
