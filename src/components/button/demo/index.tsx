@@ -6,9 +6,11 @@ const ButtonDemo = () => {
 
   return (
     <div className="button-demo">
-      <h1>button-demo</h1>
-      <Button onClick={() => console.log('clicked')}>
+      <Button type="primary" style={{ marginRight: 8 }}>
         Primary
+      </Button>
+      <Button>
+        Default
       </Button>
     </div>
   );

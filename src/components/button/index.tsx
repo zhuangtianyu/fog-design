@@ -1,10 +1,21 @@
 import React from 'react';
+import classnames from 'classnames';
 import './index.less';
 
 const Button = props => {
-  const { children, ...restProps } = props;
+  const { children, type, ...restProps } = props;
 
-  return <button {...restProps}>{children}</button>;
+  return (
+    <button
+      className={classnames({
+        ['button']: true,
+        [`button--${type}`]: type,
+      })}
+      {...restProps}
+    >
+      {children}
+    </button>
+  );
 };
 
 export default Button;
