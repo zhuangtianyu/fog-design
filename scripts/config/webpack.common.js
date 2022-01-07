@@ -1,4 +1,5 @@
 const path = require('path');
+const namespace = require('../../namespace.json');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
@@ -24,13 +25,23 @@ module.exports = {
       },
       {
         test: /\.less$/,
-        use: ['style-loader', 'css-loader', 'less-loader'],
+        use: [
+          'style-loader',
+          'css-loader',
+          {
+            loader: 'less-loader',
+            options: {
+              additionalData: `@prefix: ${namespace.prefix};`,
+            },
+          },
+        ],
       },
     ],
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     alias: {
+      '@namespace': path.resolve(__dirname, '../../namespace.json'),
       '@components': path.resolve(__dirname, '../../src/components'),
       '@constants': path.resolve(__dirname, '../../src/constants'),
       '@styles': path.resolve(__dirname, '../../src/styles'),

@@ -1,43 +1,29 @@
-export interface ThemeItem {
-  light: {
-    [colorName: string]: string;
-  };
-  dark: {
-    [colorName: string]: string;
-  };
-}
+import { Themes, ThemeItem } from './themes.d';
 
-export interface Themes {
-  [themeName: string]: ThemeItem;
-}
+export const getTransformedColor = (HEX: string, percent: number) => {
+  const value = Number.parseInt(HEX.slice(1), 16);
+  const colorant = percent < 0 ? 0 : 255;
+  const transform = value => Math.round((colorant - value) * Math.abs(percent)) + value;
+  const R = transform(value >> 16);
+  const G = transform(value >> 8 & 0x00FF);
+  const B = transform(value & 0x0000FF);
 
-export const getTransformedColor = (hex: string, step: number) => {
-  hex = hex.slice(1);
-
-  let r = hex.slice(0, 2);
-  let g = hex.slice(2, 4);
-  let b = hex.slice(4, 6);
-
-  const transform = (value: string) => {
-    const transformed = Number(`0x${value}`) + step;
-
-    if (transformed < 0) return '00';
-    if (transformed > 255) return 'ff';
-
-    return transformed.toString(16).padStart(2, '0');
-  };
-
-  r = transform(r);
-  g = transform(g);
-  b = transform(b);
-
-  return `#${r}${g}${b}`;
+  return `#${(0x1000000 + R * 0x10000 + G * 0x100 + B).toString(16).slice(1)}`;
 };
 
 export const themeColors = {
-  cloudless: '#2482f5',
-  camellias: '#f65a6e',
-  lavenders: '#7373f2',
+  cloudless: '#0066ff',
+  tangerine: '#ff6600',
+  lavenders: '#9966ff',
+};
+
+export const sharedColors = {
+  'color-disabled': '#a6a6a6',
+  'color-contrast': '#ffffff',
+  'transparent': 'transparent',
+  'danger-color': '#ff3300',
+  'danger-color-hover': getTransformedColor('#ff3300', 0.2),
+  'danger-color-active': getTransformedColor('#ff3300', -0.2),
 };
 
 export const lightColors = {
@@ -59,16 +45,22 @@ export const themes: Themes = themeNames.reduce((accumulator, themeName) => {
 
   const primaryColors = {
     'primary-color': primaryColor,
-    'primary-color-hover': getTransformedColor(primaryColor, 25),
-    'primary-color-active': getTransformedColor(primaryColor, -25),
+    'primary-color-hover': getTransformedColor(primaryColor, 0.2),
+    'primary-color-active': getTransformedColor(primaryColor, -0.2),
   };
 
   const themeItem: ThemeItem = {
-    light: { ...primaryColors, ...lightColors },
-    dark: { ...primaryColors, ...darkColors },
+    light: {
+      ...primaryColors,
+      ...sharedColors,
+      ...lightColors,
+    },
+    dark: {
+      ...primaryColors,
+      ...sharedColors,
+      ...darkColors,
+    },
   };
 
   return { ...accumulator, [themeName]: themeItem };
 }, {});
-
-export default themes;

@@ -11,6 +11,7 @@
     "resolveJsonModule": true,
     "baseUrl": "./",
     "paths": {
+      "@namespace": ["namespace.json"],
       "@components/*": ["src/components/*"],
       "@constants/*": ["src/constants/*"],
       "@styles/*": ["src/styles/*"],

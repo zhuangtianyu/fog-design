@@ -1,41 +1,135 @@
-.button {
+.@{prefix}-button {
   box-sizing: border-box;
   padding: 4px 16px;
+  font-size: 14px;
   line-height: 22px;
-  color: var(--color);
-  border: 1px solid var(--border-color);
+  border-width: 1px;
+  border-style: solid;
   border-radius: 2px;
-  background-color: var(--background-color);
   outline: none;
   cursor: pointer;
 
-  &:hover,
-  &:focus {
-    color: var(--primary-color-hover);
-    border-color: var(--primary-color-hover);
+  color: var(--fog-color);
+  border-color: var(--fog-border-color);
+  background-color: var(--fog-background-color);
+
+  &:hover, &:focus {
+    color: var(--fog-primary-color-hover);
+    border-color: var(--fog-primary-color-hover);
+    background-color: var(--fog-background-color);
   }
 
   &:active {
-    color: var(--primary-color-active);
-    border-color: var(--primary-color-active);
+    color: var(--fog-primary-color-active);
+    border-color: var(--fog-primary-color-active);
+    background-color: var(--fog-background-color);
   }
 
   &--primary {
-    color: #ffffff;
-    border-color: transparent;
-    background-color: var(--primary-color);
+    color: var(--fog-color-contrast);
+    border-color: var(--fog-transparent);
+    background-color: var(--fog-primary-color);
 
-    &:hover,
-    &:focus {
-      color: #ffffff;
-      border-color: transparent;
-      background-color: var(--primary-color-hover);
+    &:hover, &:focus {
+      color: var(--fog-color-contrast);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-primary-color-hover);
     }
 
     &:active {
-      color: #ffffff;
-      border-color: transparent;
-      background-color: var(--primary-color-active);
+      color: var(--fog-color-contrast);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-primary-color-active);
     }
+  }
+
+  &--link {
+    color: var(--fog-primary-color);
+    border-color: var(--fog-transparent);
+    background-color: var(--fog-transparent);
+
+    &:hover, &:focus {
+      color: var(--fog-primary-color-hover);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-transparent);
+    }
+
+    &:active {
+      color: var(--fog-primary-color-active);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-transparent);
+    }
+  }
+
+  &--text {
+    color: var(--fog-color);
+    border-color: var(--fog-transparent);
+    background-color: var(--fog-transparent);
+
+    &:hover, &:focus {
+      color: var(--fog-color);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-transparent);
+    }
+
+    &:active {
+      color: var(--fog-color);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-transparent);
+    }
+  }
+
+  &--danger {
+    color: var(--fog-danger-color);
+    border-color: var(--fog-danger-color);
+    background-color: var(--fog-background-color);
+
+    &:hover, &:focus {
+      color: var(--fog-danger-color-hover);
+      border-color: var(--fog-danger-color-hover);
+      background-color: var(--fog-background-color);
+    }
+
+    &:active {
+      color: var(--fog-danger-color-active);
+      border-color: var(--fog-danger-color-active);
+      background-color: var(--fog-background-color);
+    }
+  }
+
+  &--danger&--primary {
+    color: var(--fog-color-contrast);
+    border-color: var(--fog-transparent);
+    background-color: var(--fog-danger-color);
+
+    &:hover, &:focus {
+      color: var(--fog-color-contrast);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-danger-color-hover);
+    }
+
+    &:active {
+      color: var(--fog-color-contrast);
+      border-color: var(--fog-transparent);
+      background-color: var(--fog-danger-color-active);
+    }
+  }
+
+  &[disabled] {
+    color: var(--fog-color-disabled);
+    border-color: var(--fog-border-color);
+    background-color: var(--fog-background-color);
+    cursor: not-allowed;
+  }
+
+  &--link[disabled],
+  &--text[disabled],
+  &--link&--danger,
+  &--text&--danger {
+    border-color: transparent;
+  }
+
+  &--dashed {
+    border-style: dashed;
   }
 }
