@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import ButtonDemo from '@components/button/demo';
+import SwitchDemo from '@components/switch/demo';
+import Switch from '@components/switch';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import './index.less';
@@ -38,21 +40,11 @@ const App = () => {
       </div>
       <h2>Darkness</h2>
       <div className="darkness">
-        <span
-          style={{ fontWeight: dark ? 'normal' : 'bold' }}
-          onClick={() => setDark(false)}
-        >
-          light
-        </span>
-        <span
-          style={{ fontWeight: dark ? 'bold' : 'normal' }}
-          onClick={() => setDark(true)}
-        >
-          dark
-        </span>
+        <Switch checked={dark} onChange={setDark} />
       </div>
       <h2>Demo</h2>
       <ButtonDemo />
+      <SwitchDemo />
     </div>
   );
 };

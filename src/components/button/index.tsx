@@ -1,6 +1,6 @@
 import React, { HTMLAttributes } from 'react';
 import classnames from 'classnames';
-import { prefix } from '@namespace';
+import namespace from '@namespace';
 import './index.less';
 
 type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
@@ -12,6 +12,8 @@ interface ButtonProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'className
   disabled?: boolean;
   [propName: string]: any;
 }
+
+const { prefix } = namespace;
 
 const Button: React.FC<ButtonProps> = props => {
   const {

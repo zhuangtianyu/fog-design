@@ -1,0 +1,44 @@
+.@{prefix}-switch {
+  position: relative;
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  width: 44px;
+  height: 22px;
+  border-radius: 11px;
+  background-color: var(--fog-background-color-interactive);
+  cursor: pointer;
+
+  &__inner {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background-color: var(--fog-color-contrast);
+    transition: all 0.3s;
+  }
+
+  &--checked {
+    background-color: var(--fog-primary-color);
+  }
+
+  &--checked &__inner {
+    left: calc(100% - 2px);
+    transform: translateX(-100%);
+  }
+
+  &--disabled {
+    background-color: var(--fog-background-color-interactive-disabled);
+    cursor: not-allowed;
+  }
+
+  &--disabled &__inner {
+    background-color: var(--fog-background-color-disabled);
+  }
+
+  &--checked&--disabled {
+    background-color: var(--fog-primary-color-disabled);
+  }
+}

@@ -30,12 +30,18 @@ export const lightColors = {
   'color': '#0d0d0d',
   'border-color': '#d9d9d9',
   'background-color': '#ffffff',
+  'background-color-disabled': '#fcfcfc',
+  'background-color-interactive': '#bfbfbf',
+  'background-color-interactive-disabled': '#e6e6e6',
 };
 
 export const darkColors = {
   'color': '#ffffff',
   'border-color': '#808080',
   'background-color': '#0d0d0d',
+  'background-color-disabled': '#b3b3b3',
+  'background-color-interactive': '#666666',
+  'background-color-interactive-disabled': '#333333',
 };
 
 export const themeNames = Object.keys(themeColors);
@@ -54,11 +60,13 @@ export const themes: Themes = themeNames.reduce((accumulator, themeName) => {
       ...primaryColors,
       ...sharedColors,
       ...lightColors,
+      'primary-color-disabled': getTransformedColor(primaryColor, 0.6),
     },
     dark: {
       ...primaryColors,
       ...sharedColors,
       ...darkColors,
+      'primary-color-disabled': getTransformedColor(primaryColor, -0.5),
     },
   };
 
