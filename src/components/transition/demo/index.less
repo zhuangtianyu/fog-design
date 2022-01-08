@@ -1,0 +1,26 @@
+.transition-demo {
+
+  .box {
+    width: 100px;
+    height: 100px;
+    background-color: var(--fog-primary-color);
+    transition: all 0.3s;
+    transform-origin: 50% 0;
+  }
+
+  .beforeEnter {
+    transform: scale(0);
+  }
+
+  .entering {
+    transform: scale(1);
+  }
+
+  .entered {
+    transform: scale(1);
+  }
+
+  .leaving {
+    transform: scale(0);
+  }
+}

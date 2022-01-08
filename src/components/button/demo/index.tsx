@@ -6,6 +6,7 @@ const ButtonDemo = () => {
 
   return (
     <div className="button-demo">
+      <h2>Button</h2>
       <h3>Type</h3>
       <Button type="primary">
         Primary

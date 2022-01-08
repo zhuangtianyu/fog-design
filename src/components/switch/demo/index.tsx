@@ -7,6 +7,7 @@ const SwitchDemo = () => {
 
   return (
     <div className="switch-demo">
+      <h2>Switch</h2>
       <h3>Basic Usage</h3>
       <Switch checked={checked} onChange={setChecked} />
       <Switch checked={checked} disabled />

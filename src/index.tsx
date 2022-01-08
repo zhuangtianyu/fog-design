@@ -27,7 +27,7 @@ const Demo = () => {
   return component ? <component.default /> : null;
 };
 
-const components: string[] = ['button', 'switch'];
+const components: string[] = ['button', 'switch', 'transition'];
 
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);
@@ -59,7 +59,7 @@ const App = () => {
                 style={{ fontWeight: item === themeName ? 'bold' : 'normal' }}
                 onClick={() => setThemeName(item)}
               >
-                {item}
+                {kebabCaseToPascalCase(item)}
               </span>
             ))}
           </div>
