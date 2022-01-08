@@ -28,18 +28,20 @@ export const sharedColors = {
 
 export const lightColors = {
   'color': '#0d0d0d',
+  'color-contrast-disabled': '#fcfcfc',
   'border-color': '#d9d9d9',
   'background-color': '#ffffff',
-  'background-color-disabled': '#fcfcfc',
+  'background-color-blushed': '#f2f2f2',
   'background-color-interactive': '#bfbfbf',
   'background-color-interactive-disabled': '#e6e6e6',
 };
 
 export const darkColors = {
   'color': '#ffffff',
-  'border-color': '#808080',
+  'color-contrast-disabled': '#b3b3b3',
+  'border-color': '#404040',
   'background-color': '#0d0d0d',
-  'background-color-disabled': '#b3b3b3',
+  'background-color-blushed': '#262626',
   'background-color-interactive': '#666666',
   'background-color-interactive-disabled': '#333333',
 };
