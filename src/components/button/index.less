@@ -8,21 +8,22 @@
   border-radius: 2px;
   outline: none;
   cursor: pointer;
+  transition: all 0.3s;
 
   color: var(--fog-color);
   border-color: var(--fog-border-color);
-  background-color: var(--fog-background-color);
+  background-color: var(--fog-transparent);
 
   &:hover, &:focus {
     color: var(--fog-primary-color-hover);
     border-color: var(--fog-primary-color-hover);
-    background-color: var(--fog-background-color);
+    background-color: var(--fog-transparent);
   }
 
   &:active {
     color: var(--fog-primary-color-active);
     border-color: var(--fog-primary-color-active);
-    background-color: var(--fog-background-color);
+    background-color: var(--fog-transparent);
   }
 
   &--primary {
@@ -82,18 +83,18 @@
   &--danger {
     color: var(--fog-danger-color);
     border-color: var(--fog-danger-color);
-    background-color: var(--fog-background-color);
+    background-color: var(--fog-transparent);
 
     &:hover, &:focus {
       color: var(--fog-danger-color-hover);
       border-color: var(--fog-danger-color-hover);
-      background-color: var(--fog-background-color);
+      background-color: var(--fog-transparent);
     }
 
     &:active {
       color: var(--fog-danger-color-active);
       border-color: var(--fog-danger-color-active);
-      background-color: var(--fog-background-color);
+      background-color: var(--fog-transparent);
     }
   }
 
@@ -118,7 +119,7 @@
   &[disabled] {
     color: var(--fog-color-disabled);
     border-color: var(--fog-border-color);
-    background-color: var(--fog-background-color);
+    background-color: var(--fog-transparent);
     cursor: not-allowed;
   }
 

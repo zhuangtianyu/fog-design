@@ -22,3 +22,5 @@ export const setRafTimeout = (callback: Function, timeout: number = 0) => {
 };
 
 export const clearRafTimeout = id => id && cancelAnimationFrame(id);
+
+export const isFunction: (fn: any) => boolean = fn => typeof fn === 'function';

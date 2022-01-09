@@ -34,6 +34,8 @@ export const lightColors = {
   'background-color-blushed': '#f2f2f2',
   'background-color-interactive': '#bfbfbf',
   'background-color-interactive-disabled': '#e6e6e6',
+  'background-color-mask': 'rgba(0, 0, 0, 0.4)',
+  'background-color-modal': '#ffffff',
 };
 
 export const darkColors = {
@@ -44,6 +46,8 @@ export const darkColors = {
   'background-color-blushed': '#262626',
   'background-color-interactive': '#666666',
   'background-color-interactive-disabled': '#333333',
+  'background-color-mask': 'rgba(0, 0, 0, 0.4)',
+  'background-color-modal': '#262626',
 };
 
 export const themeNames = Object.keys(themeColors);
