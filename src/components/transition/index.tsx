@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
-import { setRafTimeout } from '@utils/index';
+import { setRafTimeout, isFunction } from '@utils/index';
 
 interface TransitionProps  {
   visible?: boolean;
@@ -11,6 +11,7 @@ interface TransitionProps  {
   entered?: string;
   leaving?: string;
   children?: React.ReactElement;
+  onLeft?: () => void;
 }
 
 type Stage = 'beforeEnter' | 'entering' | 'entered' | 'leaving';
@@ -21,6 +22,7 @@ const Transition: React.FC<TransitionProps> = props => {
     timeout,
     unmountNodeAfterLeave,
     children,
+    onLeft,
   } = props;
 
   const [stage, setStage] = useState<Stage>('beforeEnter');
@@ -41,6 +43,7 @@ const Transition: React.FC<TransitionProps> = props => {
       setRafTimeout(() => {
         setVisible(false);
         setStage('beforeEnter');
+        isFunction(onLeft) && onLeft();
       }, timeout);
     }
   }, [visibleFromProps]);
