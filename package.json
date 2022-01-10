@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/zhuangtianyu/fog-design/issues"
   },
-  "homepage": "https://github.com/zhuangtianyu/fog-design#readme",
+  "homepage": "https://zhuangtianyu.github.io/fog-design",
   "devDependencies": {
     "@babel/core": "^7.16.7",
     "@babel/preset-env": "^7.16.7",
