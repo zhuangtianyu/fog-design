@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
-import { setRafTimeout, isFunction } from '@utils/index';
+import { setRafTimeout, cancelRafTimeout, isFunction } from '@utils/index';
 
 interface TransitionProps  {
   visible?: boolean;
@@ -29,23 +29,27 @@ const Transition: React.FC<TransitionProps> = props => {
   const [visible, setVisible] = useState<boolean>(false);
 
   useEffect(() => {
+    const timers = [];
+
     if (visibleFromProps) {
       setVisible(true);
       setStage('beforeEnter');
-      setRafTimeout(() => {
+      timers.push(setRafTimeout(() => {
         setStage('entering');
-        setRafTimeout(() => {
+        timers.push(setRafTimeout(() => {
           setStage('entered');
-        }, timeout);
-      }, 50); // delay 50ms for ensure beforeEnter class rendered
+        }, timeout));
+      }, 50)); // delay 50ms for ensure beforeEnter class rendered
     } else {
       setStage('leaving');
-      setRafTimeout(() => {
+      timers.push(setRafTimeout(() => {
         setVisible(false);
         setStage('beforeEnter');
         isFunction(onLeft) && onLeft();
-      }, timeout);
+      }, timeout));
     }
+
+    return () => timers.forEach(timer => cancelRafTimeout(timer));
   }, [visibleFromProps]);
 
   if (unmountNodeAfterLeave && !visible) return null;

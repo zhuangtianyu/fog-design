@@ -7,20 +7,20 @@ export const kebabCaseToPascalCase: (name: string) => string = name => {
 };
 
 export const setRafTimeout = (callback: Function, timeout: number = 0) => {
-  const startTime = Date.now();
-  let id = 0;
+  const startTime = performance.now();
+  const timer = { id: 0 };
 
-  const checker = () => id = requestAnimationFrame(() => {
-    const elapsedTime = Date.now() - startTime;
+  const checker = () => timer.id = requestAnimationFrame(() => {
+    const elapsedTime = performance.now() - startTime;
 
     elapsedTime > timeout ? callback() : checker();
   });
 
   checker();
 
-  return id;
+  return timer;
 };
 
-export const clearRafTimeout = id => id && cancelAnimationFrame(id);
+export const cancelRafTimeout = timer => timer.id && cancelAnimationFrame(timer.id);
 
 export const isFunction: (fn: any) => boolean = fn => typeof fn === 'function';

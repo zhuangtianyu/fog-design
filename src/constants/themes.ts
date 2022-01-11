@@ -36,6 +36,7 @@ export const lightColors = {
   'background-color-interactive-disabled': '#e6e6e6',
   'background-color-mask': 'rgba(0, 0, 0, 0.4)',
   'background-color-modal': '#ffffff',
+  'shadow-color-popup': '#8c8c8c',
 };
 
 export const darkColors = {
@@ -48,6 +49,7 @@ export const darkColors = {
   'background-color-interactive-disabled': '#333333',
   'background-color-mask': 'rgba(0, 0, 0, 0.4)',
   'background-color-modal': '#262626',
+  'shadow-color-popup': 'transparent',
 };
 
 export const themeNames = Object.keys(themeColors);
