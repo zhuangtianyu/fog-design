@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { setRafTimeout, cancelRafTimeout, isFunction } from '@utils/index';
 
-interface TransitionProps  {
+export interface TransitionProps  {
   visible?: boolean;
   timeout?: number;
   unmountNodeAfterLeave?: boolean;
@@ -14,7 +14,7 @@ interface TransitionProps  {
   onLeft?: () => void;
 }
 
-type Stage = 'beforeEnter' | 'entering' | 'entered' | 'leaving';
+export type Stage = 'beforeEnter' | 'entering' | 'entered' | 'leaving';
 
 const Transition: React.FC<TransitionProps> = props => {
   const {

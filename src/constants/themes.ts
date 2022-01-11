@@ -38,6 +38,7 @@ export const lightColors = {
   'background-color-modal': '#ffffff',
   'background-color-input': 'transparent',
   'background-color-input-disabled': '#f2f2f2',
+  'background-color-select-option': '#f2f2f2',
   'shadow-color-popup': '#8c8c8c',
 };
 
@@ -53,6 +54,7 @@ export const darkColors = {
   'background-color-modal': '#262626',
   'background-color-input': '#262626',
   'background-color-input-disabled': '#1a1a1a',
+  'background-color-select-option': '#404040',
   'shadow-color-popup': 'transparent',
 };
 

@@ -1,0 +1,41 @@
+.@{prefix}-select {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  &__input {
+    cursor: pointer;
+
+    &--open {
+      border-color: var(--fog-primary-color);
+    }
+  }
+
+  &__popup--before-enter {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  &__popup--entering {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--entered {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--leaving {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  &__options {
+    padding: 4px 0;
+  }
+}

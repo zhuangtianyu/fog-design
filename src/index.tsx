@@ -27,7 +27,15 @@ const Demo = () => {
   return component ? <component.default /> : null;
 };
 
-const components: string[] = ['button', 'switch', 'transition', 'modal', 'trigger', 'input'];
+const components: string[] = [
+  'button',
+  'switch',
+  'transition',
+  'modal',
+  'trigger',
+  'input',
+  'select',
+];
 
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);

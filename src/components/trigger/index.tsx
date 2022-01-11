@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, cloneElem
 import ReactDOM from 'react-dom';
 import namespace from '@namespace';
 import classnames from 'classnames';
-import Transition from '@components/transition';
+import Transition, { TransitionProps } from '@components/transition';
 import useControlled from '@hooks/useControlled';
 import './index.less';
 
@@ -22,6 +22,7 @@ interface TriggerProps {
   onVisibleChange?: (visible: boolean) => void;
   trigger?: Trigger;
   popup?: React.ReactElement;
+  popupTransitionProps?: TransitionProps;
   children?: React.ReactElement;
   getPopupMountNode?: () => HTMLElement;
 }
@@ -34,6 +35,7 @@ const Trigger: React.FC<TriggerProps> = props => {
     onVisibleChange: onVisibleChangeFromProps,
     trigger,
     popup,
+    popupTransitionProps,
     children,
     getPopupMountNode,
   } = props;
@@ -161,6 +163,7 @@ const Trigger: React.FC<TriggerProps> = props => {
             entering={`${prefix}-trigger__popup--entering`}
             entered={`${prefix}-trigger__popup--entered`}
             leaving={`${prefix}-trigger__popup--leaving`}
+            {...popupTransitionProps}
           >
             <div
               className={classnames(`${prefix}-trigger__popup`, className)}
@@ -178,6 +181,7 @@ const Trigger: React.FC<TriggerProps> = props => {
 
 Trigger.defaultProps = {
   trigger: 'click',
+  popupTransitionProps: {},
   getPopupMountNode: () => document.body,
 };
 

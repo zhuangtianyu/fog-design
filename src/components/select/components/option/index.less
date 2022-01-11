@@ -1,0 +1,25 @@
+.@{prefix}-select__option {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  padding: 4px 12px;
+  font-size: 14px;
+  line-height: 24px;
+  transition: all 0.3s;
+  user-select: none;
+  cursor: pointer;
+
+  &--active {
+    font-weight: bold;
+    background-color: var(--fog-background-color-select-option);
+  }
+
+  &--picking {
+    background-color: var(--fog-background-color-select-option);
+  }
+}
