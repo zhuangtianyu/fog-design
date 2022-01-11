@@ -36,6 +36,8 @@ export const lightColors = {
   'background-color-interactive-disabled': '#e6e6e6',
   'background-color-mask': 'rgba(0, 0, 0, 0.4)',
   'background-color-modal': '#ffffff',
+  'background-color-input': 'transparent',
+  'background-color-input-disabled': '#f2f2f2',
   'shadow-color-popup': '#8c8c8c',
 };
 
@@ -49,6 +51,8 @@ export const darkColors = {
   'background-color-interactive-disabled': '#333333',
   'background-color-mask': 'rgba(0, 0, 0, 0.4)',
   'background-color-modal': '#262626',
+  'background-color-input': '#262626',
+  'background-color-input-disabled': '#1a1a1a',
   'shadow-color-popup': 'transparent',
 };
 

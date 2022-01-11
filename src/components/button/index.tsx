@@ -3,9 +3,9 @@ import classnames from 'classnames';
 import namespace from '@namespace';
 import './index.less';
 
-type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
+export type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
 
-interface ButtonProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'className'> {
+export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   className?: string;
   type?: ButtonType;
   danger?: boolean;
