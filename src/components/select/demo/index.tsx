@@ -4,10 +4,6 @@ import './index.less';
 
 const { Option } = Select;
 
-const drinks = ['Coca-Cola', 'Sprite', 'Fanta Orange'];
-
-const beers = ['Snow Beer Trekker', 'Corona', 'Budweiser', 'Hoegaarden'];
-
 const SelectDemo = () => {
 
   return (
@@ -15,19 +11,18 @@ const SelectDemo = () => {
       <h2>Select</h2>
       <h3>Basic Usage</h3>
       <Select placeholder="Please select">
-        {drinks.map(name => (
-          <Option key={name} value={name}>
-            {name}
-          </Option>
-        ))}
+        <Option value={0}>Coca-Cola</Option>
+        <Option value={1} disabled>Pepsi</Option>
+        <Option value={2}>Sprite</Option>
+        <Option value={3}>Fanta Orange</Option>
       </Select>
       <h3>Multiple Mode</h3>
       <Select placeholder="Please select" multiple>
-        {beers.map(name => (
-          <Option key={name} value={name}>
-            {name}
-          </Option>
-        ))}
+        <Option value={0}>Snow Beer Trekker</Option>
+        <Option value={1} disabled>Pepsi</Option>
+        <Option value={2}>Corona</Option>
+        <Option value={3}>Budweiser</Option>
+        <Option value={4}>Hoegaarden</Option>
       </Select>
     </div>
   );

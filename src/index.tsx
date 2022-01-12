@@ -5,6 +5,7 @@ import Switch from '@components/switch';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import { kebabCaseToPascalCase } from '@utils/index';
+import '@styles/index.less';
 import './index.less';
 
 const previousDark = !!localStorage.getItem('dark');

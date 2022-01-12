@@ -75,6 +75,7 @@ const Select: SelectTypes = props => {
       ? React.Children.map(children, (item: React.ReactElement) => ({
           label: item.props.label,
           value: item.props.value,
+          disabled: item.props.disabled,
           children: item.props.children,
         }))
       : optionsFromProps || []
@@ -122,7 +123,9 @@ const Select: SelectTypes = props => {
     }
   };
 
-  const handleOptionClick = optionValue => {
+  const handleOptionClick = (optionValue: ValueType, option: OptionProps) => {
+    if (option.disabled) return;
+
     if (multiple) {
       value.includes(optionValue)
         ? deleteMultipleValue(optionValue)
@@ -157,18 +160,38 @@ const Select: SelectTypes = props => {
             handleOpenChange(false);
           }
           if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
-            const pickingIndex = options.findIndex(item => item.value === picking);
-            const nextPickingIndex = (pickingIndex + 1) % options.length;
+            let pickingIndex = options.findIndex(item => item.value === picking);
+            let nextIndex = (pickingIndex + 1) % options.length;
 
-            setPicking(options[nextPickingIndex].value);
+            for (let i = 0; i < options.length; i++) {
+              const option = options[nextIndex];
+
+              if (!option.disabled) {
+                return setPicking(option.value);
+              } else {
+                nextIndex = (nextIndex + 1) % options.length
+              }
+            }
+
+            setPicking(null);
           }
           if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
             const pickingIndex = options.findIndex(item => item.value === picking);
-            const nextPickingIndex = pickingIndex !== -1
-              ? (pickingIndex + options.length - 1) % options.length
-              : options.length - 1;
+            let nextIndex = pickingIndex !== -1
+              ? (pickingIndex - 1 + options.length) % options.length
+              : options.length - 1
 
-            setPicking(options[nextPickingIndex].value);
+            for (let i = 0; i < options.length; i++) {
+              const option = options[nextIndex];
+
+              if (!option.disabled) {
+                return setPicking(option.value);
+              } else {
+                nextIndex = (nextIndex - 1 + options.length) % options.length
+              }
+            }
+
+            setPicking(null);
           }
         } else {
           if (event.key === 'Enter') {
@@ -181,7 +204,7 @@ const Select: SelectTypes = props => {
     document.addEventListener('keydown', handleKeyDown);
 
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [open, value, picking]);
+  }, [open, value, picking, options]);
 
   const popup = useMemo(() => (
     <div className={`${prefix}-select__options`}>
@@ -192,8 +215,9 @@ const Select: SelectTypes = props => {
           value={item.value}
           active={isOptionActive(item.value)}
           picking={!isOptionActive(item.value) && item.value === picking}
+          disabled={item.disabled}
           multiple={multiple}
-          onClick={() => handleOptionClick(item.value)}
+          onClick={() => handleOptionClick(item.value, item)}
           onMouseEnter={() => setPicking(item.value)}
           onMouseLeave={() => setPicking(multiple ? null : value)}
         >

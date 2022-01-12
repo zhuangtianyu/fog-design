@@ -13,6 +13,7 @@ export interface OptionProps {
   value?: ValueType;
   active?: boolean;
   picking?: boolean;
+  disabled?: boolean;
   multiple?: boolean;
   children?: React.ReactChild,
   [propName: string]: any;
@@ -24,6 +25,7 @@ const Option: React.FC<OptionProps> = props => {
     label,
     active,
     picking,
+    disabled,
     multiple,
     children,
     ...restProps
@@ -36,6 +38,7 @@ const Option: React.FC<OptionProps> = props => {
           [`${prefix}-select__option`]: true,
           [`${prefix}-select__option--active`]: active,
           [`${prefix}-select__option--picking`]: picking,
+          [`${prefix}-select__option--disabled`]: disabled,
           [`${prefix}-select__option--multiple`]: multiple,
         },
         className,
