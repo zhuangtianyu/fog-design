@@ -67,7 +67,6 @@ const TriggerDemo = () => {
           height: 500,
           border: '1px solid var(--fog-border-color)',
           margin: '30px 0',
-          backgroundColor: 'var(--fog-background-color-interactive-disabled)',
         }}
       >
         Block make sure body scrollable.

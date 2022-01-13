@@ -43,7 +43,13 @@ const ModalDemo = () => {
                 </span>
                 <Button
                   onClick={() => {
-                    modal.update({ content: 'Catch the moment.' });
+                    modal.update({
+                      content: (
+                        <span style={{ lineHeight: '32px' }}>
+                          Catch the moment.
+                        </span>
+                      ),
+                    });
                   }}
                 >
                   Update

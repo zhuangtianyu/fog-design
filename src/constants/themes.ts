@@ -17,45 +17,70 @@ export const themeColors = {
   lavenders: '#9966ff',
 };
 
-export const sharedColors = {
-  'color-disabled': '#a6a6a6',
-  'color-contrast': '#ffffff',
+export const lightColors = {
   'transparent': 'transparent',
+
+  'color': '#0d0d0d',
+  'color-disabled': '#a6a6a6',
+
+  'contrast-color': '#ffffff',
+  'contrast-color-disabled': '#fcfcfc',
+
+  'border-color': '#d9d9d9',
+  'background-color': '#ffffff',
+
+  /* used for: switch */
+  'internal-color': '#bfbfbf',
+  'internal-color-disabled': '#e6e6e6',
+
+  /* used for: input, modal, popup... */
+  'panel-color': '#ffffff',
+  'panel-color-active': '#f2f2f2',
+  'panel-color-disabled': '#f5f5f5',
+
+  /* used for: modal */
+  'mask-color': 'rgba(0, 0, 0, 0.4)',
+
+  /* used for: popup */
+  'shadow-color': '#8c8c8c',
+
+  /* used for: danger-element */
   'danger-color': '#ff3300',
   'danger-color-hover': getTransformedColor('#ff3300', 0.2),
   'danger-color-active': getTransformedColor('#ff3300', -0.2),
 };
 
-export const lightColors = {
-  'color': '#0d0d0d',
-  'color-contrast-disabled': '#fcfcfc',
-  'border-color': '#d9d9d9',
-  'background-color': '#ffffff',
-  'background-color-blushed': '#f2f2f2',
-  'background-color-interactive': '#bfbfbf',
-  'background-color-interactive-disabled': '#e6e6e6',
-  'background-color-mask': 'rgba(0, 0, 0, 0.4)',
-  'background-color-modal': '#ffffff',
-  'background-color-input': 'transparent',
-  'background-color-input-disabled': '#f2f2f2',
-  'background-color-select-option': '#f2f2f2',
-  'shadow-color-popup': '#8c8c8c',
-};
-
 export const darkColors = {
-  'color': '#ffffff',
-  'color-contrast-disabled': '#b3b3b3',
+  'transparent': 'transparent',
+
+  'color': '#d9d9d9',
+  'color-disabled': '#8c8c8c',
+
+  'contrast-color': '#ffffff',
+  'contrast-color-disabled': '#b3b3b3',
+
   'border-color': '#404040',
   'background-color': '#0d0d0d',
-  'background-color-blushed': '#262626',
-  'background-color-interactive': '#666666',
-  'background-color-interactive-disabled': '#333333',
-  'background-color-mask': 'rgba(0, 0, 0, 0.4)',
-  'background-color-modal': '#262626',
-  'background-color-input': '#262626',
-  'background-color-input-disabled': '#1a1a1a',
-  'background-color-select-option': '#404040',
-  'shadow-color-popup': 'transparent',
+
+  /* used for: switch */
+  'internal-color': '#666666',
+  'internal-color-disabled': '#333333',
+
+  /* used for: input, modal, popup... */
+  'panel-color': '#262626',
+  'panel-color-active': '#404040',
+  'panel-color-disabled': '#1a1a1a',
+
+  /* used for: modal */
+  'mask-color': 'rgba(0, 0, 0, 0.4)',
+
+  /* used for: popup */
+  'shadow-color': '#1a1a1a',
+
+  /* used for: danger-element */
+  'danger-color': '#ff3300',
+  'danger-color-hover': getTransformedColor('#ff3300', 0.2),
+  'danger-color-active': getTransformedColor('#ff3300', -0.2),
 };
 
 export const themeNames = Object.keys(themeColors);
@@ -71,15 +96,13 @@ export const themes: Themes = themeNames.reduce((accumulator, themeName) => {
 
   const themeItem: ThemeItem = {
     light: {
-      ...primaryColors,
-      ...sharedColors,
       ...lightColors,
+      ...primaryColors,
       'primary-color-disabled': getTransformedColor(primaryColor, 0.6),
     },
     dark: {
-      ...primaryColors,
-      ...sharedColors,
       ...darkColors,
+      ...primaryColors,
       'primary-color-disabled': getTransformedColor(primaryColor, -0.5),
     },
   };

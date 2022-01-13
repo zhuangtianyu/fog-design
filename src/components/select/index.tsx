@@ -218,7 +218,7 @@ const Select: SelectTypes = props => {
           disabled={item.disabled}
           multiple={multiple}
           onClick={() => handleOptionClick(item.value, item)}
-          onMouseEnter={() => setPicking(item.value)}
+          onMouseEnter={() => !item.disabled && setPicking(item.value)}
           onMouseLeave={() => setPicking(multiple ? null : value)}
         >
           {item.children}

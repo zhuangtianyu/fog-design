@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Routes, Route, Link, NavLink, useParams } from 'react-router-dom';
 import Switch from '@components/switch';
+import Select from '@components/select';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import { kebabCaseToPascalCase } from '@utils/index';
@@ -38,6 +39,8 @@ const components: string[] = [
   'select',
 ];
 
+const { Option } = Select;
+
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);
   const [themeName, setThemeName] = useState(previousThemeName || themeNames[0]);
@@ -62,20 +65,21 @@ const App = () => {
             </div>
           </Link>
           <div className="app__header-themes">
-            {themeNames.map(item => (
-              <span
-                key={item}
-                style={{ fontWeight: item === themeName ? 'bold' : 'normal' }}
-                onClick={() => setThemeName(item)}
-              >
-                {kebabCaseToPascalCase(item)}
-              </span>
-            ))}
+            <span>Theme:</span>
+            <Select
+              className="app__header-themes-select"
+              value={themeName}
+              onChange={setThemeName}
+            >
+              {themeNames.map(item => (
+                <Option key={item} value={item}>
+                  {kebabCaseToPascalCase(item)}
+                </Option>
+              ))}
+            </Select>
           </div>
           <div className="app__header-darkness">
-            <span className="app__header-darkname">
-              {dark ? 'Dark' : 'Light'}
-            </span>
+            <span className="app__header-darkname">Darkness:</span>
             <Switch checked={dark} onChange={setDark} />
           </div>
         </div>

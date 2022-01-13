@@ -1,5 +1,12 @@
 .@{prefix}-button {
-  box-sizing: border-box;
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
   padding: 4px 16px;
   font-size: 14px;
   line-height: 22px;
@@ -27,18 +34,18 @@
   }
 
   &--primary {
-    color: var(--fog-color-contrast);
+    color: var(--fog-contrast-color);
     border-color: var(--fog-transparent);
     background-color: var(--fog-primary-color);
 
     &:hover, &:focus {
-      color: var(--fog-color-contrast);
+      color: var(--fog-contrast-color);
       border-color: var(--fog-transparent);
       background-color: var(--fog-primary-color-hover);
     }
 
     &:active {
-      color: var(--fog-color-contrast);
+      color: var(--fog-contrast-color);
       border-color: var(--fog-transparent);
       background-color: var(--fog-primary-color-active);
     }
@@ -99,18 +106,18 @@
   }
 
   &--danger&--primary {
-    color: var(--fog-color-contrast);
+    color: var(--fog-contrast-color);
     border-color: var(--fog-transparent);
     background-color: var(--fog-danger-color);
 
     &:hover, &:focus {
-      color: var(--fog-color-contrast);
+      color: var(--fog-contrast-color);
       border-color: var(--fog-transparent);
       background-color: var(--fog-danger-color-hover);
     }
 
     &:active {
-      color: var(--fog-color-contrast);
+      color: var(--fog-contrast-color);
       border-color: var(--fog-transparent);
       background-color: var(--fog-danger-color-active);
     }

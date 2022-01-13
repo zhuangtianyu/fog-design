@@ -1,12 +1,19 @@
 .@{prefix}-switch {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  box-sizing: border-box;
   width: 44px;
   height: 22px;
   border-radius: 11px;
-  background-color: var(--fog-background-color-interactive);
+  background-color: var(--fog-internal-color);
   cursor: pointer;
 
   &__inner {
@@ -16,7 +23,7 @@
     border-radius: 50%;
     top: 2px;
     left: 2px;
-    background-color: var(--fog-color-contrast);
+    background-color: var(--fog-contrast-color);
     transition: all 0.3s;
   }
 
@@ -30,15 +37,15 @@
   }
 
   &--disabled {
-    background-color: var(--fog-background-color-interactive-disabled);
+    background-color: var(--fog-internal-color-disabled);
     cursor: not-allowed;
   }
 
-  &--disabled &__inner {
-    background-color: var(--fog-color-contrast-disabled);
+  &--disabled&--checked {
+    background-color: var(--fog-primary-color-disabled);
   }
 
-  &--checked&--disabled {
-    background-color: var(--fog-primary-color-disabled);
+  &--disabled &__inner {
+    background-color: var(--fog-contrast-color-disabled);
   }
 }

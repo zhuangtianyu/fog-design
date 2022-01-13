@@ -35,17 +35,23 @@ body {
     }
 
     &-themes {
-      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      margin-right: 20px;
       margin-left: auto;
 
       span {
-        margin-right: 12px;
+        margin-right: 6px;
         cursor: pointer;
 
         &:last-child {
           margin-right: 0;
         }
       }
+    }
+
+    &-themes-select {
+      width: 120px;
     }
 
     &-darkness {
@@ -55,10 +61,6 @@ body {
 
     &-darkname {
       margin-right: 6px;
-
-      &::after {
-        content: ':';
-      }
     }
   }
 
@@ -75,7 +77,7 @@ body {
   }
 
   &__sidebar a.active &__sidebar-item {
-    background-color: var(--fog-background-color-blushed);
+    background-color: var(--fog-panel-color-active);
   }
 
   &__sidebar-item {
