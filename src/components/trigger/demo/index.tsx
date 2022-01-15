@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import Button from '@components/button';
 import Switch from '@components/switch';
 import Trigger from '@components/trigger';
+import Input from '@components/input';
 import './index.less';
 
 const popup = (
@@ -13,6 +14,8 @@ const popup = (
     ))}
   </div>
 );
+
+const { TextArea } = Input;
 
 const TriggerDemo = () => {
   const [resizableVisible, setResizableVisible] = useState<boolean>(false);
@@ -39,7 +42,10 @@ const TriggerDemo = () => {
       <h3>Resizable</h3>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Trigger popup={popup} visible={resizableVisible}>
-          <textarea style={{ marginRight: 12 }} />
+          <TextArea
+            style={{ width: 320, marginRight: 12 }}
+            defaultValue="Resize textarea to update popup position"
+          />
         </Trigger>
         <Switch
           checked={resizableVisible}

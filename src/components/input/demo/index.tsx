@@ -2,6 +2,8 @@ import React from 'react';
 import Input from '@components/input';
 import './index.less';
 
+const { TextArea } = Input;
+
 const InputDemo = () => {
 
   return (
@@ -15,6 +17,8 @@ const InputDemo = () => {
       <Input placeholder="Please Input" readOnly />
       <h3>Password</h3>
       <Input placeholder="Please Input" type="password" defaultValue="12345678" />
+      <h3>TextArea</h3>
+      <TextArea placeholder="Please Input" />
     </div>
   );
 };

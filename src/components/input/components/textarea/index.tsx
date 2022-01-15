@@ -1,28 +1,23 @@
 import React, { forwardRef, HTMLAttributes } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
-import TextArea from './components/textarea';
 import { isFunction } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
 
-export type InputValue = string | undefined | null;
+export type TextAreaValue = string | undefined | null;
 
-export interface InputProps extends HTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps extends HTMLAttributes<HTMLTextAreaElement> {
   className?: string;
-  value?: InputValue;
+  value?: TextAreaValue;
   disabled?: boolean;
   readOnly?: boolean;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
   [propName: string]: any;
 }
 
-export interface InputTypes extends React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement>> {
-  TextArea: typeof TextArea;
-}
-
-const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+const TextArea: React.FC<TextAreaProps> = forwardRef<HTMLTextAreaElement, TextAreaProps>((props, ref) => {
   const {
     className,
     value,
@@ -38,8 +33,8 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
   };
 
   return (
-    <input
-      className={classnames(`${prefix}-input`, className)}
+    <textarea
+      className={classnames(`${prefix}-textarea`, className)}
       ref={ref}
       value={value}
       defaultValue={defaultValue}
@@ -49,12 +44,10 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
       {...restProps}
     />
   );
-}) as InputTypes;
+});
 
-Input.defaultProps = {};
+TextArea.defaultProps = {};
 
-Input.displayName = 'Input';
+TextArea.displayName = 'TextArea';
 
-Input.TextArea = TextArea;
-
-export default Input;
+export default TextArea;
