@@ -32,11 +32,12 @@ const Demo = () => {
 const components: string[] = [
   'button',
   'switch',
-  'transition',
-  'modal',
   'trigger',
+  'tag',
   'input',
   'select',
+  'modal',
+  'transition',
 ];
 
 const { Option } = Select;
