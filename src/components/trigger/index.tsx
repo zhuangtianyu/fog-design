@@ -108,20 +108,18 @@ const Trigger: React.FC<TriggerProps> = props => {
     return () => {};
   }, [mountNode, containerNode]);
 
-  useLayoutEffect(() => {
-    if (containerNode) {
-      setTimeout(() => {
-        if (triggerRef.current && popupRef.current) {
-          const { x: triggerRefX, y: triggerRefY, width, height } = triggerRef.current.getBoundingClientRect();
-          const { x: containerNodeX, y: containerNodeY } = containerNode.getBoundingClientRect();
+  const updatePopupPosition = () => {
+    setTimeout(() => {
+      if (containerNode && triggerRef.current && popupRef.current) {
+        const { x: triggerRefX, y: triggerRefY, width, height } = triggerRef.current.getBoundingClientRect();
+        const { x: containerNodeX, y: containerNodeY } = containerNode.getBoundingClientRect();
 
-          popupRef.current.style.left = `${triggerRefX - containerNodeX}px`;
-          popupRef.current.style.top = `${triggerRefY - containerNodeY + height + 4}px`;
-          popupRef.current.style.minWidth = `${width}px`;
-        }
-      });
-    }
-  }, [visible, containerNode]);
+        popupRef.current.style.left = `${triggerRefX - containerNodeX}px`;
+        popupRef.current.style.top = `${triggerRefY - containerNodeY + height + 4}px`;
+        popupRef.current.style.minWidth = `${width}px`;
+      }
+    });
+  };
 
   useEffect(() => {
     if (propertyIncludes(trigger, 'click')) {
@@ -142,6 +140,20 @@ const Trigger: React.FC<TriggerProps> = props => {
       return () => document.removeEventListener('click', handleClick);
     }
   }, [visible, containerNode, trigger]);
+
+  useLayoutEffect(() => {
+    if (visible && containerNode) {
+      if (ResizeObserver && triggerRef.current) {
+        const resizeObserver = new ResizeObserver(updatePopupPosition);
+
+        resizeObserver.observe(triggerRef.current);
+
+        return () => resizeObserver.disconnect();
+      }
+
+      updatePopupPosition();
+    }
+  }, [visible, containerNode]);
 
   return (
     <>

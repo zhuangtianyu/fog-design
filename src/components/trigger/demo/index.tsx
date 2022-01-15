@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Button from '@components/button';
+import Switch from '@components/switch';
 import Trigger from '@components/trigger';
 import './index.less';
 
@@ -14,6 +15,8 @@ const popup = (
 );
 
 const TriggerDemo = () => {
+  const [resizableVisible, setResizableVisible] = useState<boolean>(false);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -33,6 +36,16 @@ const TriggerDemo = () => {
       <Trigger popup={popup} trigger={['click', 'hover']}>
         <Button>Click or hover me</Button>
       </Trigger>
+      <h3>Resizable</h3>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Trigger popup={popup} visible={resizableVisible}>
+          <textarea style={{ marginRight: 12 }} />
+        </Trigger>
+        <Switch
+          checked={resizableVisible}
+          onChange={setResizableVisible}
+        />
+      </div>
       <h3>Scroll Container</h3>
       <div
         ref={scrollRef}
@@ -60,16 +73,6 @@ const TriggerDemo = () => {
             </Button>
           </Trigger>
         </div>
-      </div>
-      <div
-        style={{
-          padding: 20,
-          height: 500,
-          border: '1px solid var(--fog-border-color)',
-          margin: '30px 0',
-        }}
-      >
-        Block make sure body scrollable.
       </div>
     </div>
   );
