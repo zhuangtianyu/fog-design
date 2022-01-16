@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
-import Input from '@components/input';
 import Trigger from '@components/trigger';
+import Selection from './components/selection';
 import Option, { OptionProps } from './components/option';
 import useControlled from '@hooks/useControlled';
 import { setRafTimeout } from '@utils/index';
@@ -16,6 +16,7 @@ export type SelectValueType = ValueType | ValueType[];
 
 export interface SelectProps {
   className?: string;
+  style?: React.CSSProperties;
   value?: SelectValueType;
   defaultValue?: SelectValueType;
   onChange?: (value: ValueType) => void;
@@ -29,12 +30,13 @@ export interface SelectProps {
 }
 
 export interface SelectTypes extends React.FC<SelectProps> {
-  Option: React.FC<OptionProps>;
+  Option: typeof Option;
 }
 
 const Select: SelectTypes = props => {
   const {
     className,
+    style,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -73,15 +75,15 @@ const Select: SelectTypes = props => {
   const options = useMemo<OptionProps[]>(() => (
     children
       ? React.Children.map(children, (item: React.ReactElement) => ({
-          label: item.props.label,
+          label: item.props.label || item.props.children,
           value: item.props.value,
           disabled: item.props.disabled,
-          children: item.props.children,
+          children: item.props.children || item.props.label,
         }))
       : optionsFromProps || []
   ), [children, optionsFromProps]);
 
-  const valueText = useMemo(() => {
+  const inputValue = useMemo(() => {
     if (multiple) {
       return options
         .filter(item => value.includes(item.value))
@@ -136,7 +138,7 @@ const Select: SelectTypes = props => {
     }
 
     setPicking(optionValue);
-    inputRef.current.focus();
+    inputRef.current?.focus();
   };
 
   useEffect(() => {
@@ -228,7 +230,10 @@ const Select: SelectTypes = props => {
   ), [options, value, picking]);
 
   return (
-    <div className={classnames(`${prefix}-select`, className)}>
+    <div
+      className={classnames(`${prefix}-select`, className)}
+      style={style}
+    >
       <Trigger
         visible={open}
         onVisibleChange={onOpenChange}
@@ -241,14 +246,15 @@ const Select: SelectTypes = props => {
         }}
         getPopupMountNode={getPopupMountNode}
       >
-        <Input
-          className={classnames(`${prefix}-select__input`, {
-            [`${prefix}-select__input--open`]: open,
-          })}
-          value={valueText}
-          ref={inputRef}
+        <Selection
+          className={`${prefix}-select__selection`}
+          value={value}
+          options={options}
+          multiple={multiple}
+          inputRef={inputRef}
+          inputValue={inputValue}
           placeholder={placeholder}
-          readOnly
+          onDeleteTag={optionValue => deleteMultipleValue(optionValue)}
         />
       </Trigger>
     </div>

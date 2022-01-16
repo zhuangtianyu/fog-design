@@ -29,6 +29,8 @@ export const lightColors = {
   'border-color': '#d9d9d9',
   'background-color': '#ffffff',
 
+  'placeholder-color': '#bfbfbf',
+
   /* used for: switch */
   'internal-color': '#bfbfbf',
   'internal-color-disabled': '#e6e6e6',
@@ -61,6 +63,8 @@ export const darkColors = {
 
   'border-color': '#404040',
   'background-color': '#0d0d0d',
+
+  'placeholder-color': '#666666',
 
   /* used for: switch */
   'internal-color': '#666666',

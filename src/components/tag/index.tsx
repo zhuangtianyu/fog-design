@@ -7,7 +7,8 @@ import './index.less';
 interface TagProps  {
   className?: string;
   closable?: boolean;
-  onClose?: () => void;
+  onClose?: (event: React.MouseEvent) => void;
+  [propName: string]: any;
 }
 
 const { prefix } = namespace;
@@ -18,15 +19,19 @@ const Tag: React.FC<TagProps> = props => {
     closable,
     children,
     onClose,
+    ...restProps
   } = props;
 
   return (
-    <div className={classnames(`${prefix}-tag`, className)}>
+    <div
+      className={classnames(`${prefix}-tag`, className)}
+      {...restProps}
+    >
       {children}
       {closable && (
         <div
           className={`${prefix}-tag__close`}
-          onClick={() => isFunction(onClose) && onClose()}
+          onClick={event => isFunction(onClose) && onClose(event)}
         >
           ✕
         </div>

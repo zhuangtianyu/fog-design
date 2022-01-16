@@ -1,0 +1,53 @@
+.@{prefix}-selection {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  position: relative;
+
+  &--single &__input--single {
+    width: 100%;
+  }
+
+  &--multiple {
+    padding: 1px 4px;
+    min-height: 32px;
+    border: 1px solid var(--fog-border-color);
+    background-color: var(--fog-panel-color);
+    cursor: text;
+
+    &:hover {
+      border-color: var(--fog-primary-color-hover);
+    }
+  }
+
+  &--multiple &--focused {
+    border-color: var(--fog-primary-color);
+  }
+
+  &--multiple &__tag {
+    margin: 2px;
+  }
+
+  &--multiple &__input--multiple {
+    padding: 0;
+    width: 2px;
+    line-height: 24px;
+    border: none;
+    background-color: var(--fog-transparent);
+    margin: 2px;
+  }
+
+  &--multiple &__placeholder {
+    position: absolute;
+    top: 4px;
+    left: 12px;
+    color: var(--fog-placeholder-color);
+    font-size: 14px;
+    line-height: 22px;
+  }
+}
