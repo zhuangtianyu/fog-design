@@ -8,17 +8,30 @@
   }
 
   padding: 0 8px;
-  display: inline-flex;
-  align-items: center;
-  font-size: 14px;
+  display: inline-block;
+  font-size: 0;
   line-height: 22px;
   border: 1px solid var(--fog-border-color);
   border-radius: 2px;
   background-color: var(--fog-background-color);
 
+  &--closable {
+    padding-right: 0;
+  }
+
+  &__text,
   &__close {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__text {
+    font-size: 14px;
+  }
+
+  &__close {
+    padding: 0 8px 0 4px;
     font-size: 12px;
-    margin-left: 4px;
     cursor: pointer;
   }
 }

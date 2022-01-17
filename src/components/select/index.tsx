@@ -115,7 +115,7 @@ const Select: SelectTypes = props => {
     onChange(nextMultipleValue);
   };
 
-  const handleOpenChange = nextOpen => {
+  const handleOpenDelayChange = nextOpen => {
     if (nextOpen) {
       onOpenChange(true);
     } else {
@@ -134,7 +134,7 @@ const Select: SelectTypes = props => {
         : insertMultipleValue(optionValue);
     } else {
       optionValue !== value && onChange(optionValue);
-      handleOpenChange(false);
+      handleOpenDelayChange(false);
     }
 
     setPicking(optionValue);
@@ -151,15 +151,17 @@ const Select: SelectTypes = props => {
                 value.includes(picking)
                   ? deleteMultipleValue(picking)
                   : insertMultipleValue(picking);
+              } else {
+                handleOpenDelayChange(false);
               }
             } else {
               picking !== null && picking !== value && onChange(picking);
-              handleOpenChange(false);
+              handleOpenDelayChange(false);
             }
           }
           if (event.key === 'Escape') {
             !multiple && setPicking(value);
-            handleOpenChange(false);
+            handleOpenDelayChange(false);
           }
           if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
             let pickingIndex = options.findIndex(item => item.value === picking);
@@ -197,7 +199,7 @@ const Select: SelectTypes = props => {
           }
         } else {
           if (event.key === 'Enter') {
-            handleOpenChange(true);
+            handleOpenDelayChange(true);
           }
         }
       }
@@ -254,7 +256,10 @@ const Select: SelectTypes = props => {
           inputRef={inputRef}
           inputValue={inputValue}
           placeholder={placeholder}
-          onDeleteTag={optionValue => deleteMultipleValue(optionValue)}
+          onTagDelete={optionValue => {
+            deleteMultipleValue(optionValue);
+            inputRef.current?.focus();
+          }}
         />
       </Trigger>
     </div>

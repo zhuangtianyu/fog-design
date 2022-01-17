@@ -22,7 +22,7 @@ export interface SelectionProps {
   inputRef?: React.RefObject<HTMLInputElement>;
   inputValue?: string;
   placeholder?: string;
-  onDeleteTag?: (optionValue: ValueType) => void;
+  onTagDelete?: (optionValue: ValueType) => void;
 }
 
 const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, SelectionProps>((props, ref) => {
@@ -35,7 +35,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     inputRef,
     inputValue,
     placeholder,
-    onDeleteTag,
+    onTagDelete,
   } = props;
 
   const [focused, setFocused] = useState<boolean>(false);
@@ -51,7 +51,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     if (event.key === 'Backspace' && value.length) {
       const lastValue = value[value.length - 1];
 
-      onDeleteTag(lastValue);
+      onTagDelete(lastValue);
     }
   };
 
@@ -83,7 +83,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
                   closable
                   onClose={event => {
                     event.stopPropagation();
-                    isFunction(onDeleteTag) && onDeleteTag(tag.value);
+                    isFunction(onTagDelete) && onTagDelete(tag.value);
                   }}
                 >
                   {tag.label}

@@ -15,8 +15,9 @@
 
   &--multiple {
     padding: 1px 4px;
-    min-height: 32px;
+    font-size: 0;
     border: 1px solid var(--fog-border-color);
+    border-radius: 2px;
     background-color: var(--fog-panel-color);
     cursor: text;
 
@@ -25,24 +26,36 @@
     }
   }
 
-  &--multiple &--focused {
+  &--focused {
     border-color: var(--fog-primary-color);
   }
 
-  &--multiple &__tag {
+  &__tag,
+  &__input--multiple {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__tag {
     margin: 2px;
   }
 
-  &--multiple &__input--multiple {
+  &__tag + &__input--multiple {
+    margin-left: 2px;
+  }
+
+  &__input--multiple {
     padding: 0;
     width: 2px;
     line-height: 24px;
     border: none;
     background-color: var(--fog-transparent);
     margin: 2px;
+    margin-left: 8px;
+    transition: all 0.3s, margin-left 0s;
   }
 
-  &--multiple &__placeholder {
+  &__placeholder {
     position: absolute;
     top: 4px;
     left: 12px;

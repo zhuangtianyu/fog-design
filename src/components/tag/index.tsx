@@ -24,10 +24,15 @@ const Tag: React.FC<TagProps> = props => {
 
   return (
     <div
-      className={classnames(`${prefix}-tag`, className)}
+      className={classnames(className, {
+        [`${prefix}-tag`]: true,
+        [`${prefix}-tag--closable`]: closable,
+      })}
       {...restProps}
     >
-      {children}
+      <div className={`${prefix}-tag__text`}>
+        {children}
+      </div>
       {closable && (
         <div
           className={`${prefix}-tag__close`}
