@@ -13,9 +13,9 @@ interface ModalProps {
   className?: string;
   visible?: boolean;
   width?: number;
-  title?: React.ReactChild,
-  content?: React.ReactChild,
-  showClose?: boolean,
+  title?: React.ReactChild;
+  content?: React.ReactChild;
+  showClose?: boolean;
   showCancel?: boolean;
   cancelText?: string;
   confirmText?: string;

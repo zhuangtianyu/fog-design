@@ -1,0 +1,52 @@
+.@{prefix}-message {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: inline-block;
+  padding: 10px 16px;
+  font-size: 0;
+  line-height: 22px;
+  box-shadow: 0 0 8px var(--fog-shadow-color);
+  border-radius: 2px;
+  background-color: var(--fog-panel-color);
+  margin-top: 16px;
+  transition: all 0.3s;
+  transform-origin: 50% 0;
+  pointer-events: all;
+
+  &--before-enter {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  &--entering {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  &--entered {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+
+  &--leaving {
+    opacity: 0;
+    transform: scaleY(0);
+  }
+
+  &__icon {
+    margin-right: 8px;
+  }
+
+  &__icon,
+  &__content {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+  }
+}

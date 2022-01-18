@@ -37,6 +37,7 @@ const components: string[] = [
   'input',
   'select',
   'modal',
+  'message',
   'transition',
 ];
 
