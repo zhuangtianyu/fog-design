@@ -34,6 +34,7 @@ const components: string[] = [
   'switch',
   'trigger',
   'tag',
+  'tabs',
   'input',
   'select',
   'modal',

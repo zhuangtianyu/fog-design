@@ -27,6 +27,7 @@ export const lightColors = {
   'contrast-color-disabled': '#fcfcfc',
 
   'border-color': '#d9d9d9',
+  'border-color-light': '#f2f2f2',
   'background-color': '#ffffff',
 
   'placeholder-color': '#bfbfbf',
@@ -62,6 +63,7 @@ export const darkColors = {
   'contrast-color-disabled': '#b3b3b3',
 
   'border-color': '#404040',
+  'border-color-light': '#262626',
   'background-color': '#0d0d0d',
 
   'placeholder-color': '#666666',
