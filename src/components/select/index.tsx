@@ -250,6 +250,7 @@ const Select: SelectTypes = props => {
       >
         <Selection
           className={`${prefix}-select__selection`}
+          open={open}
           value={value}
           options={options}
           multiple={multiple}

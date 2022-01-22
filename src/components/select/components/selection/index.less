@@ -26,8 +26,13 @@
     }
   }
 
-  &--focused {
-    border-color: var(--fog-primary-color);
+  &--multiple:active,
+  &--focused,
+  &--open {
+
+    &, &:hover {
+      border-color: var(--fog-primary-color);
+    }
   }
 
   &__tag,

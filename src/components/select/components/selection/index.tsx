@@ -15,6 +15,7 @@ export type SelectValueType = ValueType | ValueType[];
 
 export interface SelectionProps {
   className?: string;
+  open?: boolean;
   value?: SelectValueType;
   options?: OptionProps[];
   multiple?: boolean;
@@ -28,6 +29,7 @@ export interface SelectionProps {
 const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, SelectionProps>((props, ref) => {
   const {
     className,
+    open,
     value,
     options,
     multiple,
@@ -61,6 +63,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
         [`${prefix}-selection--single`]: !multiple,
         [`${prefix}-selection--multiple`]: multiple,
         [`${prefix}-selection--focused`]: multiple && focused,
+        [`${prefix}-selection--open`]: multiple && open,
       })}
       ref={ref}
       onClick={() => multiple && inputRef.current?.focus()}
