@@ -29,6 +29,7 @@ export const lightColors = {
   'border-color': '#d9d9d9',
   'border-color-light': '#f2f2f2',
   'background-color': '#ffffff',
+  'background-color-preset': '#f2f2f2',
 
   'placeholder-color': '#bfbfbf',
 
@@ -65,6 +66,7 @@ export const darkColors = {
   'border-color': '#404040',
   'border-color-light': '#262626',
   'background-color': '#0d0d0d',
+  'background-color-preset': '#333333',
 
   'placeholder-color': '#666666',
 

@@ -40,6 +40,7 @@ const components: string[] = [
   'modal',
   'message',
   'transition',
+  'date-picker',
 ];
 
 const { Option } = Select;

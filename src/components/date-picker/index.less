@@ -1,0 +1,116 @@
+.@{prefix}-date-picker {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: inline-block;
+
+  &__popup--before-enter {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  &__popup--entering {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--entered {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--leaving {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  &__header {
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 32px;
+    border-bottom: 1px solid var(--fog-border-color);
+  }
+
+  &__trigger {
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    font-size: 18px;
+    line-height: 28px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+  }
+
+  &__overview {
+    flex-grow: 1;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__year {
+    margin-right: 4px;
+  }
+
+  &__body {
+    position: static;
+  }
+
+  &__days {
+    padding: 4px 12px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    grid-template-columns: repeat(7, 32px);
+    grid-template-rows: repeat(1, 32px);
+    border-bottom: 1px solid var(--fog-border-color);
+  }
+
+  &__day {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &__dates {
+    padding: 4px 12px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    grid-template-columns: repeat(7, 32px);
+    grid-template-rows: repeat(6, 32px);
+  }
+
+  &__date {
+    width: 24px;
+    height: 24px;
+    font-size: 14px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 2px;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover:not(&--active) {
+      background-color: var(--fog-background-color-preset);
+    }
+
+    &--active {
+      color: var(--fog-contrast-color);
+      background-color: var(--fog-primary-color);
+    }
+  }
+}
