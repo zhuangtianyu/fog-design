@@ -14,6 +14,19 @@ const DatePickerDemo = () => {
         value={value}
         onChange={setValue}
       />
+      <h3>Disabled</h3>
+      <DatePicker
+        placeholder="Please select"
+        disabled
+      />
+      <h3>Disabled Date</h3>
+      <DatePicker
+        placeholder="Please select"
+        disabledDate={value => (
+          new Date(value).getDate() <= 10 ||
+          new Date(value).getDate() === 15
+        )}
+      />
     </div>
   );
 };

@@ -6,8 +6,8 @@ import Trigger from '@components/trigger';
 import Button from '@components/button';
 import Icon from './icon';
 import useControlled from '@hooks/useControlled';
-import { setRafTimeout } from '@utils/index';
-import { DAYS, timestampToDate, getMonthStartDate, getMonthDates } from './utils';
+import { setRafTimeout, isFunction } from '@utils/index';
+import { DAYS, ONE_DAY, timestampToDate, getMonthStartDate, getMonthDates } from './utils';
 import './index.less';
 
 interface DateItem {
@@ -27,6 +27,8 @@ interface DatePickerProps  {
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
   format?: string;
+  disabled?: boolean;
+  disabledDate?: (value: number) => boolean;
 }
 
 const { prefix } = namespace;
@@ -42,6 +44,8 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     defaultOpen: defaultOpenFromProps,
     onOpenChange: onOpenChangeFromProps,
     format,
+    disabled,
+    disabledDate,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -191,20 +195,35 @@ const DatePicker: React.FC<DatePickerProps> = props => {
           ))}
         </div>
         <div className={`${prefix}-date-picker__dates`}>
-          {dates.map(item => (
-            <div
-              className={classnames({
-                [`${prefix}-date-picker__date`]: true,
-                [`${prefix}-date-picker__date--active`]: item.value === value,
-                [`${prefix}-date-picker__date--within`]: item.within,
-              })}
-              key={item.value}
-              title={item.title}
-              onClick={() => handleDateClick(item.value)}
-            >
-              {item.dateText}
-            </div>
-          ))}
+          {dates.map(item => {
+            const disabled = isFunction(disabledDate) && disabledDate(item.value);
+            const yesterdayDisabled = isFunction(disabledDate) && disabledDate(item.value - ONE_DAY);
+            const tomorrowDisabled = isFunction(disabledDate) && disabledDate(item.value + ONE_DAY);
+            const disabledFirstChild = disabled && !yesterdayDisabled && tomorrowDisabled;
+            const disabledLastChild = disabled && yesterdayDisabled && !tomorrowDisabled;
+            const disabledIsolated = disabled && !yesterdayDisabled && !tomorrowDisabled;
+
+            return (
+              <div
+                className={classnames({
+                  [`${prefix}-date-picker__date`]: true,
+                  [`${prefix}-date-picker__date--active`]: item.value === value,
+                  [`${prefix}-date-picker__date--within`]: item.within,
+                  [`${prefix}-date-picker__date--disabled`]: disabled,
+                  [`${prefix}-date-picker__date--disabled-first-child`]: disabledFirstChild,
+                  [`${prefix}-date-picker__date--disabled-last-child`]: disabledLastChild,
+                  [`${prefix}-date-picker__date--disabled-isolated`]: disabledIsolated,
+                })}
+                key={item.value}
+                title={item.title}
+                onClick={() => !disabled && handleDateClick(item.value)}
+              >
+                <div className={`${prefix}-date-picker__date-text`}>
+                  {item.dateText}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
       <div className={`${prefix}-date-picker__footer`}>
@@ -214,6 +233,19 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       </div>
     </div>
   );
+
+  if (disabled) {
+    return (
+      <div className={classnames(`${prefix}-date-picker`, className)}>
+        <Input
+          className={`${prefix}-date-picker__input`}
+          value={inputValue}
+          placeholder={placeholder}
+          disabled
+        />
+      </div>
+    );
+  }
 
   return (
     <div className={classnames(`${prefix}-date-picker`, className, {
