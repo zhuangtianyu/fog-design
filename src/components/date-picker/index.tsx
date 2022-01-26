@@ -1,12 +1,21 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Input from '@components/input';
 import Trigger from '@components/trigger';
+import Button from '@components/button';
+import Icon from './icon';
 import useControlled from '@hooks/useControlled';
+import { setRafTimeout } from '@utils/index';
+import { DAYS, timestampToDate, getMonthStartDate, getMonthDates } from './utils';
 import './index.less';
 
-const { prefix } = namespace;
+interface DateItem {
+  value: number;
+  title: string;
+  within: boolean;
+  dateText: number | string;
+}
 
 interface DatePickerProps  {
   className?: string;
@@ -17,7 +26,10 @@ interface DatePickerProps  {
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  format?: string;
 }
+
+const { prefix } = namespace;
 
 const DatePicker: React.FC<DatePickerProps> = props => {
   const {
@@ -29,6 +41,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     open: openFromProps,
     defaultOpen: defaultOpenFromProps,
     onOpenChange: onOpenChangeFromProps,
+    format,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -43,55 +56,169 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     onChange: onOpenChangeFromProps,
   });
 
-  const days = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+  const [panelValue, setPanelValue] = useState<number>(getMonthStartDate(Date.now()));
 
-  const dates = Array.from({ length: 40 });
+  const dates = useMemo<DateItem[]>(() => getMonthDates(panelValue), [panelValue]);
+
+  const panelText = useMemo(() => timestampToDate(panelValue), [panelValue]);
 
   const inputValue = useMemo(() => {
     if (value === null || value === undefined) return '';
 
-    return '2022-01-01';
+    return timestampToDate(value, format).dateString;
   }, [value]);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (value === null || value === undefined) {
+      setPanelValue(getMonthStartDate(Date.now()));
+    } else {
+      setPanelValue(getMonthStartDate(value));
+    }
+  }, [value]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (document.activeElement === inputRef.current) {
+        if (event.key === 'Escape' && open) {
+          onOpenChange(false);
+        }
+        if (event.key === 'Enter' && !open) {
+          onOpenChange(true);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
+
+  const handleLastMonthClick = () => {
+    const { year, monthIndex } = timestampToDate(panelValue);
+
+    setPanelValue(new Date(year, monthIndex - 1).valueOf());
+  };
+
+  const handleNextMonthClick = () => {
+    const { year, monthIndex } = timestampToDate(panelValue);
+
+    setPanelValue(new Date(year, monthIndex + 1).valueOf());
+  };
+
+  const handleLastYearClick = () => {
+    const { year, monthIndex } = timestampToDate(panelValue);
+
+    setPanelValue(new Date(year - 1, monthIndex).valueOf());
+  };
+
+  const handleNextYearClick = () => {
+    const { year, monthIndex } = timestampToDate(panelValue);
+
+    setPanelValue(new Date(year + 1, monthIndex).valueOf());
+  };
+
+  const handleTodayClick = () => {
+    const { year, monthIndex, date } = timestampToDate(Date.now());
+    const nextValue = new Date(year, monthIndex, date).valueOf();
+
+    handleDateClick(nextValue);
+  };
+
+  const handleDateClick = (nextValue: number) => {
+    onChange(nextValue);
+    setPanelValue(getMonthStartDate(nextValue));
+    handleOpenChange(false);
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen) {
+      onOpenChange(true);
+    } else {
+      setRafTimeout(() => {
+        onOpenChange(false);
+      }, 200);
+    }
+  };
+
   const popup = (
-    <div className={`${prefix}-date-picker__popup`}>
+    <div
+      className={`${prefix}-date-picker__popup`}
+      onClick={() => inputRef.current.focus()}
+    >
       <div className={`${prefix}-date-picker__header`}>
-        <div className={`${prefix}-date-picker__trigger`}>⏪</div>
-        <div className={`${prefix}-date-picker__trigger`}>⬅️</div>
-        <div className={`${prefix}-date-picker__overview`}>
-          <div className={`${prefix}-date-picker__year`}>2020</div>
-          <div className={`${prefix}-date-picker__month`}>10</div>
+        <div
+          className={`${prefix}-date-picker__trigger`}
+          title="last year"
+          onClick={handleLastYearClick}
+        >
+          <Icon type="double-left" />
         </div>
-        <div className={`${prefix}-date-picker__trigger`}>➡️</div>
-        <div className={`${prefix}-date-picker__trigger`}>⏩</div>
+        <div
+          className={`${prefix}-date-picker__trigger`}
+          onClick={handleLastMonthClick}
+        >
+          <Icon type="left" />
+        </div>
+        <div className={`${prefix}-date-picker__overview`}>
+          <div className={`${prefix}-date-picker__year`}>
+            {panelText.YYYY}
+          </div>
+          <div className={`${prefix}-date-picker__month`}>
+            {panelText.MM}
+          </div>
+        </div>
+        <div
+          className={`${prefix}-date-picker__trigger`}
+          onClick={handleNextMonthClick}
+        >
+          <Icon type="right" />
+        </div>
+        <div
+          className={`${prefix}-date-picker__trigger`}
+          onClick={handleNextYearClick}
+        >
+          <Icon type="double-right" />
+        </div>
       </div>
       <div className={`${prefix}-date-picker__body`}>
         <div className={`${prefix}-date-picker__days`}>
-          {days.map(day => (
+          {DAYS.map(day => (
             <div className={`${prefix}-date-picker__day`} key={day}>
               {day}
             </div>
           ))}
         </div>
         <div className={`${prefix}-date-picker__dates`}>
-          {dates.map((date, index) => (
+          {dates.map(item => (
             <div
               className={classnames({
                 [`${prefix}-date-picker__date`]: true,
-                [`${prefix}-date-picker__date--active`]: index === 6,
+                [`${prefix}-date-picker__date--active`]: item.value === value,
+                [`${prefix}-date-picker__date--within`]: item.within,
               })}
-              key={index}
+              key={item.value}
+              title={item.title}
+              onClick={() => handleDateClick(item.value)}
             >
-              Hi
+              {item.dateText}
             </div>
           ))}
         </div>
+      </div>
+      <div className={`${prefix}-date-picker__footer`}>
+        <Button type="link" onClick={handleTodayClick}>
+          Today
+        </Button>
       </div>
     </div>
   );
 
   return (
-    <div className={classnames(`${prefix}-date-picker`, className)}>
+    <div className={classnames(`${prefix}-date-picker`, className, {
+      [`${prefix}-date-picker--open`]: open,
+    })}>
       <Trigger
         visible={open}
         onVisibleChange={onOpenChange}
@@ -104,6 +231,8 @@ const DatePicker: React.FC<DatePickerProps> = props => {
         }}
       >
         <Input
+          className={`${prefix}-date-picker__input`}
+          ref={inputRef}
           value={inputValue}
           placeholder={placeholder}
           readOnly
@@ -111,6 +240,10 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       </Trigger>
     </div>
   );
+};
+
+DatePicker.defaultProps = {
+  format: 'YYYY-MM-DD',
 };
 
 export default DatePicker;

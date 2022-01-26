@@ -9,6 +9,10 @@
 
   display: inline-block;
 
+  &--open &__input {
+    border-color: var(--fog-primary-color);
+  }
+
   &__popup--before-enter {
     transform: scaleY(0);
     opacity: 0;
@@ -40,13 +44,13 @@
 
   &__trigger {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 28px;
     height: 28px;
-    font-size: 18px;
-    line-height: 28px;
-    text-align: center;
-    user-select: none;
     cursor: pointer;
+    user-select: none;
   }
 
   &__overview {
@@ -58,7 +62,7 @@
   }
 
   &__year {
-    margin-right: 4px;
+    margin-right: 8px;
   }
 
   &__body {
@@ -95,12 +99,14 @@
   }
 
   &__date {
+    position: relative;
     width: 24px;
     height: 24px;
     font-size: 14px;
     line-height: 24px;
     text-align: center;
     border-radius: 2px;
+    transition: all 0.3s;
     user-select: none;
     cursor: pointer;
 
@@ -111,6 +117,34 @@
     &--active {
       color: var(--fog-contrast-color);
       background-color: var(--fog-primary-color);
+    }
+
+    &:not(&--within) {
+      color: var(--fog-color-disabled);
+    }
+
+    &--active:not(&--within) {
+      background-color: var(--fog-background-color-preset);
+    }
+
+    &::after {
+      position: absolute;
+      inset: -4px;
+      content: '';
+    }
+  }
+
+  &__footer {
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 14px;
+    line-height: 32px;
+    border-top: 1px solid var(--fog-border-color);
+
+    .@{prefix}-button {
+      padding: 4px 8px;
     }
   }
 }
