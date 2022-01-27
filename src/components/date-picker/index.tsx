@@ -234,19 +234,6 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     </div>
   );
 
-  if (disabled) {
-    return (
-      <div className={classnames(`${prefix}-date-picker`, className)}>
-        <Input
-          className={`${prefix}-date-picker__input`}
-          value={inputValue}
-          placeholder={placeholder}
-          disabled
-        />
-      </div>
-    );
-  }
-
   return (
     <div className={classnames(`${prefix}-date-picker`, className, {
       [`${prefix}-date-picker--open`]: open,
@@ -255,12 +242,14 @@ const DatePicker: React.FC<DatePickerProps> = props => {
         visible={open}
         onVisibleChange={onOpenChange}
         popup={popup}
+        popupClassName={`${prefix}-date-picker__popup`}
         popupTransitionProps={{
           beforeEnter: `${prefix}-date-picker__popup--before-enter`,
           entering: `${prefix}-date-picker__popup--entering`,
           entered: `${prefix}-date-picker__popup--entered`,
           leaving: `${prefix}-date-picker__popup--leaving`,
         }}
+        disabled={disabled}
       >
         <Input
           className={`${prefix}-date-picker__input`}

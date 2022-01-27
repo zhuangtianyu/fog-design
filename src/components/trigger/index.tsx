@@ -7,37 +7,43 @@ import useControlled from '@hooks/useControlled';
 import './index.less';
 
 const { prefix } = namespace;
+
 const { createPortal } = ReactDOM;
 
 const propertyIncludes = (property, value) =>
   Array.isArray(property) ? property.includes(value) : property === value;
 
+const getTriggerClassName = children =>
+  classnames(`${prefix}-trigger`, React.Children.only(children).props.className);
+
 type TriggerType = 'click' | 'hover';
 type Trigger = TriggerType | TriggerType[];
 
 interface TriggerProps {
-  className?: string;
   visible?: boolean;
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
   trigger?: Trigger;
   popup?: React.ReactElement;
+  popupClassName?: string;
   popupTransitionProps?: TransitionProps;
   children?: React.ReactElement;
   getPopupMountNode?: () => HTMLElement;
+  disabled?: boolean;
 }
 
 const Trigger: React.FC<TriggerProps> = props => {
   const {
-    className,
     visible: visibleFromProps,
     defaultVisible: defaultVisibleFromProps,
     onVisibleChange: onVisibleChangeFromProps,
     trigger,
     popup,
+    popupClassName,
     popupTransitionProps,
     children,
     getPopupMountNode,
+    disabled,
   } = props;
 
   const {
@@ -49,9 +55,43 @@ const Trigger: React.FC<TriggerProps> = props => {
     onChange: onVisibleChangeFromProps,
   });
 
+  if (disabled) return (
+    cloneElement(React.Children.only(children), {
+      className: getTriggerClassName(children),
+      disabled,
+    })
+  );
+
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
 
-  const [containerNode, setContainerNode] = useState<HTMLElement | null>(null);
+  useEffect(() => {
+    const getNodeWithRaf = () => {
+      window.requestAnimationFrame(() => {
+        const nextMountNode = getPopupMountNode();
+
+        nextMountNode
+          ? setMountNode(nextMountNode)
+          : getNodeWithRaf();
+      });
+    };
+
+    getNodeWithRaf();
+  }, [getPopupMountNode]);
+
+  const containerNode = useMemo<HTMLElement | null>(() => {
+    if (!mountNode) return null;
+
+    const container: HTMLDivElement = document.createElement('div');
+
+    container.style.position = 'absolute';
+    container.style.top = '0px';
+    container.style.left = '0px';
+    container.style.width = '100%';
+
+    mountNode.appendChild(container);
+
+    return container;
+  }, [mountNode]);
 
   const triggerRefDefault = useRef<HTMLElement>(null);
 
@@ -59,12 +99,6 @@ const Trigger: React.FC<TriggerProps> = props => {
     const childrenRef = React.Children.only(children as any).ref;
 
     return childrenRef ?? triggerRefDefault;
-  }, [children]);
-
-  const triggerClassName = useMemo(() => {
-    const { props: childrenProps } = React.Children.only(children);
-
-    return classnames(childrenProps.className, `${prefix}-trigger`);
   }, [children]);
 
   const popupRef = useRef<HTMLDivElement>(null);
@@ -79,26 +113,6 @@ const Trigger: React.FC<TriggerProps> = props => {
 
     return {};
   }, [trigger]);
-
-  useEffect(() => {
-    const nextMountNode = getPopupMountNode();
-
-    nextMountNode && setMountNode(nextMountNode);
-  }, [getPopupMountNode]);
-
-  useEffect(() => {
-    if (mountNode) {
-      const container: HTMLDivElement = document.createElement('div');
-
-      container.style.position = 'absolute';
-      container.style.top = '0px';
-      container.style.left = '0px';
-      container.style.width = '100%';
-
-      mountNode.appendChild(container);
-      setContainerNode(container);
-    }
-  }, [mountNode]);
 
   useEffect(() => {
     if (mountNode && containerNode) {
@@ -161,7 +175,7 @@ const Trigger: React.FC<TriggerProps> = props => {
         children &&
         cloneElement(React.Children.only(children), {
           ref: triggerRef,
-          className: triggerClassName,
+          className: getTriggerClassName(children),
           ...mouseEvents,
         })
       }
@@ -178,7 +192,7 @@ const Trigger: React.FC<TriggerProps> = props => {
             {...popupTransitionProps}
           >
             <div
-              className={classnames(`${prefix}-trigger__popup`, className)}
+              className={classnames(`${prefix}-trigger__popup`, popupClassName)}
               ref={popupRef}
               {...mouseEvents}
             >
