@@ -30,7 +30,7 @@ export const lightColors = {
   'border-color-light': '#f2f2f2',
   'background-color': '#ffffff',
   'background-color-preset': '#f2f2f2',
-  'background-color-disabled': '#e6e6e6',
+  'background-color-disabled': '#f2f2f2',
 
   'placeholder-color': '#bfbfbf',
 

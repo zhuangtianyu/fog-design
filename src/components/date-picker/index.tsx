@@ -3,19 +3,31 @@ import classnames from 'classnames';
 import namespace from '@namespace';
 import Input from '@components/input';
 import Trigger from '@components/trigger';
-import Button from '@components/button';
-import Icon from './icon';
+import DatePanel from './components/date-panel';
+import YearPanel from './components/year-panel';
+import MonthPanel from './components/month-panel';
 import useControlled from '@hooks/useControlled';
-import { setRafTimeout, isFunction } from '@utils/index';
-import { DAYS, ONE_DAY, timestampToDate, getMonthStartDate, getMonthDates } from './utils';
+import { setRafTimeout } from '@utils/index';
+import {
+  timestampToDate,
+  getMonthStartDate,
+  getLastMonthStartDate,
+  getNextMonthStartDate,
+  getLastYearStartDate,
+  getNextYearStartDate,
+  getLastYearGroupDate,
+  getNextYearGroupDate,
+  getLastYearDate,
+  getNextYearDate,
+  getDates,
+  getYears,
+  getMonths,
+} from './utils';
 import './index.less';
 
-interface DateItem {
-  value: number;
-  title: string;
-  within: boolean;
-  dateText: number | string;
-}
+const { prefix } = namespace;
+
+type ModeType = 'date' | 'month' | 'year';
 
 interface DatePickerProps  {
   className?: string;
@@ -29,9 +41,9 @@ interface DatePickerProps  {
   format?: string;
   disabled?: boolean;
   disabledDate?: (value: number) => boolean;
+  mode?: ModeType;
+  renderFooter?: () => React.ReactElement;
 }
-
-const { prefix } = namespace;
 
 const DatePicker: React.FC<DatePickerProps> = props => {
   const {
@@ -46,6 +58,8 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     format,
     disabled,
     disabledDate,
+    renderFooter,
+    mode,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -62,9 +76,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
 
   const [panelValue, setPanelValue] = useState<number>(getMonthStartDate(Date.now()));
 
-  const dates = useMemo<DateItem[]>(() => getMonthDates(panelValue), [panelValue]);
-
-  const panelText = useMemo(() => timestampToDate(panelValue), [panelValue]);
+  const [panelMode, setPanelMode] = useState<ModeType>(undefined);
 
   const inputValue = useMemo(() => {
     if (value === null || value === undefined) return '';
@@ -83,6 +95,10 @@ const DatePicker: React.FC<DatePickerProps> = props => {
   }, [value]);
 
   useEffect(() => {
+    setPanelMode(mode);
+  }, [mode]);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (document.activeElement === inputRef.current) {
         if (event.key === 'Escape' && open) {
@@ -98,37 +114,6 @@ const DatePicker: React.FC<DatePickerProps> = props => {
 
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [open]);
-
-  const handleLastMonthClick = () => {
-    const { year, monthIndex } = timestampToDate(panelValue);
-
-    setPanelValue(new Date(year, monthIndex - 1).valueOf());
-  };
-
-  const handleNextMonthClick = () => {
-    const { year, monthIndex } = timestampToDate(panelValue);
-
-    setPanelValue(new Date(year, monthIndex + 1).valueOf());
-  };
-
-  const handleLastYearClick = () => {
-    const { year, monthIndex } = timestampToDate(panelValue);
-
-    setPanelValue(new Date(year - 1, monthIndex).valueOf());
-  };
-
-  const handleNextYearClick = () => {
-    const { year, monthIndex } = timestampToDate(panelValue);
-
-    setPanelValue(new Date(year + 1, monthIndex).valueOf());
-  };
-
-  const handleTodayClick = () => {
-    const { year, monthIndex, date } = timestampToDate(Date.now());
-    const nextValue = new Date(year, monthIndex, date).valueOf();
-
-    handleDateClick(nextValue);
-  };
 
   const handleDateClick = (nextValue: number) => {
     onChange(nextValue);
@@ -146,91 +131,56 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     }
   };
 
+  const handleYearClick = (nextValue: number) => {
+    setPanelValue(nextValue);
+    setPanelMode('month');
+  };
+
+  const handleMonthClick = (nextValue: number) => {
+    setPanelValue(nextValue);
+    setPanelMode('date');
+  };
+
   const popup = (
     <div
       className={`${prefix}-date-picker__popup`}
       onClick={() => inputRef.current.focus()}
     >
-      <div className={`${prefix}-date-picker__header`}>
-        <div
-          className={`${prefix}-date-picker__trigger`}
-          title="last year"
-          onClick={handleLastYearClick}
-        >
-          <Icon type="double-left" />
-        </div>
-        <div
-          className={`${prefix}-date-picker__trigger`}
-          onClick={handleLastMonthClick}
-        >
-          <Icon type="left" />
-        </div>
-        <div className={`${prefix}-date-picker__overview`}>
-          <div className={`${prefix}-date-picker__year`}>
-            {panelText.YYYY}
-          </div>
-          <div className={`${prefix}-date-picker__month`}>
-            {panelText.MM}
-          </div>
-        </div>
-        <div
-          className={`${prefix}-date-picker__trigger`}
-          onClick={handleNextMonthClick}
-        >
-          <Icon type="right" />
-        </div>
-        <div
-          className={`${prefix}-date-picker__trigger`}
-          onClick={handleNextYearClick}
-        >
-          <Icon type="double-right" />
-        </div>
-      </div>
-      <div className={`${prefix}-date-picker__body`}>
-        <div className={`${prefix}-date-picker__days`}>
-          {DAYS.map(day => (
-            <div className={`${prefix}-date-picker__day`} key={day}>
-              {day}
-            </div>
-          ))}
-        </div>
-        <div className={`${prefix}-date-picker__dates`}>
-          {dates.map(item => {
-            const disabled = isFunction(disabledDate) && disabledDate(item.value);
-            const yesterdayDisabled = isFunction(disabledDate) && disabledDate(item.value - ONE_DAY);
-            const tomorrowDisabled = isFunction(disabledDate) && disabledDate(item.value + ONE_DAY);
-            const disabledFirstChild = disabled && !yesterdayDisabled && tomorrowDisabled;
-            const disabledLastChild = disabled && yesterdayDisabled && !tomorrowDisabled;
-            const disabledIsolated = disabled && !yesterdayDisabled && !tomorrowDisabled;
-
-            return (
-              <div
-                className={classnames({
-                  [`${prefix}-date-picker__date`]: true,
-                  [`${prefix}-date-picker__date--active`]: item.value === value,
-                  [`${prefix}-date-picker__date--within`]: item.within,
-                  [`${prefix}-date-picker__date--disabled`]: disabled,
-                  [`${prefix}-date-picker__date--disabled-first-child`]: disabledFirstChild,
-                  [`${prefix}-date-picker__date--disabled-last-child`]: disabledLastChild,
-                  [`${prefix}-date-picker__date--disabled-isolated`]: disabledIsolated,
-                })}
-                key={item.value}
-                title={item.title}
-                onClick={() => !disabled && handleDateClick(item.value)}
-              >
-                <div className={`${prefix}-date-picker__date-text`}>
-                  {item.dateText}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className={`${prefix}-date-picker__footer`}>
-        <Button type="link" onClick={handleTodayClick}>
-          Today
-        </Button>
-      </div>
+      {mode === 'date' && panelMode === 'date' && (
+        <DatePanel
+          value={panelValue}
+          list={getDates(panelValue, value, disabledDate)}
+          onLastYearClick={() => setPanelValue(getLastYearStartDate(panelValue))}
+          onLastMonthClick={() => setPanelValue(getLastMonthStartDate(panelValue))}
+          onNextMonthClick={() => setPanelValue(getNextMonthStartDate(panelValue))}
+          onNextYearClick={() => setPanelValue(getNextYearStartDate(panelValue))}
+          onYearClick={() => setPanelMode('year')}
+          onMonthClick={() => setPanelMode('month')}
+          onCellClick={handleDateClick}
+          renderFooter={renderFooter}
+        />
+      )}
+      {panelMode === 'year' && (
+        <YearPanel
+          list={getYears(panelValue, value, disabledDate)}
+          onLastGroupClick={() => setPanelValue(getLastYearGroupDate(panelValue))}
+          onNextGroupClick={() => setPanelValue(getNextYearGroupDate(panelValue))}
+          onYearClick={() => {}}
+          onCellClick={handleYearClick}
+          renderFooter={renderFooter}
+        />
+      )}
+      {panelMode === 'month' && (
+        <MonthPanel
+          value={panelValue}
+          list={getMonths(panelValue, value, disabledDate)}
+          onLastYearClick={() => setPanelValue(getLastYearDate(panelValue))}
+          onNextYearClick={() => setPanelValue(getNextYearDate(panelValue))}
+          onYearClick={() => setPanelMode('year')}
+          onCellClick={handleMonthClick}
+          renderFooter={renderFooter}
+        />
+      )}
     </div>
   );
 
@@ -265,6 +215,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
 
 DatePicker.defaultProps = {
   format: 'YYYY-MM-DD',
+  mode: 'date',
 };
 
 export default DatePicker;

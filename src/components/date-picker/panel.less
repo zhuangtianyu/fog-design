@@ -1,0 +1,66 @@
+.@{prefix}-date-picker {
+
+  &__panel {
+    position: static;
+  }
+
+  &__header {
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    line-height: 32px;
+    border-bottom: 1px solid var(--fog-border-color);
+  }
+
+  &__trigger {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  &__overview {
+    flex-grow: 1;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__overview-item {
+    padding-left: 4px;
+    padding-right: 4px;
+    color: inherit;
+  }
+
+  &__body {
+    position: static;
+  }
+
+  &__cells {
+    padding: 4px 12px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+  }
+
+  &__footer {
+    padding: 4px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 14px;
+    line-height: 32px;
+    border-top: 1px solid var(--fog-border-color);
+
+    .@{prefix}-button {
+      padding: 4px 8px;
+    }
+  }
+}

@@ -22,7 +22,10 @@ const DatePickerDemo = () => {
       <h3>Disabled Date</h3>
       <DatePicker
         placeholder="Please select"
-        disabledDate={value => new Date(value).getDate() >= 20}
+        disabledDate={value => (
+          new Date(value).getDate() >= 20 ||
+          new Date(value).getDate() === 12
+        )}
       />
     </div>
   );

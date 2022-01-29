@@ -1,0 +1,27 @@
+.@{prefix}-date-picker__date-panel {
+
+  .@{prefix}-date-picker__cells {
+    grid-template-columns: repeat(7, calc(100% / 7));
+    grid-template-rows: repeat(6, 32px);
+  }
+
+  .@{prefix}-date-picker__days {
+    padding: 4px 12px;
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+    grid-template-columns: repeat(7, calc(100% / 7));
+    grid-template-rows: repeat(1, 32px);
+    border-bottom: 1px solid var(--fog-border-color);
+  }
+
+  .@{prefix}-date-picker__day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+  }
+}
