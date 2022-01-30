@@ -9,16 +9,15 @@ import MonthPanel from './components/month-panel';
 import useControlled from '@hooks/useControlled';
 import { setRafTimeout } from '@utils/index';
 import {
+  FORMAT_DEFAULT,
   timestampToDate,
   getMonthStartDate,
-  getLastMonthStartDate,
-  getNextMonthStartDate,
-  getLastYearStartDate,
-  getNextYearStartDate,
-  getLastYearGroupDate,
-  getNextYearGroupDate,
+  getLastMonthDate,
+  getNextMonthDate,
   getLastYearDate,
   getNextYearDate,
+  getLastGroupYearDate,
+  getNextGroupYearDate,
   getDates,
   getYears,
   getMonths,
@@ -74,14 +73,15 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     onChange: onOpenChangeFromProps,
   });
 
-  const [panelValue, setPanelValue] = useState<number>(getMonthStartDate(Date.now()));
+  // panelValue is zero o'clock on the first day of the panel month
+  const [panelValue, setPanelValue] = useState<number>(undefined);
 
   const [panelMode, setPanelMode] = useState<ModeType>(undefined);
 
   const inputValue = useMemo(() => {
     if (value === null || value === undefined) return '';
 
-    return timestampToDate(value, format).dateString;
+    return timestampToDate(value, format || FORMAT_DEFAULT[mode]).dateString;
   }, [value]);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -115,12 +115,6 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [open]);
 
-  const handleDateClick = (nextValue: number) => {
-    onChange(nextValue);
-    setPanelValue(getMonthStartDate(nextValue));
-    handleOpenChange(false);
-  };
-
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
       onOpenChange(true);
@@ -131,14 +125,31 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     }
   };
 
+  const handleChange = (nextValue: number) => {
+    onChange(nextValue);
+    handleOpenChange(false);
+  };
+
+  const handleDateClick = (nextValue: number) => {
+    handleChange(nextValue);
+  };
+
   const handleYearClick = (nextValue: number) => {
-    setPanelValue(nextValue);
-    setPanelMode('month');
+    if (mode === 'year') {
+      handleChange(nextValue);
+    } else {
+      setPanelValue(nextValue);
+      setPanelMode('month');
+    }
   };
 
   const handleMonthClick = (nextValue: number) => {
-    setPanelValue(nextValue);
-    setPanelMode('date');
+    if (mode === 'month') {
+      handleChange(nextValue);
+    } else {
+      setPanelValue(nextValue);
+      setPanelMode('date');
+    }
   };
 
   const popup = (
@@ -150,10 +161,10 @@ const DatePicker: React.FC<DatePickerProps> = props => {
         <DatePanel
           value={panelValue}
           list={getDates(panelValue, value, disabledDate)}
-          onLastYearClick={() => setPanelValue(getLastYearStartDate(panelValue))}
-          onLastMonthClick={() => setPanelValue(getLastMonthStartDate(panelValue))}
-          onNextMonthClick={() => setPanelValue(getNextMonthStartDate(panelValue))}
-          onNextYearClick={() => setPanelValue(getNextYearStartDate(panelValue))}
+          onLastYearClick={() => setPanelValue(getLastYearDate(panelValue))}
+          onLastMonthClick={() => setPanelValue(getLastMonthDate(panelValue))}
+          onNextMonthClick={() => setPanelValue(getNextMonthDate(panelValue))}
+          onNextYearClick={() => setPanelValue(getNextYearDate(panelValue))}
           onYearClick={() => setPanelMode('year')}
           onMonthClick={() => setPanelMode('month')}
           onCellClick={handleDateClick}
@@ -162,9 +173,9 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       )}
       {panelMode === 'year' && (
         <YearPanel
-          list={getYears(panelValue, value, disabledDate)}
-          onLastGroupClick={() => setPanelValue(getLastYearGroupDate(panelValue))}
-          onNextGroupClick={() => setPanelValue(getNextYearGroupDate(panelValue))}
+          list={getYears(panelValue, value, mode === 'year' ? disabledDate : null)}
+          onLastGroupClick={() => setPanelValue(getLastGroupYearDate(panelValue))}
+          onNextGroupClick={() => setPanelValue(getNextGroupYearDate(panelValue))}
           onYearClick={() => {}}
           onCellClick={handleYearClick}
           renderFooter={renderFooter}
@@ -173,7 +184,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
       {panelMode === 'month' && (
         <MonthPanel
           value={panelValue}
-          list={getMonths(panelValue, value, disabledDate)}
+          list={getMonths(panelValue, value, mode === 'month' ? disabledDate : null)}
           onLastYearClick={() => setPanelValue(getLastYearDate(panelValue))}
           onNextYearClick={() => setPanelValue(getNextYearDate(panelValue))}
           onYearClick={() => setPanelMode('year')}
@@ -214,7 +225,6 @@ const DatePicker: React.FC<DatePickerProps> = props => {
 };
 
 DatePicker.defaultProps = {
-  format: 'YYYY-MM-DD',
   mode: 'date',
 };
 

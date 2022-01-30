@@ -59,7 +59,7 @@ const YearPanel: React.FC<YearPanelProps> = props => {
           {list.map(item => (
             <PanelCell
               key={item.value}
-              onClick={() => onCellClick(item.value)}
+              onClick={() => !item.disabled && onCellClick(item.value)}
               {...item}
             />
           ))}

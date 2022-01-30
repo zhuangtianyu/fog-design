@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import DatePicker from '@components/date-picker';
 import './index.less';
 
 const DatePickerDemo = () => {
-  const [value, setValue] = useState<number | null>(null);
 
   return (
     <div className="date-picker-demo">
       <h2>DatePicker</h2>
       <h3>Basic Usage</h3>
-      <DatePicker
-        placeholder="Please select"
-        value={value}
-        onChange={setValue}
-      />
+      <DatePicker placeholder="Please select" />
       <h3>Disabled</h3>
       <DatePicker
         placeholder="Please select"
@@ -26,6 +21,21 @@ const DatePickerDemo = () => {
           new Date(value).getDate() >= 20 ||
           new Date(value).getDate() === 12
         )}
+      />
+      <h3>Mode</h3>
+      <p>
+        <code>mode="month"</code>
+      </p>
+      <DatePicker
+        placeholder="Please select"
+        mode="month"
+      />
+      <p>
+        <code>mode="year"</code>
+      </p>
+      <DatePicker
+        placeholder="Please select"
+        mode="year"
       />
     </div>
   );
