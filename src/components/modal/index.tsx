@@ -4,6 +4,7 @@ import namespace from '@namespace';
 import classnames from 'classnames';
 import Button from '@components/button';
 import Transition from '@components/transition';
+import Icon from '@components/icon';
 import { isFunction } from '@utils/index';
 import './index.less';
 
@@ -114,7 +115,9 @@ const Modal: ModalTypes = props => {
               {title}
             </div>
             {showClose && (
-              <div className={`${prefix}-modal__close`} onClick={handleCancel} />
+              <div className={`${prefix}-modal__close`} onClick={handleCancel}>
+                <Icon type="close" size={16} />
+              </div>
             )}
           </div>
           <div className={`${prefix}-modal__body`}>

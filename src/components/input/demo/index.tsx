@@ -1,5 +1,6 @@
 import React from 'react';
 import Input from '@components/input';
+import Icon from '@components/icon';
 import './index.less';
 
 const { TextArea } = Input;
@@ -11,6 +12,22 @@ const InputDemo = () => {
       <h2>Input</h2>
       <h3>Basic Usage</h3>
       <Input placeholder="Please input" />
+      <h3>Clearable</h3>
+      <Input
+        placeholder="Please input"
+        defaultValue="Your emotion"
+        clearable
+      />
+      <h3>Prefix</h3>
+      <Input
+        placeholder="Please input"
+        prefix={<Icon type="calendar" />}
+      />
+      <h3>Suffix</h3>
+      <Input
+        placeholder="Please input"
+        suffix={<Icon type="setting" />}
+      />
       <h3>Disabled</h3>
       <Input placeholder="Please input" disabled />
       <h3>ReadOnly</h3>

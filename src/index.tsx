@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter, Routes, Route, Link, NavLink, useParams } from 'react-router-dom';
 import Switch from '@components/switch';
 import Select from '@components/select';
+import Icon from '@components/icon';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import { kebabCaseToPascalCase } from '@utils/index';
@@ -35,6 +36,7 @@ const components: string[] = [
   'trigger',
   'tag',
   'tabs',
+  'icon',
   'input',
   'select',
   'modal',
@@ -86,6 +88,14 @@ const App = () => {
             <span className="app__header-darkname">Darkness:</span>
             <Switch checked={dark} onChange={setDark} />
           </div>
+          <a
+            href="https://github.com/zhuangtianyu/fog-design"
+            target="_blank"
+          >
+            <div className="app__header-github">
+              <Icon type="github-circle-fill" size={22} />
+            </div>
+          </a>
         </div>
         <div className="app__body">
           <div className="app__sidebar">

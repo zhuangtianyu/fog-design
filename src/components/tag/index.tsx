@@ -1,6 +1,7 @@
 import React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
+import Icon from '@components/icon';
 import { isFunction } from '@utils/index';
 import './index.less';
 
@@ -38,7 +39,11 @@ const Tag: React.FC<TagProps> = props => {
           className={`${prefix}-tag__close`}
           onClick={event => isFunction(onClose) && onClose(event)}
         >
-          ✕
+          <Icon
+            className={`${prefix}-tag__close-icon`}
+            type="close"
+            size={12}
+          />
         </div>
       )}
     </div>

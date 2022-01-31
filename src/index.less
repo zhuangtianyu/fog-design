@@ -51,16 +51,26 @@ body {
     }
 
     &-themes-select {
-      width: 100px;
+      width: 110px;
+
+      .@{prefix}-input-wrapper {
+        border-color: var(--fog-transparent);
+        background-color: var(--fog-transparent);
+      }
     }
 
     &-darkness {
       display: flex;
       align-items: center;
+      margin-right: 20px;
     }
 
     &-darkname {
       margin-right: 6px;
+    }
+
+    &-github {
+      line-height: 0;
     }
   }
 

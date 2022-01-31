@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Tag from '@components/tag';
+import Message from '@components/message';
 import './index.less';
 
 const tags = ['React', 'Vue', 'Angular'];
 
 const TagDemo = () => {
+  useEffect(() => Message.destroyAll, []);
 
   return (
     <div className="tag-demo">
@@ -17,7 +19,14 @@ const TagDemo = () => {
       ))}
       <h3>Closable</h3>
       {tags.map(tag => (
-        <Tag key={tag} closable>
+        <Tag
+          key={tag}
+          closable
+          onClose={() => Message.info({
+            icon: '💥',
+            content: 'Tag closed!',
+          })}
+        >
           {tag}
         </Tag>
       ))}

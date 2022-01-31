@@ -5,15 +5,16 @@ const useControlled = props => {
     value,
     defaultValue,
     onChange = () => {},
+    innerValueGetter = nextValue => nextValue,
   } = props;
 
   const isControlled = useMemo(() => typeof value !== 'undefined', [value]);
 
   const [innerValue, setInnerValue] = useState(defaultValue);
 
-  const uncontrolledHandler = nextValue => {
-    setInnerValue(nextValue);
-    onChange(nextValue);
+  const uncontrolledHandler = (...args) => {
+    setInnerValue(innerValueGetter(...args));
+    onChange(...args);
   };
 
   return isControlled

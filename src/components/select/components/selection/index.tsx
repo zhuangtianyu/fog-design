@@ -2,6 +2,7 @@ import React, { useState, useMemo, forwardRef } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Input from '@components/input';
+import Icon from '@components/icon';
 import Tag from '@components/tag';
 import { OptionProps } from '../option';
 import { isFunction } from '@utils/index';
@@ -63,7 +64,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
         [`${prefix}-selection--single`]: !multiple,
         [`${prefix}-selection--multiple`]: multiple,
         [`${prefix}-selection--focused`]: multiple && focused,
-        [`${prefix}-selection--open`]: multiple && open,
+        [`${prefix}-selection--open`]: open,
       })}
       ref={ref}
       onClick={() => multiple && inputRef.current?.focus()}
@@ -76,6 +77,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
               value={inputValue}
               placeholder={placeholder}
               disabled={disabled}
+              suffix={<Icon type="down" />}
               readOnly
             />
           : <>
@@ -105,6 +107,9 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
                   {placeholder}
                 </div>
               )}
+              <div className={`${prefix}-selection__arrow-down`}>
+                <Icon type="down" size={14} />
+              </div>
             </>
       }
     </div>

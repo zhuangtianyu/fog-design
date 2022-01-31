@@ -36,6 +36,7 @@ export const lightColors = {
 
   /* used for: switch */
   'internal-color': '#bfbfbf',
+  'internal-color-hover': '#a6a6a6',
   'internal-color-disabled': '#e6e6e6',
 
   /* used for: input, modal, popup... */
@@ -74,6 +75,7 @@ export const darkColors = {
 
   /* used for: switch */
   'internal-color': '#666666',
+  'internal-color-hover': '#808080',
   'internal-color-disabled': '#333333',
 
   /* used for: input, modal, popup... */

@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Button from '@components/button';
-import Icon from '../../icon';
+import Icon from '@components/icon';
 import { isFunction } from '@utils/index';
 import PanelCell, { CellType } from '../panel-cell';
 import { DAYS, MONTHS, timestampToDate, getDayStartDate } from '../../utils';

@@ -8,13 +8,23 @@
   }
 
   position: relative;
+  cursor: pointer;
 
   &--single &__input--single {
     width: 100%;
+    cursor: pointer;
+  }
+
+  &--single:hover:not(&--open) &:not(&__input--single:focus) {
+    border-color: var(--fog-primary-color-hover);
+  }
+
+  &--open &__input--single {
+    border-color: var(--fog-primary-color);
   }
 
   &--multiple {
-    padding: 1px 4px;
+    padding: 1px 30px 1px 4px;
     font-size: 0;
     border: 1px solid var(--fog-border-color);
     border-radius: 2px;
@@ -67,5 +77,16 @@
     color: var(--fog-placeholder-color);
     font-size: 14px;
     line-height: 22px;
+  }
+
+  &__arrow-down {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    bottom: 1px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

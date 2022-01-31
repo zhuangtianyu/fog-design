@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import namespace from '@namespace';
 import Input from '@components/input';
 import Trigger from '@components/trigger';
+import Icon from '@components/icon';
 import DatePanel from './components/date-panel';
 import YearPanel from './components/year-panel';
 import MonthPanel from './components/month-panel';
@@ -217,6 +218,7 @@ const DatePicker: React.FC<DatePickerProps> = props => {
           ref={inputRef}
           value={inputValue}
           placeholder={placeholder}
+          suffix={<Icon type="calendar" />}
           readOnly
         />
       </Trigger>

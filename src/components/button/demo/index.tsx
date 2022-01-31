@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@components/button';
+import Icon from '@components/icon';
 import './index.less';
 
 const ButtonDemo = () => {
@@ -22,6 +23,19 @@ const ButtonDemo = () => {
       </Button>
       <Button type="text">
         Text
+      </Button>
+      <h3>Icon</h3>
+      <Button type="primary">
+        <Icon type="calendar" />
+        <span>Date</span>
+      </Button>
+      <Button>
+        <Icon type="github-circle-fill" />
+        <span>Social</span>
+      </Button>
+      <Button type="dashed">
+        <span>Trigger</span>
+        <Icon type="down" />
       </Button>
       <h3>Disabled</h3>
       <Button type="primary" disabled>
