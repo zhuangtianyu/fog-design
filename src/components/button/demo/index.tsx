@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@components/button';
 import Icon from '@components/icon';
 import './index.less';
 
 const ButtonDemo = () => {
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <div className="button-demo">
@@ -27,15 +28,38 @@ const ButtonDemo = () => {
       <h3>Icon</h3>
       <Button type="primary">
         <Icon type="calendar" />
-        <span>Date</span>
+        Date
       </Button>
       <Button>
-        <Icon type="github-circle-fill" />
-        <span>Social</span>
+        <Icon type="email" />
+        Send
       </Button>
       <Button type="dashed">
-        <span>Trigger</span>
+        Trigger
         <Icon type="down" />
+      </Button>
+      <Button type="link">
+        <Icon type="link" />
+        Link
+      </Button>
+      <Button type="text">
+        <Icon type="edit" />
+        Edit
+      </Button>
+      <h3>Loading</h3>
+      <Button type="primary" loading>
+        Loading
+      </Button>
+      <Button
+        loading={loading}
+        onClick={() => {
+          setLoading(true);
+
+          setTimeout(() => setLoading(false), 1000);
+        }
+      }>
+        <Icon type="email" />
+        Click me
       </Button>
       <h3>Disabled</h3>
       <Button type="primary" disabled>

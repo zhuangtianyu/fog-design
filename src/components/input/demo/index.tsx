@@ -21,12 +21,12 @@ const InputDemo = () => {
       <h3>Prefix</h3>
       <Input
         placeholder="Please input"
-        prefix={<Icon type="calendar" />}
+        prefix={<Icon type="email" />}
       />
       <h3>Suffix</h3>
       <Input
         placeholder="Please input"
-        suffix={<Icon type="setting" />}
+        suffix={<Icon type="edit" />}
       />
       <h3>Disabled</h3>
       <Input placeholder="Please input" disabled />

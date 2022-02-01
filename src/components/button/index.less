@@ -130,6 +130,11 @@
     cursor: not-allowed;
   }
 
+  &--loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
   &--link[disabled],
   &--text[disabled],
   &--link&--danger,
@@ -143,7 +148,7 @@
   }
 
   .@{prefix}-icon {
-    vertical-align: -0.08em;
+    vertical-align: -0.13em;
 
     &:first-child {
       margin-right: 0.52em;
@@ -152,5 +157,23 @@
     &:last-child {
       margin-left: 0.52em;
     }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0);
+    }
+
+    50% {
+      transform: rotate(180deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  &__loading {
+    animation: spin 1s infinite linear;
   }
 }
