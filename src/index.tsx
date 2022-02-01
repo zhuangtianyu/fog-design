@@ -40,6 +40,7 @@ const components: string[] = [
   'input',
   'select',
   'modal',
+  'drawer',
   'message',
   'transition',
   'date-picker',

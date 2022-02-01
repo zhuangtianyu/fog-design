@@ -1,0 +1,159 @@
+.@{prefix}-drawer {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  position: fixed;
+  font-size: 14px;
+
+  &--before-enter &__mask {
+    position: static;
+    background-color: var(--fog-transparent);
+  }
+
+  &--entering &__mask {
+    background-color: var(--fog-mask-color);
+  }
+
+  &--entered &__mask {
+    background-color: var(--fog-mask-color);
+  }
+
+  &--leaving &__mask {
+    background-color: var(--fog-transparent);
+  }
+
+  &--before-enter&--left &__content {
+    transform: translateX(-100%);
+  }
+
+  &--before-enter&--right &__content {
+    transform: translateX(100%);
+  }
+
+  &--before-enter&--top &__content {
+    transform: translateY(-100%);
+  }
+
+  &--before-enter&--bottom &__content {
+    transform: translateY(100%);
+  }
+
+  &--entering&--left &__content {
+    transform: translateX(0);
+  }
+
+  &--entering&--right &__content {
+    transform: translateX(0);
+  }
+
+  &--entering&--top &__content {
+    transform: translateY(0);
+  }
+
+  &--entering&--bottom &__content {
+    transform: translateY(0);
+  }
+
+  &--entered&--left &__content {
+    transform: translateX(0);
+  }
+
+  &--entered&--right &__content {
+    transform: translateX(0);
+  }
+
+  &--entered&--top &__content {
+    transform: translateY(0);
+  }
+
+  &--entered&--bottom &__content {
+    transform: translateY(0);
+  }
+
+  &--leaving&--left &__content {
+    transform: translateX(-100%);
+  }
+
+  &--leaving&--right &__content {
+    transform: translateX(100%);
+  }
+
+  &--leaving&--top &__content {
+    transform: translateY(-100%);
+  }
+
+  &--leaving&--bottom &__content {
+    transform: translateY(100%);
+  }
+
+  &--left &__content {
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+
+  &--right &__content {
+    top: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &--top &__content {
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  &--bottom &__content {
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+
+  &__mask {
+    position: fixed;
+    inset: 0;
+    text-align: center;
+    transition: all 0.3s;
+  }
+
+  &__content {
+    position: fixed;
+    text-align: left;
+    background-color: var(--fog-panel-color);
+    transition: all 0.3s;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--fog-border-color);
+  }
+
+  &__title {
+    flex-grow: 1;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
+  }
+
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  &__body {
+    padding: 12px 16px;
+  }
+}
