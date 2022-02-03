@@ -32,13 +32,13 @@ body {
       font-size: 20px;
       font-weight: 600;
       line-height: 40px;
+      margin-right: auto;
     }
 
     &-themes {
       display: flex;
       align-items: center;
       margin-right: 20px;
-      margin-left: auto;
 
       span {
         margin-right: 6px;
@@ -83,16 +83,6 @@ body {
     width: 200px;
     min-height: calc(100vh - 64px);
     border-right: 1px solid var(--fog-border-color);
-    transition: all 0.3s;
-  }
-
-  &__sidebar a.active &__sidebar-item {
-    background-color: var(--fog-panel-color-active);
-  }
-
-  &__sidebar-item {
-    padding: 10px 20px;
-    transition: all 0.3s;
   }
 
   &__content {
@@ -100,4 +90,22 @@ body {
     padding: 10px 20px;
     overflow-x: auto;
   }
+
+  &__drawer-trigger {
+    padding: 4px;
+    font-size: 0;
+  }
+}
+
+.@{prefix}-menu {
+  transition: all 0.3s;
+}
+
+.@{prefix}-menu a.active .@{prefix}-menu__item {
+  background-color: var(--fog-panel-color-active);
+}
+
+.@{prefix}-menu__item {
+  padding: 10px 20px;
+  transition: all 0.3s;
 }

@@ -9,6 +9,7 @@
 
   position: fixed;
   font-size: 14px;
+  z-index: 1;
 
   &--before-enter &__mask {
     position: static;
@@ -123,6 +124,8 @@
   }
 
   &__content {
+    display: flex;
+    flex-direction: column;
     position: fixed;
     text-align: left;
     background-color: var(--fog-panel-color);
@@ -132,6 +135,8 @@
 
   &__header {
     display: flex;
+    flex-shrink: 0;
+    align-items: center;
     padding: 12px 16px;
     border-bottom: 1px solid var(--fog-border-color);
   }
@@ -153,7 +158,16 @@
     cursor: pointer;
   }
 
+  &__close--isolated {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    transition: all 0.3s;
+  }
+
   &__body {
+    flex-grow: 1;
+    overflow: auto;
     padding: 12px 16px;
   }
 }

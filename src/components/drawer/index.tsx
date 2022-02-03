@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useMemo } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Transition from '@components/transition';
@@ -11,8 +11,8 @@ const { prefix } = namespace;
 interface DrawerProps {
   className?: string;
   visible?: boolean;
-  width?: number;
-  height?: number;
+  width?: number | string;
+  height?: number | string;
   title?: React.ReactChild;
   placement?: string;
   showClose?: boolean;
@@ -66,6 +66,13 @@ const Drawer: React.FC<DrawerProps> = props => {
     });
   }, [visible, drawerRef.current]);
 
+  const direction = useMemo(() => {
+    if (['left', 'right'].includes(placement)) return 'horizontal';
+    if (['top', 'bottom'].includes(placement)) return 'vertical';
+
+    return undefined;
+  }, [placement]);
+
   return (
     <Transition
       visible={visible}
@@ -93,20 +100,34 @@ const Drawer: React.FC<DrawerProps> = props => {
         <div
           className={`${prefix}-drawer__content`}
           style={{
-            width: ['left', 'right'].includes(placement) ? width : 'auto',
-            height: ['top', 'bottom'].includes(placement) ? height : 'auto',
+            width: direction === 'horizontal' ? width : 'auto',
+            height: direction === 'vertical' ? height : 'auto',
           }}
         >
-          <div className={`${prefix}-drawer__header`}>
-            <div className={`${prefix}-drawer__title`}>
-              {title}
-            </div>
-            {showClose && (
-              <div className={`${prefix}-drawer__close`} onClick={handleClose}>
-                <Icon type="close" size={16} />
-              </div>
-            )}
-          </div>
+          {
+            typeof title !== 'undefined'
+              ? <div className={`${prefix}-drawer__header`}>
+                  <div className={`${prefix}-drawer__title`}>
+                    {title}
+                  </div>
+                  {showClose && (
+                    <div className={`${prefix}-drawer__close`} onClick={handleClose}>
+                      <Icon type="close" size={18} />
+                    </div>
+                  )}
+                </div>
+              : showClose && (
+                  <div
+                    className={classnames(
+                      `${prefix}-drawer__close`,
+                      `${prefix}-drawer__close--isolated`,
+                    )}
+                    onClick={handleClose}
+                  >
+                    <Icon type="close" size={18} />
+                  </div>
+                )
+          }
           <div className={`${prefix}-drawer__body`}>
             {children}
           </div>
@@ -117,7 +138,7 @@ const Drawer: React.FC<DrawerProps> = props => {
 };
 
 Drawer.defaultProps = {
-  width: 360,
+  width: 300,
   height: 300,
   visible: false,
   placement: 'right',

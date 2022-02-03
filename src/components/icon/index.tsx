@@ -15,12 +15,13 @@ interface IconProps {
 }
 
 const Icon: React.FC<IconProps> = props => {
-  const { className, type, size, color } = props;
+  const { className, type, size, color, ...restProps } = props;
 
   return (
     <div
       className={classnames(`${prefix}-icon`, className)}
       style={{ fontSize: size, color }}
+      {...restProps}
     >
       <svg
         viewBox="0 0 1024 1024"

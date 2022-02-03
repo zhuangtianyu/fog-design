@@ -116,7 +116,7 @@ const Modal: ModalTypes = props => {
             </div>
             {showClose && (
               <div className={`${prefix}-modal__close`} onClick={handleCancel}>
-                <Icon type="close" size={16} />
+                <Icon type="close" size={18} />
               </div>
             )}
           </div>

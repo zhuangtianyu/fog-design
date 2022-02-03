@@ -28,3 +28,5 @@ export const cancelRafTimeout = timer => {
 };
 
 export const isFunction: (fn: any) => boolean = fn => typeof fn === 'function';
+
+export const isMobile = () => /mobile/i.test(window.navigator.userAgent);
