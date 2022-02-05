@@ -5,12 +5,19 @@ import MenuItem from './components/menu-item';
 
 export const MenuContext = React.createContext(null);
 
-export const renderChildren = (list, floorIndex = 1) => list.map(item => {
-  const childComponents = [SubMenu, MenuItemGroup, MenuItem];
+export const renderChildren = (children, floorIndex = 1) => {
+  const childrenEnhanced = [];
 
-  if (childComponents.includes(item.type)) {
-    return React.cloneElement(item, { floorIndex });
-  }
+  React.Children.forEach(children, item => {
+    const childComponents = [SubMenu, MenuItemGroup, MenuItem];
 
-  return null;
-});
+    if (childComponents.includes(item.type)) {
+      childrenEnhanced.push(React.cloneElement(item, {
+        floorIndex,
+        value: item.props.value ?? item.key,
+      }));
+    }
+  });
+
+  return childrenEnhanced;
+};

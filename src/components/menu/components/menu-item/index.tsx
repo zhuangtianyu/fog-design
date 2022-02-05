@@ -8,7 +8,7 @@ export type ValueType = number | string | null | any;
 
 export interface MenuItemProps {
   label?: string;
-  value: ValueType;
+  value?: ValueType;
   children?: React.ReactElement | React.ReactElement[];
   floorIndex?: number;
 }

@@ -74,7 +74,7 @@ const Menu: MenuTypes = props => {
       style={style}
     >
       <MenuContext.Provider value={context}>
-        {renderChildren(React.Children.toArray(children))}
+        {renderChildren(children)}
       </MenuContext.Provider>
     </div>
   );

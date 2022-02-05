@@ -8,7 +8,7 @@ export type ValueType = number | string | null | any;
 
 export interface SubMenuProps {
   label: string;
-  value: ValueType;
+  value?: ValueType;
   children: React.ReactElement | React.ReactElement[];
   floorIndex?: number;
 }
@@ -49,7 +49,7 @@ const SubMenu: React.FC<SubMenuProps> = props => {
       </div>
       {open && (
         <div className={`${prefix}-menu-submenu__content`}>
-          {renderChildren([].concat(children), floorIndex + 1)}
+          {renderChildren(children, floorIndex + 1)}
         </div>
       )}
     </div>
