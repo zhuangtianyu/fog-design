@@ -1,0 +1,28 @@
+.@{prefix}-menu-submenu {
+
+  &__title {
+    padding: 10px 16px 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      color: var(--fog-primary-color);
+    }
+  }
+
+  > &__title {
+    background-color: var(--fog-background-color);
+  }
+
+  &__label {
+    margin-right: auto;
+  }
+
+  &__content {
+    background-color: var(--fog-content-color);
+    transition: all 0.3s;
+  }
+}

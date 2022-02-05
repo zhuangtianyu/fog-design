@@ -44,6 +44,12 @@ export const lightColors = {
   'panel-color-active': '#f2f2f2',
   'panel-color-disabled': '#f5f5f5',
 
+  /* used for: menu-group, option-group... */
+  'group-color': '#8c8c8c',
+
+  /* used for: menu */
+  'content-color': '#fafafa',
+
   /* used for: modal */
   'mask-color': 'rgba(0, 0, 0, 0.4)',
 
@@ -82,6 +88,12 @@ export const darkColors = {
   'panel-color': '#262626',
   'panel-color-active': '#404040',
   'panel-color-disabled': '#1a1a1a',
+
+  /* used for: menu-group, option-group... */
+  'group-color': '#808080',
+
+  /* used for: menu */
+  'content-color': '#1a1a1a',
 
   /* used for: modal */
   'mask-color': 'rgba(0, 0, 0, 0.4)',

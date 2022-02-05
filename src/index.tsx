@@ -1,22 +1,69 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
-import { HashRouter, Routes, Route, Link, NavLink, useParams } from 'react-router-dom';
-import classnames from 'classnames';
-import namespace from '@namespace';
+import { HashRouter, Routes, Route, Link, NavLink, Navigate, useParams } from 'react-router-dom';
 import Switch from '@components/switch';
 import Select from '@components/select';
 import Icon from '@components/icon';
 import Drawer from '@components/drawer';
+import Menu from '@components/menu';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import { kebabCaseToPascalCase, isMobile } from '@utils/index';
 import '@styles/index.less';
 import './index.less';
 
-const { prefix } = namespace;
+const { Option } = Select;
 
 const previousDark = !!localStorage.getItem('dark');
 const previousThemeName = localStorage.getItem('themeName');
+
+const components: string[] = [
+  'button',
+  'date-picker',
+  'drawer',
+  'icon',
+  'input',
+  'menu',
+  'message',
+  'modal',
+  'select',
+  'switch',
+  'tabs',
+  'tag',
+  'transition',
+  'trigger',
+];
+
+const AppMenu = ({ className }) => {
+  const { name } = useParams();
+
+  return (
+    <Menu
+      className={className}
+      value={name}
+      style={{ width: 240 }}
+    >
+      {components.map(componentName => (
+        <Menu.Item key={componentName} value={componentName}>
+          <NavLink to={`/${componentName}`}>
+            {kebabCaseToPascalCase(componentName)}
+          </NavLink>
+        </Menu.Item>
+      ))}
+    </Menu>
+  );
+};
+
+const GithubLink = () => (
+  <a
+    href="https://github.com/zhuangtianyu/fog-design"
+    target="_blank"
+  >
+    <div className="app__header-github">
+      <Icon type="github-circle-fill" size={22} />
+    </div>
+  </a>
+);
 
 const Demo = () => {
   const { name } = useParams();
@@ -34,50 +81,6 @@ const Demo = () => {
 
   return component ? <component.default /> : null;
 };
-
-const components: string[] = [
-  'button',
-  'switch',
-  'trigger',
-  'tag',
-  'tabs',
-  'icon',
-  'input',
-  'select',
-  'modal',
-  'drawer',
-  'message',
-  'transition',
-  'date-picker',
-];
-
-const { Option } = Select;
-
-const Menu = ({ className }) => {
-
-  return (
-    <div className={classnames(`${prefix}-menu`, className)}>
-      {components.map(name => (
-        <NavLink to={name} key={name}>
-          <div className={`${prefix}-menu__item`}>
-            {kebabCaseToPascalCase(name)}
-          </div>
-        </NavLink>
-      ))}
-    </div>
-  );
-};
-
-const GithubLink = () => (
-  <a
-    href="https://github.com/zhuangtianyu/fog-design"
-    target="_blank"
-  >
-    <div className="app__header-github">
-      <Icon type="github-circle-fill" size={22} />
-    </div>
-  </a>
-);
 
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);
@@ -167,18 +170,30 @@ const App = () => {
                       <h3>Github</h3>
                       <GithubLink />
                       <h3>Components</h3>
-                      <Menu className="app-drawer__menu" />
+                      <Routes>
+                        <Route
+                          path="/:name"
+                          element={<AppMenu className="app__drawer-menu" />}
+                        />
+                      </Routes>
                     </div>
                   </Drawer>
                 </>
           }
         </div>
         <div className="app__body">
-          {!mobile && <Menu className="app__sidebar" />}
+          {!mobile && (
+            <Routes>
+              <Route
+                path="/:name"
+                element={<AppMenu className="app__sidebar" />}
+              />
+            </Routes>
+          )}
           <div className="app__content">
             <Routes>
-              <Route path="/" element={<span>No component picked.</span>} />
               <Route path="/:name" element={<Demo />} />
+              <Route path="*" element={<Navigate to="/button" />} />
             </Routes>
           </div>
         </div>

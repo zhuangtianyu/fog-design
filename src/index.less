@@ -15,7 +15,6 @@ body {
   font-size: 14px;
 
   a {
-    color: var(--fog-color);
     text-decoration: none;
   }
 
@@ -27,6 +26,10 @@ body {
     background-color: var(--fog-background-color);
     border-bottom: 1px solid var(--fog-border-color);
     transition: all 0.3s;
+
+    a {
+      color: var(--fog-color);
+    }
 
     &-title {
       font-size: 20px;
@@ -79,8 +82,8 @@ body {
   }
 
   &__sidebar {
+    padding: 20px 0;
     flex-shrink: 0;
-    width: 200px;
     min-height: calc(100vh - 64px);
     border-right: 1px solid var(--fog-border-color);
   }
@@ -95,17 +98,4 @@ body {
     padding: 4px;
     font-size: 0;
   }
-}
-
-.@{prefix}-menu {
-  transition: all 0.3s;
-}
-
-.@{prefix}-menu a.active .@{prefix}-menu__item {
-  background-color: var(--fog-panel-color-active);
-}
-
-.@{prefix}-menu__item {
-  padding: 10px 20px;
-  transition: all 0.3s;
 }

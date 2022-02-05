@@ -1,0 +1,54 @@
+.@{prefix}-menu-item {
+
+  position: relative;
+  padding: 10px 16px 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: all 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--fog-primary-color);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 3px;
+    height: 0;
+    margin: auto;
+    background-color: var(--fog-primary-color);
+  }
+
+  a {
+    color: var(--fog-color);
+
+    &:hover {
+      color: var(--fog-primary-color);
+    }
+  }
+
+  a::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  &--active {
+    color: var(--fog-primary-color);
+    background-color: var(--fog-panel-color-active);
+
+    &::after {
+      height: 100%;
+      transition: all 0.3s;
+    }
+
+    a {
+      color: var(--fog-primary-color);
+    }
+  }
+}
