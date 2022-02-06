@@ -1,4 +1,4 @@
-import React, { useMemo, useContext } from 'react';
+import React, { useState, useLayoutEffect, useRef, useMemo, useContext } from 'react';
 import namespace from '@namespace';
 import Icon from '@components/icon';
 import { MenuContext, renderChildren } from '../../utils';
@@ -27,6 +27,16 @@ const SubMenu: React.FC<SubMenuProps> = props => {
 
   const open = useMemo(() => opens.includes(value), [value, opens]);
 
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const [transitionHeight, setTransitionHeight] = useState<number | string>('auto');
+
+  const transitionDuration = useMemo(() => {
+    const duration = Math.ceil(Number(transitionHeight) * 0.1) * 0.01;
+
+    return duration > 0.3 ? 0.3 : duration;
+  }, [transitionHeight]);
+
   const handleTitleClick = () => {
     if (open) {
       onOpenChange(opens.filter(item => item !== value));
@@ -34,6 +44,20 @@ const SubMenu: React.FC<SubMenuProps> = props => {
       onOpenChange([...opens, value]);
     }
   };
+
+  useLayoutEffect(() => {
+    if (ResizeObserver && contentRef.current) {
+      const resizeObserver = new ResizeObserver(() => {
+        const { height } = contentRef.current.getBoundingClientRect();
+
+        setTransitionHeight(height);
+      });
+
+      resizeObserver.observe(contentRef.current);
+
+      return () => resizeObserver.disconnect();
+    }
+  }, []);
 
   return (
     <div className={`${prefix}-menu-submenu`}>
@@ -47,11 +71,21 @@ const SubMenu: React.FC<SubMenuProps> = props => {
         </div>
         <Icon type={open ? 'up' : 'down'} />
       </div>
-      {open && (
-        <div className={`${prefix}-menu-submenu__content`}>
+      <div
+        className={`${prefix}-menu-submenu__transition`}
+        style={{
+          overflow: 'hidden',
+          transition: `all ${transitionDuration}s`,
+          height: open ? transitionHeight : 0,
+        }}
+      >
+        <div
+          className={`${prefix}-menu-submenu__content`}
+          ref={contentRef}
+        >
           {renderChildren(children, floorIndex + 1)}
         </div>
-      )}
+      </div>
     </div>
   );
 };
