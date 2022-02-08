@@ -26,6 +26,7 @@ const components: string[] = [
   'menu',
   'message',
   'modal',
+  'radio',
   'select',
   'switch',
   'tabs',

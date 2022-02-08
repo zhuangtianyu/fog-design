@@ -27,8 +27,10 @@ export const lightColors = {
   'contrast-color-disabled': '#fcfcfc',
 
   'border-color': '#d9d9d9',
+  'border-color-deep': '#bfbfbf',
   'border-color-light': '#f2f2f2',
   'background-color': '#ffffff',
+  'background-color-active': '#bfbfbf',
   'background-color-preset': '#f2f2f2',
   'background-color-disabled': '#f2f2f2',
 
@@ -72,8 +74,10 @@ export const darkColors = {
   'contrast-color-disabled': '#b3b3b3',
 
   'border-color': '#404040',
+  'border-color-deep': '#595959',
   'border-color-light': '#262626',
   'background-color': '#0d0d0d',
+  'background-color-active': '#595959',
   'background-color-preset': '#4d4d4d',
   'background-color-disabled': '#333333',
 
