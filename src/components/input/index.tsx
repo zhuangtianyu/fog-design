@@ -69,7 +69,6 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
           [`${prefixClassName}-input-wrapper--disabled`]: disabled,
           [`${prefixClassName}-input-wrapper--readOnly`]: readOnly,
         })}
-        ref={inputRef}
         onClick={() => inputRef.current.focus()}
       >
         {prefix && (
@@ -92,7 +91,7 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
           </div>
         )}
       </div>
-    : React.cloneElement(InputElement, { ref: inputRef });
+    : InputElement;
 
   return getWrappedInput(
     <input
@@ -100,6 +99,7 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
         [`${prefixClassName}-input--clearable`]: clearable,
         [`${prefixClassName}-input--disabled`]: disabled,
       })}
+      ref={inputRef}
       value={value || ''}
       disabled={disabled}
       readOnly={readOnly}
