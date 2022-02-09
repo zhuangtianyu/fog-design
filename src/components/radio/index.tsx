@@ -2,6 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Group from './components/group';
+import Button from './components/button';
 import useControlled from '@hooks/useControlled';
 import { isFunction } from '@utils/index';
 import './index.less';
@@ -22,6 +23,7 @@ export interface RadioProps {
 
 export interface RadioTypes extends React.FC<RadioProps> {
   Group: typeof Group;
+  Button: typeof Button;
 }
 
 const Radio: RadioTypes = props => {
@@ -47,8 +49,9 @@ const Radio: RadioTypes = props => {
       [`${prefix}-radio--checked`]: checked,
       [`${prefix}-radio--disabled`]: disabled,
     })}>
-      <label>
+      <label className={`${prefix}-radio__label`}>
         <input
+          className={`${prefix}-radio__input`}
           type="radio"
           value={value}
           checked={checked || false}
@@ -68,5 +71,7 @@ const Radio: RadioTypes = props => {
 Radio.defaultProps = {};
 
 Radio.Group = Group;
+
+Radio.Button = Button;
 
 export default Radio;

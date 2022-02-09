@@ -8,5 +8,32 @@
   }
 
   display: inline-block;
-  font-size: 0;
+
+  .@{prefix}-radio {
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  .@{prefix}-radio-button-wrapper {
+    margin-right: 0;
+
+    .@{prefix}-radio-button {
+      border-radius: 0;
+      margin-right: -1px;
+    }
+
+    &:first-child .@{prefix}-radio-button {
+      border-top-left-radius: 2px;
+      border-bottom-left-radius: 2px;
+    }
+
+    &:last-child .@{prefix}-radio-button {
+      border-top-right-radius: 2px;
+      border-bottom-right-radius: 2px;
+      margin-right: 0;
+    }
+  }
 }

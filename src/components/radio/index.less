@@ -8,15 +8,14 @@
   }
 
   display: inline-block;
-  font-size: 0;
 
-  label {
+  &__label {
     display: inline-block;
     vertical-align: middle;
     cursor: pointer;
   }
 
-  input[type="radio"] {
+  &__input[type="radio"] {
     width: 0;
     height: 0;
     opacity: 0;
@@ -75,7 +74,7 @@
     color: var(--fog-color-disabled);
   }
 
-  &--disabled label {
+  &--disabled &__label {
     cursor: not-allowed;
   }
 

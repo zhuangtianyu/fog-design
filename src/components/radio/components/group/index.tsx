@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Radio from '@components/radio';
+import RadioButton, { ButtonStyle } from '../button';
 import useControlled from '@hooks/useControlled';
 import './index.less';
 
@@ -15,6 +16,7 @@ export interface RadioGroupProps {
   defaultValue?: ValueType;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
   disabled?: boolean;
+  buttonStyle?: ButtonStyle;
   children?: React.ReactElement[];
 }
 
@@ -26,6 +28,7 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
     onChange: onChangeFromProps,
     children: childrenFromProps,
     disabled,
+    buttonStyle,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -46,8 +49,16 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
       if (item.type === Radio) {
         childrenParsed.push(React.cloneElement(item, {
           checked: item.props.value === value,
-          onClick: handleRadioClick,
           disabled: item.props.disabled || disabled,
+          onClick: handleRadioClick,
+        }));
+      }
+      if (item.type === RadioButton) {
+        childrenParsed.push(React.cloneElement(item, {
+          checked: item.props.value === value,
+          disabled: item.props.disabled || disabled,
+          onClick: handleRadioClick,
+          buttonStyle,
         }));
       }
     });
@@ -62,6 +73,8 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
   );
 };
 
-RadioGroup.defaultProps = {};
+RadioGroup.defaultProps = {
+  buttonStyle: 'outline',
+};
 
 export default RadioGroup;
