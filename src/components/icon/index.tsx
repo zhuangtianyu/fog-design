@@ -39,9 +39,6 @@ const Icon: React.FC<IconProps> = props => {
   );
 };
 
-Icon.defaultProps = {
-  size: 'inherit',
-  color: 'inherit',
-};
+Icon.defaultProps = {};
 
 export default Icon;

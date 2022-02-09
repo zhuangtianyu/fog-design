@@ -4,6 +4,19 @@ import './index.less';
 
 const SwitchDemo = () => {
   const [checked, setChecked] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingChecked, setLoadingChecked] = useState<boolean>(false);
+
+  const handleLoadingCheckChange = nextChecked => {
+    setLoading(true);
+
+    let timer = setTimeout(() => {
+      setLoading(false);
+      setLoadingChecked(nextChecked);
+
+      timer = null;
+    }, 1000);
+  };
 
   return (
     <div className="switch-demo">
@@ -14,6 +27,12 @@ const SwitchDemo = () => {
       <h3>Uncontrolled</h3>
       <Switch />
       <Switch defaultChecked />
+      <h3>Loading</h3>
+      <Switch
+        loading={loading}
+        checked={loadingChecked}
+        onChange={handleLoadingCheckChange}
+      />
     </div>
   );
 };
