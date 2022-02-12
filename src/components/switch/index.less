@@ -12,9 +12,21 @@
   vertical-align: middle;
   width: 44px;
   height: 22px;
+  font-size: 14px;
+  border: none;
   border-radius: 11px;
   background-color: var(--fog-internal-color);
+  transition: all 0.3s;
+  outline: none;
   cursor: pointer;
+
+  &:hover {
+    box-shadow: none;
+  }
+
+  &:focus:not(&:hover) {
+    box-shadow: 0 0 0 2px var(--fog-border-color);
+  }
 
   &__inner {
     position: absolute;
@@ -29,6 +41,10 @@
 
   &--checked {
     background-color: var(--fog-primary-color);
+  }
+
+  &--checked:focus:not(&:hover) {
+    box-shadow: 0 0 0 2px var(--fog-primary-color-blushed);
   }
 
   &--checked &__inner {

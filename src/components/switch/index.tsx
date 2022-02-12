@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';
@@ -32,12 +32,25 @@ const Switch: React.FC<SwitchProps> = props => {
     onChange: onChangeFromProps,
   });
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+
+    return () => {
+      // loading state will set button to disabled, then body becomes activeElement
+      // handle focus switch after loading, to ensure keyboard events respond
+      loading && buttonRef.current.focus();
+    };
+  }, [loading]);
+
   return (
-    <div
+    <button
       className={classnames(`${prefix}-switch`, className, {
         [`${prefix}-switch--checked`]: checked,
         [`${prefix}-switch--disabled`]: disabled || loading,
       })}
+      ref={buttonRef}
+      disabled={disabled || loading}
       onClick={() => !disabled && !loading && onChange(!checked)}
     >
       <div className={`${prefix}-switch__inner`}>
@@ -48,7 +61,7 @@ const Switch: React.FC<SwitchProps> = props => {
           />
         )}
       </div>
-    </div>
+    </button>
   );
 };
 
