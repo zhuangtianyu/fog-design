@@ -84,16 +84,11 @@ const Select: SelectTypes = props => {
   ), [children, optionsFromProps]);
 
   const inputValue = useMemo(() => {
-    if (multiple) {
-      return options
-        .filter(item => value.includes(item.value))
-        .map(item => item.label || item.children || item.value || '')
-        .join(' / ');
-    } else {
-      const { label, children } = options.find(item => item.value === value) || {};
+    if (multiple) return null;
 
-      return label || children || value || '';
-    }
+    const { label, children } = options.find(item => item.value === value) || {};
+
+    return label || children || value || '';
   }, [value, options, multiple]);
 
   const isOptionActive = optionValue => multiple
