@@ -1,7 +1,7 @@
-import React, { forwardRef, HTMLAttributes, useState, useRef } from 'react';
+import React, { forwardRef, HTMLAttributes, useState, useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
-import Icon from '@components/icon';
+import InputWrapper from './components/wrapper';
 import TextArea from './components/textarea';
 import useControlled from '@hooks/useControlled';
 import './index.less';
@@ -32,11 +32,11 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
+    clearable: clearableFromProps,
     disabled,
     readOnly,
     prefix,
     suffix,
-    clearable,
     ...restProps
   } = props;
 
@@ -53,52 +53,32 @@ const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) 
 
   const inputRef = ref as React.RefObject<HTMLInputElement> || defaultRef;
 
-  const clearableVisible = clearable && value && !disabled && !readOnly;
+  const clearable = clearableFromProps && value && !disabled && !readOnly;
 
-  const prefixVisible = prefix;
+  const shouldWrap = clearableFromProps || prefix || suffix;
 
-  const suffixVisible = suffix;
-
-  const shouldWrap = clearableVisible || prefixVisible || suffixVisible;
+  const handleWrapperClear = () => {
+    onChange({ target: { value: '' } });
+  };
 
   const getWrappedInput = InputElement => shouldWrap
-    ? <div
-        className={classnames({
-          [`${prefixClassName}-input-wrapper`]: true,
-          [`${prefixClassName}-input-wrapper--focused`]: focused,
-          [`${prefixClassName}-input-wrapper--disabled`]: disabled,
-          [`${prefixClassName}-input-wrapper--readOnly`]: readOnly,
-        })}
+    ? <InputWrapper
+        focused={focused}
+        disabled={disabled}
+        readOnly={readOnly}
+        clearable={clearable}
+        prefix={prefix}
+        suffix={suffix}
+        onClear={handleWrapperClear}
         onClick={() => inputRef.current.focus()}
       >
-        {prefix && (
-          <div className={`${prefixClassName}-input__prefix`}>
-            {prefix}
-          </div>
-        )}
         {InputElement}
-        {clearableVisible && (
-          <div
-            className={`${prefixClassName}-input__clear`}
-            onClick={() => onChange({ target: { value: '' } })}
-          >
-            <Icon type="close-circle-fill" />
-          </div>
-        )}
-        {suffix && (
-          <div className={`${prefixClassName}-input__suffix`}>
-            {suffix}
-          </div>
-        )}
-      </div>
+      </InputWrapper>
     : InputElement;
 
   return getWrappedInput(
     <input
-      className={classnames(`${prefixClassName}-input`, className, {
-        [`${prefixClassName}-input--clearable`]: clearable,
-        [`${prefixClassName}-input--disabled`]: disabled,
-      })}
+      className={classnames(`${prefixClassName}-input`, className)}
       ref={inputRef}
       value={value || ''}
       disabled={disabled}

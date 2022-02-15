@@ -23,10 +23,18 @@ const InputDemo = () => {
         placeholder="Please input"
         prefix={<Icon type="email" />}
       />
+      <Input
+        placeholder="Please input"
+        prefix="https://"
+      />
       <h3>Suffix</h3>
       <Input
         placeholder="Please input"
         suffix={<Icon type="edit" />}
+      />
+      <Input
+        placeholder="Please input"
+        suffix="@163.com"
       />
       <h3>Disabled</h3>
       <Input placeholder="Please input" disabled />
