@@ -85,6 +85,8 @@ const DatePicker: React.FC<DatePickerProps> = props => {
     return timestampToDate(value, format || FORMAT_DEFAULT[mode]).dateString;
   }, [value]);
 
+  const triggerRef = useRef<HTMLDivElement>(null);
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -213,14 +215,17 @@ const DatePicker: React.FC<DatePickerProps> = props => {
         }}
         disabled={disabled}
       >
-        <Input
-          className={`${prefix}-date-picker__input`}
-          ref={inputRef}
-          value={inputValue}
-          placeholder={placeholder}
-          suffix={<Icon type="calendar" />}
-          readOnly
-        />
+        <div ref={triggerRef}>
+          <Input
+            className={`${prefix}-date-picker__input`}
+            ref={inputRef}
+            value={inputValue}
+            placeholder={placeholder}
+            suffix={<Icon type="calendar" />}
+            disabled={disabled}
+            readOnly
+          />
+        </div>
       </Trigger>
     </div>
   );
