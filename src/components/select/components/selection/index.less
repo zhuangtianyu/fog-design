@@ -11,15 +11,10 @@
   cursor: pointer;
 
   &--single &__input--single {
-    width: 100%;
     cursor: pointer;
   }
 
-  &--single:hover:not(&--open) &:not(&__input--single:focus) {
-    border-color: var(--fog-primary-color-hover);
-  }
-
-  &--open &__input--single {
+  &--open .@{prefix}-input-wrapper {
     border-color: var(--fog-primary-color);
   }
 
@@ -53,6 +48,7 @@
 
   &__tag {
     margin: 2px;
+    cursor: default;
   }
 
   &__tag + &__input--multiple {
