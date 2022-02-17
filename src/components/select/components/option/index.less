@@ -1,4 +1,4 @@
-.@{prefix}-select__option {
+.@{prefix}-select-option {
 
   &,
   *,
@@ -7,6 +7,9 @@
     box-sizing: border-box;
   }
 
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   padding: 4px 12px;
   font-size: 14px;
   line-height: 24px;
@@ -26,5 +29,9 @@
   &--disabled {
     color: var(--fog-color-disabled);
     cursor: not-allowed;
+  }
+
+  &__content {
+    margin-right: auto;
   }
 }

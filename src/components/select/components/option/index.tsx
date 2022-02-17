@@ -1,6 +1,7 @@
 import React from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
+import Icon from '@components/icon';
 import './index.less';
 
 const { prefix } = namespace;
@@ -35,17 +36,20 @@ const Option: React.FC<OptionProps> = props => {
     <div
       className={classnames(
         {
-          [`${prefix}-select__option`]: true,
-          [`${prefix}-select__option--active`]: active,
-          [`${prefix}-select__option--picking`]: picking,
-          [`${prefix}-select__option--disabled`]: disabled,
-          [`${prefix}-select__option--multiple`]: multiple,
+          [`${prefix}-select-option`]: true,
+          [`${prefix}-select-option--active`]: active,
+          [`${prefix}-select-option--picking`]: picking,
+          [`${prefix}-select-option--disabled`]: disabled,
+          [`${prefix}-select-option--multiple`]: multiple,
         },
         className,
       )}
       {...restProps}
     >
-      {children || label}
+      <div className={`${prefix}-select-option__content`}>
+        {children || label}
+      </div>
+      {multiple && active && <Icon type="check" />}
     </div>
   );
 };
