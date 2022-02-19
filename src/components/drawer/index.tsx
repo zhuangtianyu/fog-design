@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Transition from '@components/transition';
@@ -40,6 +40,14 @@ const Drawer: React.FC<DrawerProps> = props => {
     afterClose,
   } = props;
 
+  /**
+   * delay visible to get animation as expected:
+   *
+   * 1. before opening, delay animation to cancel position teleport caused by props.placement updating
+   * 2. before closing, delay visible updating to ensure the closing animation did execution
+   */
+  const [delayedVisible, setDelayedVisible] = useState<boolean>(visible);
+
   const drawerRef = useRef<HTMLDivElement>(null);
 
   const handleClose = () => isFunction(onClose) && onClose();
@@ -66,6 +74,10 @@ const Drawer: React.FC<DrawerProps> = props => {
     });
   }, [visible, drawerRef.current]);
 
+  useEffect(() => {
+    visible && setTimeout(setDelayedVisible, 0, true);
+  }, [visible]);
+
   const direction = useMemo(() => {
     if (['left', 'right'].includes(placement)) return 'horizontal';
     if (['top', 'bottom'].includes(placement)) return 'vertical';
@@ -82,14 +94,17 @@ const Drawer: React.FC<DrawerProps> = props => {
       entered={`${prefix}-drawer--entered`}
       leaving={`${prefix}-drawer--leaving`}
       unmountNodeAfterLeave={unmountNodeAfterLeave}
-      onLeft={afterClose}
+      onLeft={() => {
+        isFunction(afterClose) && afterClose();
+        setDelayedVisible(false);
+      }}
     >
       <div
-        className={classnames(
-          className,
-          `${prefix}-drawer`,
-          `${prefix}-drawer--${placement}`,
-        )}
+        className={classnames(className, {
+          [`${prefix}-drawer`]: true,
+          [`${prefix}-drawer--open`]: delayedVisible,
+          [`${prefix}-drawer--${placement}`]: placement,
+        })}
         ref={drawerRef}
         tabIndex={-1}
       >
@@ -145,7 +160,7 @@ Drawer.defaultProps = {
   showClose: true,
   escClosable: true,
   maskClosable: true,
-  unmountNodeAfterLeave: true,
+  unmountNodeAfterLeave: false,
 };
 
 export default Drawer;

@@ -129,8 +129,11 @@
     position: fixed;
     text-align: left;
     background-color: var(--fog-panel-color);
-    transition: all 0.3s;
     overflow: hidden;
+  }
+
+  &--open &__content {
+    transition: all 0.3s;
   }
 
   &__header {
