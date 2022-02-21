@@ -19,6 +19,7 @@ const previousThemeName = localStorage.getItem('themeName');
 
 const components: string[] = [
   'button',
+  'checkbox',
   'date-picker',
   'drawer',
   'icon',

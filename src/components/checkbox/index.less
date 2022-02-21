@@ -1,0 +1,106 @@
+.@{prefix}-checkbox {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: inline-block;
+
+  &__label {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+
+  &__input[type="checkbox"] {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  &__box,
+  &__content {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  &__box {
+    position: relative;
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--fog-border-color-deep);
+    border-radius: 2px;
+    margin-right: 8px;
+    transition: all 0.3s;
+  }
+
+  &__box::after {
+    content: none;
+  }
+
+  &__content {
+    color: var(--fog-color);
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  &--focused &__box,
+  &:not(&--checked):not(&--disabled):hover &__box {
+    border-color: var(--fog-primary-color);
+  }
+
+  &--checked &__box,
+  &--indeterminate &__box {
+    border-color: var(--fog-transparent);
+    background-color: var(--fog-primary-color);
+  }
+
+  &--checked &__box::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    width: 6px;
+    height: 10px;
+    border-top: none;
+    border-left: none;
+    border-right: 2px solid var(--fog-contrast-color);
+    border-bottom: 2px solid var(--fog-contrast-color);
+    transform: rotate(45deg) scale(0.9);
+  }
+
+  &--indeterminate &__box::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 2.2px;
+    width: 10px;
+    height: 0;
+    border: none;
+    border-bottom: 2px solid var(--fog-contrast-color);
+    transform: scale(0.9);
+  }
+
+  &--disabled &__content {
+    color: var(--fog-color-disabled);
+  }
+
+  &--disabled &__label {
+    cursor: not-allowed;
+  }
+
+  &--disabled &__box {
+    border-color: var(--fog-border-color);
+    background-color: var(--fog-background-color-disabled);
+  }
+
+  &--disabled &__box::after {
+    border-color: var(--fog-color-disabled);
+  }
+}
