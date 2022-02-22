@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLAttributes, useMemo } from 'react';
+import * as React from 'react';
+import { forwardRef, HTMLAttributes, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';

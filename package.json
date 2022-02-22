@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --config ./scripts/config/webpack.dev.js",
-    "build": "webpack --config ./scripts/config/webpack.prod.js"
+    "build": "webpack --config ./scripts/config/webpack.prod.js",
+    "docs": "tsnd --respawn --quiet ./scripts/docs/index.ts"
   },
   "repository": {
     "type": "git",
@@ -28,6 +29,7 @@
     "@babel/preset-env": "^7.16.7",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
+    "@types/node": "^17.0.19",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "babel-loader": "^8.2.3",
@@ -36,8 +38,11 @@
     "html-webpack-plugin": "^5.5.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "react-docgen-typescript": "^2.2.2",
     "react-router-dom": "^6.2.1",
     "style-loader": "^3.3.1",
+    "ts-node": "^10.5.0",
+    "ts-node-dev": "^1.1.8",
     "typescript": "^4.5.4",
     "webpack": "^5.65.0",
     "webpack-cli": "^4.9.1",
