@@ -10,19 +10,24 @@ export type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
 export type ChildrenType = React.ReactNode | React.ReactElement;
 
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
+  /** --skip */
   className?: string;
   type?: ButtonType;
   danger?: boolean;
   loading?: boolean;
   disabled?: boolean;
   children?: ChildrenType | ChildrenType[];
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  /** --skip */
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   [propName: string]: any;
 }
 
 const { prefix } = namespace;
 
-const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+/**
+ * Button is used to trigger events, such as click events, etc.
+ */
+export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
     className,
     type,

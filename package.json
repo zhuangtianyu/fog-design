@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve --config ./scripts/config/webpack.dev.js",
     "build": "webpack --config ./scripts/config/webpack.prod.js",
-    "docs": "tsnd --respawn --quiet ./scripts/docs/index.ts"
+    "docs": "tsnd --respawn --quiet --watch src ./scripts/docs/index.ts"
   },
   "repository": {
     "type": "git",
