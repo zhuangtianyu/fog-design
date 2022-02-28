@@ -57,7 +57,7 @@ const renderComponentDoc = componentName => {
       `## ${component.displayName}\n\n` +
       `${component.description}\n\n` +
       '| Property | Type | Default | Description |\n' +
-      '| - | - | - | - |\n' +
+      '| :- | :- | :- | :- |\n' +
       propsRows.join('\n');
 
     fs.writeFileSync(path.resolve(__dirname, `${componentName}-doc.md`), md);
