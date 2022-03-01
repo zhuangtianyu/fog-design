@@ -24,6 +24,7 @@ const components: string[] = [
   'drawer',
   'icon',
   'input',
+  'loading',
   'menu',
   'message',
   'modal',
