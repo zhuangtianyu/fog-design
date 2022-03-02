@@ -12,6 +12,7 @@ interface LoadingProps {
   loading?: boolean;
   icon?: React.ReactElement;
   tip?: React.ReactChild;
+  tipBackground?: boolean;
   children?: React.ReactElement;
 }
 
@@ -22,6 +23,7 @@ const Loading: React.FC<LoadingProps> = props => {
     loading,
     icon,
     tip,
+    tipBackground,
     children,
   } = props;
 
@@ -41,7 +43,10 @@ const Loading: React.FC<LoadingProps> = props => {
         <div className={classnames(`${prefix}-loading`, className)}>
           <LoadingIcon />
           {tip && (
-            <div className={`${prefix}-loading__tip`}>
+            <div className={classnames({
+              [`${prefix}-loading__tip`]: true,
+              [`${prefix}-loading__tip--background`]: tipBackground,
+            })}>
               {tip}
             </div>
           )}
@@ -60,6 +65,7 @@ const Loading: React.FC<LoadingProps> = props => {
 Loading.defaultProps = {
   loading: true,
   icon: <Icon type="loading" />,
+  tipBackground: true,
 };
 
 export default Loading;
