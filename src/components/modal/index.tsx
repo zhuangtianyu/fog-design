@@ -1,14 +1,31 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import namespace from '@namespace';
 import classnames from 'classnames';
-import Button from '@components/button';
+import Button, { ButtonProps } from '@components/button';
 import Transition from '@components/transition';
 import Icon from '@components/icon';
 import { isFunction } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
+
+const asyncHandler = (handler, onPending, onFinally) => {
+  if (isFunction(handler)) {
+    const pending = handler();
+    const isPromise = isFunction(pending?.then);
+
+    if (isPromise) {
+      isFunction(onPending) && onPending();
+
+      pending.finally(() => {
+        isFunction(onFinally) && onFinally();
+      });
+    } else {
+      isFunction(onFinally) && onFinally();
+    }
+  }
+};
 
 interface ModalProps {
   className?: string;
@@ -20,6 +37,10 @@ interface ModalProps {
   showCancel?: boolean;
   cancelText?: string;
   confirmText?: string;
+  cancelLoading?: boolean;
+  confirmLoading?: boolean;
+  cancelButtonProps?: ButtonProps;
+  confirmButtonProps?: ButtonProps;
   escClosable?: boolean;
   maskClosable?: boolean;
   unmountNodeAfterLeave?: boolean;
@@ -50,6 +71,10 @@ const Modal: ModalTypes = props => {
     showCancel,
     cancelText,
     confirmText,
+    cancelLoading,
+    confirmLoading,
+    cancelButtonProps,
+    confirmButtonProps,
     escClosable,
     maskClosable,
     unmountNodeAfterLeave,
@@ -60,9 +85,20 @@ const Modal: ModalTypes = props => {
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const handleCancel = () => isFunction(onCancel) && onCancel();
+  const [innerCancelLoading, setInnerCancelLoading] = useState<boolean>(false);
+  const [innerConfirmLoading, setInnerConfirmLoading] = useState<boolean>(false);
 
-  const handleConfirm = () => isFunction(onConfirm) && onConfirm();
+  const handleCancel = () => asyncHandler(
+    onCancel,
+    () => setInnerCancelLoading(true),
+    () => setInnerCancelLoading(false),
+  );
+
+  const handleConfirm = () => asyncHandler(
+    onConfirm,
+    () => setInnerConfirmLoading(true),
+    () => setInnerConfirmLoading(false),
+  );
 
   const handleMaskClick = () => maskClosable && handleCancel();
 
@@ -125,9 +161,28 @@ const Modal: ModalTypes = props => {
           </div>
           <div className={`${prefix}-modal__footer`}>
             {showCancel && (
-              <Button onClick={handleCancel}>{cancelText}</Button>
+              <Button
+                loading={
+                  innerCancelLoading ||
+                  cancelLoading ||
+                  cancelButtonProps?.loading
+                }
+                onClick={handleCancel}
+                {...cancelButtonProps}
+              >
+                {cancelText}
+              </Button>
             )}
-            <Button type="primary" onClick={handleConfirm}>
+            <Button
+              type="primary"
+              loading={
+                innerConfirmLoading ||
+                confirmLoading ||
+                confirmButtonProps?.loading
+              }
+              onClick={handleConfirm}
+              {...confirmButtonProps}
+            >
               {confirmText}
             </Button>
           </div>
@@ -144,6 +199,8 @@ Modal.defaultProps = {
   showCancel: true,
   cancelText: 'Cancel',
   confirmText: 'Confirm',
+  cancelButtonProps: {},
+  confirmButtonProps: {},
   escClosable: true,
   maskClosable: true,
   unmountNodeAfterLeave: true,
@@ -173,12 +230,24 @@ Modal.confirm = props => {
       <Modal
         visible={visible}
         onCancel={() => {
-          isFunction(onCancel) && onCancel();
-          closeHandler();
+          asyncHandler(
+            isFunction(onCancel) ? onCancel : () => {},
+            () => updateHandler({ cancelLoading: true }),
+            () => {
+              updateHandler({ cancelLoading: false });
+              closeHandler();
+            }
+          );
         }}
         onConfirm={() => {
-          isFunction(onConfirm) && onConfirm();
-          closeHandler();
+          asyncHandler(
+            isFunction(onConfirm) ? onConfirm : () => {},
+            () => updateHandler({ confirmLoading: true }),
+            () => {
+              updateHandler({ confirmLoading: false });
+              closeHandler();
+            }
+          );
         }}
         afterClose={() => {
           isFunction(afterClose) && afterClose();
@@ -198,7 +267,7 @@ Modal.confirm = props => {
     referenceList = referenceList.filter(item => item !== reference);
   };
 
-  const updateHandler = payload => renderModal({ ...lastProps, ...payload });
+  const updateHandler = (payload: ModalProps) => renderModal({ ...lastProps, ...payload });
 
   renderModal(props);
 

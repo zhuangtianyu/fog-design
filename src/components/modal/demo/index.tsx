@@ -3,8 +3,16 @@ import Button from '@components/button';
 import Modal from '@components/modal';
 import './index.less';
 
+const promiseHandler = (duration = 1000) => new Promise(resolve => {
+  const timer = setTimeout(() => {
+    resolve(null);
+    clearTimeout(timer);
+  }, duration);
+});
+
 const ModalDemo = () => {
   const [visible, setVisible] = useState<boolean>(false);
+  const [asyncVisible, setAsyncVisible] = useState<boolean>(false);
 
   return (
     <div className="modal-demo">
@@ -21,7 +29,7 @@ const ModalDemo = () => {
       >
         Basic usage.
       </Modal>
-      <h3>By Methods</h3>
+      <h3>By Method</h3>
       <Button
         onClick={() => {
           Modal.confirm({
@@ -78,6 +86,29 @@ const ModalDemo = () => {
         }}
       >
         Modal.destroyAll
+      </Button>
+      <h3>Async Logic</h3>
+      <Modal
+        title="Async modal"
+        visible={asyncVisible}
+        onCancel={() => setAsyncVisible(false)}
+        onConfirm={() => promiseHandler().then(() => setAsyncVisible(false))}
+      >
+        Async logic in basic usage.
+      </Modal>
+      <Button onClick={() => setAsyncVisible(true)}>
+        Open modal
+      </Button>
+      <Button
+        onClick={() => {
+          Modal.confirm({
+            title: 'Async method',
+            content: 'Async logic by method.',
+            onConfirm: promiseHandler,
+          });
+        }}
+      >
+        Modal.confirm
       </Button>
     </div>
   );
