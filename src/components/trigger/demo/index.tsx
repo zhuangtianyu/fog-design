@@ -3,13 +3,14 @@ import Button from '@components/button';
 import Switch from '@components/switch';
 import Trigger from '@components/trigger';
 import Input from '@components/input';
+import Placement from './placement';
 import './index.less';
 
-const popup = (
+export const popup = (
   <div style={{ padding: '4px 0' }}>
-    {new Array(3).fill(1).map((item, index) => (
+    {new Array(3).fill(1).map((_, index) => (
       <div style={{ padding: '4px 16px', fontSize: 14, lineHeight: '22px' }} key={index}>
-        popup content
+        Popup content injected
       </div>
     ))}
   </div>
@@ -39,6 +40,8 @@ const TriggerDemo = () => {
       <Trigger popup={popup} trigger={['click', 'hover']}>
         <Button>Click or hover me</Button>
       </Trigger>
+      <h3>Placement</h3>
+      <Placement />
       <h3>Resizable</h3>
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Trigger popup={popup} visible={resizableVisible}>

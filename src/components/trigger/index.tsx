@@ -17,7 +17,14 @@ const getTriggerClassName = children =>
   classnames(`${prefix}-trigger`, React.Children.only(children).props.className);
 
 type TriggerType = 'click' | 'hover';
+
 type Trigger = TriggerType | TriggerType[];
+
+type TriggerPlacement =
+  'topLeft' | 'top' | 'topRight' |
+  'leftTop' | 'left' | 'leftBottom' |
+  'rightTop' | 'right' | 'rightBottom' |
+  'bottomLeft' | 'bottom' | 'bottomRight';
 
 interface TriggerProps {
   visible?: boolean;
@@ -28,9 +35,25 @@ interface TriggerProps {
   popupClassName?: string;
   popupTransitionProps?: TransitionProps;
   children?: React.ReactElement;
-  getPopupMountNode?: () => HTMLElement;
   disabled?: boolean;
+  placement?: TriggerPlacement;
+  getPopupMountNode?: () => HTMLElement;
 }
+
+enum TRANSFORM_ORIGIN_MAP {
+  topLeft = 'left bottom',
+  top = 'center bottom',
+  topRight = 'right bottom',
+  leftTop = 'right top',
+  left = 'right center',
+  leftBottom = 'right bottom',
+  rightTop = 'left top',
+  right = 'left center',
+  rightBottom = 'left bottom',
+  bottomLeft = 'left top',
+  bottom = 'center top',
+  bottomRight = 'right top',
+};
 
 const Trigger: React.FC<TriggerProps> = props => {
   const {
@@ -42,8 +65,9 @@ const Trigger: React.FC<TriggerProps> = props => {
     popupClassName,
     popupTransitionProps,
     children,
-    getPopupMountNode,
     disabled,
+    placement,
+    getPopupMountNode,
   } = props;
 
   const {
@@ -123,14 +147,84 @@ const Trigger: React.FC<TriggerProps> = props => {
   }, [mountNode, containerNode]);
 
   const updatePopupPosition = () => {
+    const POPUP_MARGIN = 4;
+
     setTimeout(() => {
       if (containerNode && triggerRef.current && popupRef.current) {
-        const { x: triggerRefX, y: triggerRefY, width, height } = triggerRef.current.getBoundingClientRect();
-        const { x: containerNodeX, y: containerNodeY } = containerNode.getBoundingClientRect();
+        const {
+          x: triggerRefX,
+          y: triggerRefY,
+          width: triggerWidth,
+          height: triggerHeight,
+        } = triggerRef.current.getBoundingClientRect();
 
-        popupRef.current.style.left = `${triggerRefX - containerNodeX}px`;
-        popupRef.current.style.top = `${triggerRefY - containerNodeY + height + 4}px`;
-        popupRef.current.style.minWidth = `${width}px`;
+        const {
+          x: containerNodeX,
+          y: containerNodeY,
+        } = containerNode.getBoundingClientRect();
+
+        const popupRefStyle = getComputedStyle(popupRef.current);
+        const popupWidth = Number(popupRefStyle.width.replace('px', ''));
+        const popupHeight = Number(popupRefStyle.height.replace('px', ''));
+
+        // initial value is the same as 'topLeft' in the switch below
+        let popupTop = triggerRefY - containerNodeY + triggerHeight + POPUP_MARGIN;
+        let popupLeft = triggerRefX - containerNodeX;
+
+        switch (placement) {
+          case 'topLeft':
+            popupTop = triggerRefY - containerNodeY - popupHeight - POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX;
+            break;
+          case 'top':
+            popupTop = triggerRefY - containerNodeY - popupHeight - POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX + 0.5 * triggerWidth - 0.5 * popupWidth;
+            break;
+          case 'topRight':
+            popupTop = triggerRefY - containerNodeY - popupHeight - POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX + triggerWidth - popupWidth;
+            break;
+          case 'leftTop':
+            popupTop = triggerRefY - containerNodeY;
+            popupLeft = triggerRefX - containerNodeX - popupWidth - POPUP_MARGIN;
+            break;
+          case 'left':
+            popupTop = triggerRefY - containerNodeY + 0.5 * triggerHeight - 0.5 * popupHeight;
+            popupLeft = triggerRefX - containerNodeX - popupWidth - POPUP_MARGIN;
+            break;
+          case 'leftBottom':
+            popupTop = triggerRefY - containerNodeY + triggerHeight - popupHeight;
+            popupLeft = triggerRefX - containerNodeX - popupWidth - POPUP_MARGIN;
+            break;
+          case 'rightTop':
+            popupTop = triggerRefY - containerNodeY;
+            popupLeft = triggerRefX - containerNodeX + triggerWidth + POPUP_MARGIN;
+            break;
+          case 'right':
+            popupTop = triggerRefY - containerNodeY + 0.5 * triggerHeight - 0.5 * popupHeight;
+            popupLeft = triggerRefX - containerNodeX + triggerWidth + POPUP_MARGIN;
+            break;
+          case 'rightBottom':
+            popupTop = triggerRefY - containerNodeY + triggerHeight - popupHeight;
+            popupLeft = triggerRefX - containerNodeX + triggerWidth + POPUP_MARGIN;
+            break;
+          case 'bottomLeft':
+            popupTop = triggerRefY - containerNodeY + triggerHeight + POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX;
+            break;
+          case 'bottom':
+            popupTop = triggerRefY - containerNodeY + triggerHeight + POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX + 0.5 * triggerWidth - 0.5 * popupWidth;
+            break;
+          case 'bottomRight':
+            popupTop = triggerRefY - containerNodeY + triggerHeight + POPUP_MARGIN;
+            popupLeft = triggerRefX - containerNodeX + triggerWidth - popupWidth;
+            break;
+        }
+
+        popupRef.current.style.top = `${popupTop}px`;
+        popupRef.current.style.left = `${popupLeft}px`;
+        popupRef.current.style.minWidth = `${triggerWidth}px`;
       }
     });
   };
@@ -194,6 +288,7 @@ const Trigger: React.FC<TriggerProps> = props => {
           >
             <div
               className={classnames(`${prefix}-trigger__popup`, popupClassName)}
+              style={{ transformOrigin: TRANSFORM_ORIGIN_MAP[placement] }}
               ref={popupRef}
               {...mouseEvents}
             >
@@ -209,6 +304,7 @@ const Trigger: React.FC<TriggerProps> = props => {
 Trigger.defaultProps = {
   trigger: 'click',
   popupTransitionProps: {},
+  placement: 'bottomLeft',
   getPopupMountNode: () => document.body,
 };
 
