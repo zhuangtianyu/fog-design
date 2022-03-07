@@ -4,6 +4,7 @@ import namespace from '@namespace';
 import classnames from 'classnames';
 import Transition, { TransitionProps } from '@components/transition';
 import useControlled from '@hooks/useControlled';
+import { POPUP_DEFAULT_MARGIN, ARROW_MARGIN, PLACEMENT_MAP } from './constants';
 import './index.less';
 
 const { prefix } = namespace;
@@ -37,36 +38,23 @@ interface TriggerProps {
   children?: React.ReactElement;
   disabled?: boolean;
   placement?: TriggerPlacement;
+  showArrow?: boolean;
   getPopupMountNode?: () => HTMLElement;
 }
-
-enum TRANSFORM_ORIGIN_MAP {
-  topLeft = 'left bottom',
-  top = 'center bottom',
-  topRight = 'right bottom',
-  leftTop = 'right top',
-  left = 'right center',
-  leftBottom = 'right bottom',
-  rightTop = 'left top',
-  right = 'left center',
-  rightBottom = 'left bottom',
-  bottomLeft = 'left top',
-  bottom = 'center top',
-  bottomRight = 'right top',
-};
 
 const Trigger: React.FC<TriggerProps> = props => {
   const {
     visible: visibleFromProps,
     defaultVisible: defaultVisibleFromProps,
     onVisibleChange: onVisibleChangeFromProps,
+    placement: placementFromProps,
     trigger,
     popup,
     popupClassName,
     popupTransitionProps,
     children,
     disabled,
-    placement,
+    showArrow,
     getPopupMountNode,
   } = props;
 
@@ -146,11 +134,31 @@ const Trigger: React.FC<TriggerProps> = props => {
     return () => {};
   }, [mountNode, containerNode]);
 
-  const updatePopupPosition = () => {
-    const POPUP_MARGIN = 4;
+  const placement = useMemo(() => PLACEMENT_MAP[placementFromProps]
+    ? placementFromProps
+    : Trigger.defaultProps.placement
+  , [placementFromProps]);
 
+  const popupHotStyle = useMemo(() => {
+    const baseStyle = {
+      top: -POPUP_DEFAULT_MARGIN,
+      right: -POPUP_DEFAULT_MARGIN,
+      bottom: -POPUP_DEFAULT_MARGIN,
+      left: -POPUP_DEFAULT_MARGIN,
+    };
+
+    const arrowStyle = showArrow
+      ? { [PLACEMENT_MAP[placement].arrowDirection]: -ARROW_MARGIN }
+      : undefined;
+
+    return { ...baseStyle, ...arrowStyle };
+  }, [placement, showArrow]);
+
+  const updatePopupPosition = () => {
     setTimeout(() => {
       if (containerNode && triggerRef.current && popupRef.current) {
+        const POPUP_MARGIN = showArrow ? ARROW_MARGIN : POPUP_DEFAULT_MARGIN;
+
         const {
           x: triggerRefX,
           y: triggerRefY,
@@ -167,9 +175,8 @@ const Trigger: React.FC<TriggerProps> = props => {
         const popupWidth = Number(popupRefStyle.width.replace('px', ''));
         const popupHeight = Number(popupRefStyle.height.replace('px', ''));
 
-        // initial value is the same as 'topLeft' in the switch below
-        let popupTop = triggerRefY - containerNodeY + triggerHeight + POPUP_MARGIN;
-        let popupLeft = triggerRefX - containerNodeX;
+        let popupTop;
+        let popupLeft;
 
         switch (placement) {
           case 'topLeft':
@@ -288,11 +295,23 @@ const Trigger: React.FC<TriggerProps> = props => {
           >
             <div
               className={classnames(`${prefix}-trigger__popup`, popupClassName)}
-              style={{ transformOrigin: TRANSFORM_ORIGIN_MAP[placement] }}
+              style={{ transformOrigin: PLACEMENT_MAP[placement].transformOrigin }}
               ref={popupRef}
               {...mouseEvents}
             >
-              {popup}
+              {showArrow && (
+                <div
+                  className={`${prefix}-trigger__popup-arrow`}
+                  style={{ ...PLACEMENT_MAP[placement].arrowStyle }}
+                />
+              )}
+              <div
+                className={`${prefix}-trigger__popup-hot`}
+                style={popupHotStyle}
+              />
+              <div className={`${prefix}-trigger__popup-content`}>
+                {popup}
+              </div>
             </div>
           </Transition>
         ), containerNode)
@@ -303,8 +322,8 @@ const Trigger: React.FC<TriggerProps> = props => {
 
 Trigger.defaultProps = {
   trigger: 'click',
-  popupTransitionProps: {},
   placement: 'bottomLeft',
+  popupTransitionProps: {},
   getPopupMountNode: () => document.body,
 };
 

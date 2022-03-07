@@ -19,7 +19,6 @@
     position: absolute;
     box-shadow: 0 0 4px var(--fog-shadow-color);
     border-radius: 2px;
-    background-color: var(--fog-panel-color);
     transition: transform 0.3s, opacity 0.3s;
 
     &--before-enter {
@@ -42,17 +41,27 @@
       opacity: 0;
     }
 
-    &::before {
+    &-hot {
       position: absolute;
       content: '';
-      top: -4px;
-      right: -4px;
-      bottom: -4px;
-      left: -4px;
     }
 
-    & > * {
+    &-arrow {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      box-shadow: 0 0 4px var(--fog-shadow-color);
+      background-color: var(--fog-panel-color);
+      transform: rotate(45deg);
+      transition: all 0.3s;
+    }
+
+    &-content {
       position: relative;
+      border-radius: 2px;
+      background-color: var(--fog-panel-color);
+      overflow: hidden;
+      transition: all 0.3s;
     }
   }
 }

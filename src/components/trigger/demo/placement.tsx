@@ -4,55 +4,57 @@ import Trigger from '@components/trigger';
 import { popup } from './index';
 import './placement.less';
 
+const TriggerWithDefaultProps = props => <Trigger popup={popup} showArrow {...props} />;
+
 const Placement = () => {
 
   return (
     <div className="placement">
       <div className="top">
-        <Trigger placement="topLeft" popup={popup}>
+        <TriggerWithDefaultProps placement="topLeft">
           <Button>Top left</Button>
-        </Trigger>
-        <Trigger placement="top" popup={popup}>
+        </TriggerWithDefaultProps>
+        <TriggerWithDefaultProps placement="top">
           <Button>Top</Button>
-        </Trigger>
-        <Trigger placement="topRight" popup={popup}>
+        </TriggerWithDefaultProps>
+        <TriggerWithDefaultProps placement="topRight">
           <Button>Top right</Button>
-        </Trigger>
+        </TriggerWithDefaultProps>
       </div>
       <div className="center">
         <div className="left">
-          <Trigger placement="leftTop" popup={popup}>
+          <TriggerWithDefaultProps placement="leftTop">
             <Button>Left top</Button>
-          </Trigger>
-          <Trigger placement="left" popup={popup}>
+          </TriggerWithDefaultProps>
+          <TriggerWithDefaultProps placement="left">
             <Button>Left</Button>
-          </Trigger>
-          <Trigger placement="leftBottom" popup={popup}>
+          </TriggerWithDefaultProps>
+          <TriggerWithDefaultProps placement="leftBottom">
             <Button>Left bottom</Button>
-          </Trigger>
+          </TriggerWithDefaultProps>
         </div>
         <div className="right">
-          <Trigger placement="rightTop" popup={popup}>
+          <TriggerWithDefaultProps placement="rightTop">
             <Button>Right top</Button>
-          </Trigger>
-          <Trigger placement="right" popup={popup}>
+          </TriggerWithDefaultProps>
+          <TriggerWithDefaultProps placement="right">
             <Button>Right</Button>
-          </Trigger>
-          <Trigger placement="rightBottom" popup={popup}>
+          </TriggerWithDefaultProps>
+          <TriggerWithDefaultProps placement="rightBottom">
             <Button>Right bottom</Button>
-          </Trigger>
+          </TriggerWithDefaultProps>
         </div>
       </div>
       <div className="bottom">
-        <Trigger placement="bottomLeft" popup={popup}>
+        <TriggerWithDefaultProps placement="bottomLeft">
           <Button>Bottom left</Button>
-        </Trigger>
-        <Trigger placement="bottom" popup={popup}>
+        </TriggerWithDefaultProps>
+        <TriggerWithDefaultProps placement="bottom">
           <Button>Bottom</Button>
-        </Trigger>
-        <Trigger placement="bottomRight" popup={popup}>
+        </TriggerWithDefaultProps>
+        <TriggerWithDefaultProps placement="bottomRight">
           <Button>Bottom right</Button>
-        </Trigger>
+        </TriggerWithDefaultProps>
       </div>
     </div>
   );
