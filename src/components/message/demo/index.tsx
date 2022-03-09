@@ -17,13 +17,38 @@ const MessageDemo = () => {
     <div className="message-demo">
       <h2>Message</h2>
       <h3>Basic Usage</h3>
+      <Button onClick={() => Message.info({ content: 'Basic usage' })}>
+        Click me
+      </Button>
+      <h3>Method</h3>
+      <Button onClick={() => Message.info({ content: 'Subscribe the news' })}>
+        Info
+      </Button>
+      <Button onClick={() => Message.error({ content: 'Login required' })}>
+        Error
+      </Button>
+      <Button onClick={() => Message.warning({ content: 'Remember password' })}>
+        Warning
+      </Button>
+      <Button onClick={() => Message.success({ content: 'Login success' })}>
+        Success
+      </Button>
+      <h3>Customized Icon</h3>
       <Button
         onClick={() => Message.info({
           icon: '🍷',
           content: 'Hot drinks and cold days',
         })}
       >
-        Click me
+        Emoji
+      </Button>
+      <Button
+        onClick={() => Message.info({
+          icon: null,
+          content: 'No icon makes me look so cool',
+        })}
+      >
+        Without icon
       </Button>
       <h3>Manual Close</h3>
       <Button
@@ -37,7 +62,7 @@ const MessageDemo = () => {
           }
         }}
       >
-        Click me
+        Open
       </Button>
       <Button
         onClick={() => {

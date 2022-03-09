@@ -64,6 +64,10 @@ export const lightColors = {
   'danger-color': '#ff3300',
   'danger-color-hover': getTransformedColor('#ff3300', 0.2),
   'danger-color-active': getTransformedColor('#ff3300', -0.2),
+
+  /* used for: message... */
+  'success-color': '#00aa33',
+  'warning-color': '#ffaa00',
 };
 
 export const darkColors = {
@@ -111,6 +115,10 @@ export const darkColors = {
   'danger-color': '#ff3300',
   'danger-color-hover': getTransformedColor('#ff3300', 0.2),
   'danger-color-active': getTransformedColor('#ff3300', -0.2),
+
+  /* used for: message... */
+  'success-color': '#00aa33',
+  'warning-color': '#ffaa00',
 };
 
 export const themeNames = Object.keys(themeColors);

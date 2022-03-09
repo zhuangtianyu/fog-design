@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Transition from '@components/transition';
+import Icon from '@components/icon';
 import { setRafTimeout, cancelRafTimeout } from '@utils/index';
 import './index.less';
 
@@ -10,7 +11,7 @@ const { prefix } = namespace;
 
 export interface MessageProps  {
   className?: string;
-  icon?: string;
+  icon?: React.ReactNode;
   content?: React.ReactChild;
 }
 
@@ -25,8 +26,16 @@ export interface MessageReference {
 
 export interface MessageTypes extends React.FC<MessageProps> {
   info: (props: MessageMethodProps) => MessageReference;
+  error: (props: MessageMethodProps) => MessageReference;
+  warning: (props: MessageMethodProps) => MessageReference;
+  success: (props: MessageMethodProps) => MessageReference;
   destroyAll: () => void;
 }
+
+const InfoIcon = () => <Icon type="info-circle-fill" color="var(--fog-primary-color)" />;
+const ErrorIcon = () => <Icon type="close-circle-fill" color="var(--fog-danger-color)" />;
+const WarningIcon = () => <Icon type="sigh-circle-fill" color="var(--fog-warning-color)" />;
+const SuccessIcon = () => <Icon type="success-circle-fill" color="var(--fog-success-color)" />;
 
 const Message: MessageTypes = props => {
   const { className, icon, content } = props;
@@ -45,7 +54,9 @@ const Message: MessageTypes = props => {
   );
 };
 
-Message.defaultProps = {};
+Message.defaultProps = {
+  icon: <InfoIcon />,
+};
 
 let referenceList = [];
 
@@ -113,6 +124,10 @@ Message.info = (props: MessageMethodProps) => {
 
   return reference;
 };
+
+Message.error = props => Message.info({ icon: <ErrorIcon />, ...props });
+Message.warning = props => Message.info({ icon: <WarningIcon />, ...props });
+Message.success = props => Message.info({ icon: <SuccessIcon />, ...props });
 
 Message.destroyAll = () => {
   while (referenceList.length) {
