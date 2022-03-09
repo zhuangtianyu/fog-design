@@ -15,6 +15,8 @@ export const themeColors = {
   cloudless: '#0066ff',
   tangerine: '#ff6600',
   lavenders: '#9966ff',
+  spearmint: '#00aa33',
+  raspberry: '#ff5050',
 };
 
 export const lightColors = {
