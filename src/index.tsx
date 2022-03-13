@@ -31,6 +31,7 @@ const components: string[] = [
   'radio',
   'select',
   'switch',
+  'table',
   'tabs',
   'tag',
   'transition',
