@@ -1,6 +1,7 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
+import useArray from '@hooks/useArray';
 import { isFunction } from '@utils/index';
 import './index.less';
 
@@ -33,8 +34,8 @@ const Table: React.FC<TableProps> = props => {
     columns: columnsFromProps,
   } = props;
 
-  const columns = useMemo<ColumnType[]>(() => Array.isArray(columnsFromProps) ? columnsFromProps : [], [columnsFromProps]);
-  const data = useMemo<RowType[]>(() => Array.isArray(dataFromProps) ? dataFromProps : [], [dataFromProps]);
+  const columns = useArray<ColumnType[]>(columnsFromProps);
+  const data = useArray<RowType[]>(dataFromProps);
 
   return (
     <table className={classnames(`${prefix}-table`, className)}>
