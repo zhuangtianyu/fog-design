@@ -8,7 +8,7 @@
   }
 
   width: 100%;
-  overflow-x: auto;
+  overflow: auto hidden;
   border: 1px solid var(--fog-border-color);
 
   table {
@@ -43,23 +43,31 @@
     width: 30px;
     transform: translateX(100%);
     box-shadow: inset 10px 0 8px -8px var(--fog-border-color);
+    transition: box-shadow 0.3s;
     pointer-events: none;
   }
 
-  &__cell--fixed-first {
-    border-left: 1px solid var(--fog-border-color);
+  &--scroll-left-end &__cell--fixed-last::after {
+    box-shadow: none;
   }
 
   &__cell--fixed-first::after {
     content: '';
     position: absolute;
     top: 0;
-    left: -1px;
+    left: 0;
     bottom: -1px;
     width: 30px;
     transform: translateX(-100%);
     box-shadow: inset -10px 0 8px -8px var(--fog-border-color);
+    border-right: 1px solid var(--fog-border-color);
+    transition: box-shadow 0.3s;
     pointer-events: none;
+  }
+
+  &--scroll-right-end &__cell--fixed-first::after {
+    box-shadow: none;
+    border-right-color: var(--fog-transparent);
   }
 
   &__cell:last-child {

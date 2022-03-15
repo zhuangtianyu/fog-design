@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useMemo } from 'react';
+import React, { useState, useLayoutEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useArray from '@hooks/useArray';
@@ -46,12 +46,22 @@ const Table: React.FC<TableProps> = props => {
     columns: columnsFromProps,
   } = props;
 
+  const tableRef = useRef<HTMLDivElement>(null);
+
   const [fixedStyles, setFixedStyles] = useState<FixedStyles>({});
 
-  const columns = useArray<ColumnType[]>(columnsFromProps).map(column => ({
-    ...column,
-    fixed: isUsableFixed(column.fixed) ? column.fixed : undefined,
-  }));
+  const [isScrollLeftEnd, setIsScrollLeftEnd] = useState(false);
+
+  const [isScrollRightEnd, setIsScrollRightEnd] = useState(false);
+
+  const columns = useMemo(() => {
+    if (!Array.isArray(columnsFromProps)) return [];
+
+    return columnsFromProps.map(column => ({
+      ...column,
+      fixed: isUsableFixed(column.fixed) ? column.fixed : undefined,
+    }));
+  }, [columnsFromProps]);
 
   const data = useArray<RowType[]>(dataFromProps);
 
@@ -78,6 +88,19 @@ const Table: React.FC<TableProps> = props => {
 
   const isFixedFirst = key => rightFixedKeys.length && rightFixedKeys[0] === key;
 
+  const tableScrollHandler = () => {
+    if (tableRef.current) {
+      const {
+        scrollLeft,
+        scrollWidth,
+        clientWidth,
+      } = tableRef.current;
+
+      setIsScrollLeftEnd(scrollLeft === 0);
+      setIsScrollRightEnd(scrollLeft + clientWidth === scrollWidth);
+    }
+  };
+
   const updateColumnsLayout = () => {
     const nextFixedStyles = {};
 
@@ -99,6 +122,7 @@ const Table: React.FC<TableProps> = props => {
     });
 
     setFixedStyles(nextFixedStyles);
+    tableScrollHandler();
   };
 
   useLayoutEffect(() => {
@@ -114,17 +138,55 @@ const Table: React.FC<TableProps> = props => {
     return () => observers.forEach(observer => observer.disconnect());
   }, [thRefs]);
 
+  useLayoutEffect(() => {
+    if (tableRef.current) {
+      tableRef.current.addEventListener('scroll', tableScrollHandler);
+
+      return () => tableRef.current.removeEventListener('scroll', tableScrollHandler);
+    }
+  }, []);
+
   return (
-    <div className={classnames(`${prefix}-table`, className)}>
-      <div className={`${prefix}-table__content`}>
-        <table width={contentWidth}>
-          <thead className={`${prefix}-table__thead`}>
-            <tr className={`${prefix}-table__tr`}>
+    <div
+      className={classnames(className, {
+        [`${prefix}-table`]: true,
+        [`${prefix}-table--scroll-left-end`]: isScrollLeftEnd,
+        [`${prefix}-table--scroll-right-end`]: isScrollRightEnd,
+      })}
+      ref={tableRef}
+    >
+      <table width={contentWidth}>
+        <thead className={`${prefix}-table__thead`}>
+          <tr className={`${prefix}-table__tr`}>
+            {columns.map(column => {
+              const { key, fixed } = column;
+
+              return (
+                <th
+                  className={classnames({
+                    [`${prefix}-table__cell`]: true,
+                    [`${prefix}-table__cell--fixed`]: fixed,
+                    [`${prefix}-table__cell--fixed-last`]: isFixedLast(key),
+                    [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
+                  })}
+                  key={key}
+                  ref={thRefs[key]}
+                  style={fixedStyles[key] || {}}
+                >
+                  {column.name}
+                </th>
+              );
+            })}
+          </tr>
+        </thead>
+        <tbody className={`${prefix}-table__tbody`}>
+          {data.map((row, index) => (
+            <tr className={`${prefix}-table__tr`} key={rowKey || index}>
               {columns.map(column => {
-                const { key, fixed } = column;
+                const { key, width, fixed, render } = column;
 
                 return (
-                  <th
+                  <td
                     className={classnames({
                       [`${prefix}-table__cell`]: true,
                       [`${prefix}-table__cell--fixed`]: fixed,
@@ -132,46 +194,21 @@ const Table: React.FC<TableProps> = props => {
                       [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
                     })}
                     key={key}
-                    ref={thRefs[key]}
+                    width={width}
                     style={fixedStyles[key] || {}}
                   >
-                    {column.name}
-                  </th>
+                    {
+                      isFunction(render)
+                        ? render(row[key], row, index)
+                        : row[key]
+                    }
+                  </td>
                 );
               })}
             </tr>
-          </thead>
-          <tbody className={`${prefix}-table__tbody`}>
-            {data.map((row, index) => (
-              <tr className={`${prefix}-table__tr`} key={rowKey || index}>
-                {columns.map(column => {
-                  const { key, width, fixed, render } = column;
-
-                  return (
-                    <td
-                      className={classnames({
-                        [`${prefix}-table__cell`]: true,
-                        [`${prefix}-table__cell--fixed`]: fixed,
-                        [`${prefix}-table__cell--fixed-last`]: isFixedLast(key),
-                        [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
-                      })}
-                      key={key}
-                      width={width}
-                      style={fixedStyles[key] || {}}
-                    >
-                      {
-                        isFunction(render)
-                          ? render(row[key], row, index)
-                          : row[key]
-                      }
-                    </td>
-                  );
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

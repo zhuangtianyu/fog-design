@@ -46,7 +46,7 @@ const columns2: ColumnType[] = [
   {
     key: 'name',
     name: 'Name',
-    width: 150,
+    width: 160,
     fixed: 'left',
   },
   {
@@ -58,8 +58,24 @@ const columns2: ColumnType[] = [
     name: 'Physics',
   },
   {
-    key: 'chemistry',
-    name: 'Chemistry',
+    key: 'program',
+    name: 'Program',
+  },
+  {
+    key: 'psychology',
+    name: 'Psychology',
+  },
+  {
+    key: 'music',
+    name: 'Music',
+  },
+  {
+    key: 'dance',
+    name: 'Dance',
+  },
+  {
+    key: 'natural',
+    name: 'Natural',
   },
   {
     key: 'total',
@@ -71,27 +87,51 @@ const columns2: ColumnType[] = [
 const data2 = [
   {
     id: 1001,
-    name: 'Dan',
+    name: 'A',
     math: 100,
     physics: 100,
-    chemistry: 100,
-    total: 300,
+    program: 100,
+    psychology: 100,
+    music: 100,
+    dance: 100,
+    natural: 100,
+    total: 700,
   },
   {
     id: 1002,
-    name: 'Evan',
+    name: 'Dan',
     math: 100,
     physics: 100,
-    chemistry: 100,
-    total: 300,
+    program: 100,
+    psychology: 100,
+    music: 100,
+    dance: 100,
+    natural: 100,
+    total: 700,
   },
   {
     id: 1003,
+    name: 'Evan',
+    math: 100,
+    physics: 100,
+    program: 100,
+    psychology: 100,
+    music: 100,
+    dance: 100,
+    natural: 100,
+    total: 700,
+  },
+  {
+    id: 1004,
     name: 'Johnson',
     math: 100,
     physics: 100,
-    chemistry: 100,
-    total: 300,
+    program: 100,
+    psychology: 100,
+    music: 100,
+    dance: 100,
+    natural: 100,
+    total: 700,
   },
 ];
 
@@ -103,7 +143,7 @@ const TableDemo = () => {
       <h3>Basic Usage</h3>
       <Table columns={columns1} data={data1} />
       <h3>Fixed Column</h3>
-      <Table columns={columns2} data={data2} contentWidth={1200} />
+      <Table columns={columns2} data={data2} contentWidth={2000} />
     </div>
   );
 };
