@@ -46,7 +46,7 @@ const Table: React.FC<TableProps> = props => {
     columns: columnsFromProps,
   } = props;
 
-  const tableRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const [fixedStyles, setFixedStyles] = useState<FixedStyles>({});
 
@@ -89,12 +89,12 @@ const Table: React.FC<TableProps> = props => {
   const isFixedFirst = key => rightFixedKeys.length && rightFixedKeys[0] === key;
 
   const tableScrollHandler = () => {
-    if (tableRef.current) {
+    if (contentRef.current) {
       const {
         scrollLeft,
         scrollWidth,
         clientWidth,
-      } = tableRef.current;
+      } = contentRef.current;
 
       setIsScrollLeftEnd(scrollLeft === 0);
       setIsScrollRightEnd(scrollLeft + clientWidth === scrollWidth);
@@ -139,10 +139,10 @@ const Table: React.FC<TableProps> = props => {
   }, [thRefs]);
 
   useLayoutEffect(() => {
-    if (tableRef.current) {
-      tableRef.current.addEventListener('scroll', tableScrollHandler);
+    if (contentRef.current) {
+      contentRef.current.addEventListener('scroll', tableScrollHandler);
 
-      return () => tableRef.current.removeEventListener('scroll', tableScrollHandler);
+      return () => contentRef.current.removeEventListener('scroll', tableScrollHandler);
     }
   }, []);
 
@@ -153,40 +153,19 @@ const Table: React.FC<TableProps> = props => {
         [`${prefix}-table--scroll-left-end`]: isScrollLeftEnd,
         [`${prefix}-table--scroll-right-end`]: isScrollRightEnd,
       })}
-      ref={tableRef}
     >
-      <table width={contentWidth}>
-        <thead className={`${prefix}-table__thead`}>
-          <tr className={`${prefix}-table__tr`}>
-            {columns.map(column => {
-              const { key, fixed } = column;
-
-              return (
-                <th
-                  className={classnames({
-                    [`${prefix}-table__cell`]: true,
-                    [`${prefix}-table__cell--fixed`]: fixed,
-                    [`${prefix}-table__cell--fixed-last`]: isFixedLast(key),
-                    [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
-                  })}
-                  key={key}
-                  ref={thRefs[key]}
-                  style={fixedStyles[key] || {}}
-                >
-                  {column.name}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody className={`${prefix}-table__tbody`}>
-          {data.map((row, index) => (
-            <tr className={`${prefix}-table__tr`} key={rowKey || index}>
+      <div
+        className={`${prefix}-table__content`}
+        ref={contentRef}
+      >
+        <table width={contentWidth}>
+          <thead className={`${prefix}-table__thead`}>
+            <tr className={`${prefix}-table__tr`}>
               {columns.map(column => {
-                const { key, width, fixed, render } = column;
+                const { key, fixed } = column;
 
                 return (
-                  <td
+                  <th
                     className={classnames({
                       [`${prefix}-table__cell`]: true,
                       [`${prefix}-table__cell--fixed`]: fixed,
@@ -194,21 +173,46 @@ const Table: React.FC<TableProps> = props => {
                       [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
                     })}
                     key={key}
-                    width={width}
+                    ref={thRefs[key]}
                     style={fixedStyles[key] || {}}
                   >
-                    {
-                      isFunction(render)
-                        ? render(row[key], row, index)
-                        : row[key]
-                    }
-                  </td>
+                    {column.name}
+                  </th>
                 );
               })}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className={`${prefix}-table__tbody`}>
+            {data.map((row, index) => (
+              <tr className={`${prefix}-table__tr`} key={rowKey || index}>
+                {columns.map(column => {
+                  const { key, width, fixed, render } = column;
+
+                  return (
+                    <td
+                      className={classnames({
+                        [`${prefix}-table__cell`]: true,
+                        [`${prefix}-table__cell--fixed`]: fixed,
+                        [`${prefix}-table__cell--fixed-last`]: isFixedLast(key),
+                        [`${prefix}-table__cell--fixed-first`]: isFixedFirst(key),
+                      })}
+                      key={key}
+                      width={width}
+                      style={fixedStyles[key] || {}}
+                    >
+                      {
+                        isFunction(render)
+                          ? render(row[key], row, index)
+                          : row[key]
+                      }
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
