@@ -22,10 +22,7 @@ const TagDemo = () => {
         <Tag
           key={tag}
           closable
-          onClose={() => Message.info({
-            icon: '💥',
-            content: 'Tag closed!',
-          })}
+          onClose={() => Message.success({ content: 'Tag closed!' })}
         >
           {tag}
         </Tag>
