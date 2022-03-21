@@ -30,6 +30,7 @@ const components: string[] = [
   'modal',
   'radio',
   'select',
+  'steps',
   'switch',
   'table',
   'tabs',

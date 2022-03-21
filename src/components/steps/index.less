@@ -1,0 +1,77 @@
+.@{prefix}-steps {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
+  line-height: 22px;
+
+  &__item {
+    flex: 1;
+    display: flex;
+    margin-right: 12px;
+  }
+
+  &__dot {
+    flex-shrink: 0;
+    margin-right: 8px;
+  }
+
+  &__index {
+    width: 28px;
+    height: 28px;
+    color: var(--fog-border-color-deep);
+    font-size: 16px;
+    line-height: 26px;
+    text-align: center;
+    border: 1px solid var(--fog-border-color-deep);
+    border-radius: 50%;
+    transition: all 0.3s;
+  }
+
+  &__item--active &__index {
+    color: var(--fog-primary-color);
+    border-color: var(--fog-primary-color);
+  }
+
+  &__item--active &__index--filled {
+    color: var(--fog-contrast-color);
+    background-color: var(--fog-primary-color);
+  }
+
+  &__content {
+    flex-grow: 1;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &__title {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 28px;
+  }
+
+  &__connector {
+    flex-grow: 1;
+    height: 1px;
+    background-color: var(--fog-border-color);
+    margin-left: 12px;
+    transition: all 0.3s;
+  }
+
+  &__connector--active {
+    background-color: var(--fog-primary-color);
+  }
+}
