@@ -28,23 +28,18 @@ const steps1 = [
 const steps2 = [
   {
     value: 1,
-    title: 'Fanta',
-    description: 'Fanta is a brand of fruit-flavored carbonated soft drinks created by Coca-Cola Deutschland under the leadership of German businessman Max Keith.',
+    title: 'S1',
+    description: 'Harry Potter and the Philosopher\'s Stone',
   },
   {
     value: 2,
-    title: 'Sprite',
-    description: 'Sprite is a colorless, lemon and lime-flavored soft drink created by The Coca-Cola Company.',
+    title: 'S2',
+    description: 'Harry Potter and the Chamber of Secrets',
   },
   {
     value: 3,
-    title: 'Aquarius',
-    description: 'Aquarius (アクエリアス) is a sports drink manufactured by The Coca-Cola Company.',
-  },
-  {
-    value: 4,
-    title: 'Coca-Cola',
-    description: 'Coca-Cola, or Coke, is a carbonated soft drink manufactured by the Coca-Cola Company.',
+    title: 'S3',
+    description: 'Harry Potter and the Prisoner of Azkaban',
   },
 ];
 
