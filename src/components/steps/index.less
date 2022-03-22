@@ -8,7 +8,7 @@
   }
 
   display: flex;
-  align-items: center;
+  align-items: top;
   justify-content: space-between;
   font-size: 14px;
   line-height: 22px;
@@ -73,5 +73,37 @@
 
   &__connector--active {
     background-color: var(--fog-primary-color);
+  }
+
+  &--vertical {
+    flex-direction: column;
+  }
+
+  &--vertical &__item {
+    margin-right: 0;
+    margin-bottom: 6px;
+  }
+
+  &--vertical &__item:last-child {
+    margin-bottom: 0;
+  }
+
+  &--vertical &__dot {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+  }
+
+  &--vertical &__connector {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 1px;
+    flex-grow: 1;
+  }
+
+  &--vertical &__description {
+    padding-bottom: 10px;
   }
 }

@@ -18,6 +18,7 @@ export interface StepsProps  {
   value?: ValueType;
   defaultValue?: ValueType;
   onChange?: (value: ValueType) => void;
+  vertical?: boolean;
 }
 
 const { prefix } = namespace;
@@ -29,6 +30,7 @@ const Steps: React.FC<StepsProps> = props => {
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
+    vertical,
   } = props;
 
   const { value } = useControlled({
@@ -42,7 +44,10 @@ const Steps: React.FC<StepsProps> = props => {
   if (!Array.isArray(steps) || !steps.length) return null;
 
   return (
-    <div className={classnames(`${prefix}-steps`, className)}>
+    <div className={classnames(className, {
+      [`${prefix}-steps`]: true,
+      [`${prefix}-steps--vertical`]: vertical,
+    })}>
       {steps.map((item, index) => (
         <div
           className={classnames({
@@ -60,13 +65,21 @@ const Steps: React.FC<StepsProps> = props => {
             >
               {index + 1}
             </div>
+            {index < steps.length - 1 && vertical && (
+              <div
+                className={classnames({
+                  [`${prefix}-steps__connector`]: true,
+                  [`${prefix}-steps__connector--active`]: index <= activeIndex - 1,
+                })}
+              />
+            )}
           </div>
           <div className={`${prefix}-steps__content`}>
             <div className={`${prefix}-steps__header`}>
               <div className={`${prefix}-steps__title`}>
                 {item.title}
               </div>
-              {index < steps.length - 1 && (
+              {index < steps.length - 1 && !vertical && (
                 <div
                   className={classnames({
                     [`${prefix}-steps__connector`]: true,
