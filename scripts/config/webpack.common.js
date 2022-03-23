@@ -39,7 +39,7 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: ['.tsx', '.ts', '.js', '.json'],
     alias: {
       '@namespace': path.resolve(__dirname, '../../namespace.json'),
       '@components': path.resolve(__dirname, '../../src/components'),
