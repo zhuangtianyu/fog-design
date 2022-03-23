@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Button from '@components/button';
 import Icon from '@components/icon';
+import Message from '@components/message';
 import './index.less';
 
 const ButtonDemo = () => {
   const [loading, setLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    import('@static/docs-config.json')
+      .then(config => {
+        console.log(config.button.demoContent);
+      })
+      .catch(error => {
+        Message.error({ content: error.message });
+      });
+  }, []);
 
   return (
     <div className="button-demo">
