@@ -13,6 +13,6 @@ module.exports = merge(common, {
     },
   },
   plugins: [
-    new DocsParsePlugin(),
+    new DocsParsePlugin({ env: 'dev' }),
   ],
 });

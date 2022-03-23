@@ -30,10 +30,21 @@ const writeDocsConfig = () => {
 };
 
 class DocsParsePlugin {
+  constructor({ env }) {
+    this.env = env;
+  }
+
   apply(compiler) {
-    compiler.hooks.watchRun.tap('DocsParsePlugin', () => {
-      writeDocsConfig();
-    });
+    if (this.env === 'dev') {
+      compiler.hooks.watchRun.tap('DocsParsePlugin', () => {
+        writeDocsConfig();
+      });
+    }
+    if (this.env === 'prod') {
+      compiler.hooks.compile.tap('DocsParsePlugin', () => {
+        writeDocsConfig();
+      });
+    }
   }
 }
 
