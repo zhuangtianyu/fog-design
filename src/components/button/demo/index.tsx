@@ -1,109 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import Button from '@components/button';
-import Icon from '@components/icon';
-import Message from '@components/message';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Input from '@components/input';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
+import Demo4 from './demo-4';
+import Demo5 from './demo-5';
 import './index.less';
 
-const ButtonDemo = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.button;
+const { TextArea } = Input;
 
-  useEffect(() => {
-    import('@static/docs-config.json')
-      .then(config => {
-        console.log(config.button.demoContent);
-      })
-      .catch(error => {
-        Message.error({ content: error.message });
-      });
-  }, []);
+const ButtonDemo = () => {
 
   return (
     <div className="button-demo">
       <h2>Button</h2>
       <h3>Type</h3>
-      <Button type="primary">
-        Primary
-      </Button>
-      <Button>
-        Default
-      </Button>
-      <Button type="dashed">
-        Dashed
-      </Button>
-      <Button type="link">
-        Link
-      </Button>
-      <Button type="text">
-        Text
-      </Button>
+      <Demo1 />
+      <TextArea defaultValue={demos['demo-1']} readOnly />
       <h3>Icon</h3>
-      <Button type="primary">
-        <Icon type="calendar" />
-        Date
-      </Button>
-      <Button>
-        <Icon type="email" />
-        Send
-      </Button>
-      <Button type="dashed">
-        Trigger
-        <Icon type="down" />
-      </Button>
-      <Button type="link">
-        <Icon type="link" />
-        Link
-      </Button>
-      <Button type="text">
-        <Icon type="edit" />
-        Edit
-      </Button>
+      <Demo2 />
+      <TextArea defaultValue={demos['demo-2']} readOnly />
       <h3>Loading</h3>
-      <Button type="primary" loading>
-        Loading
-      </Button>
-      <Button
-        loading={loading}
-        onClick={() => {
-          setLoading(true);
-
-          setTimeout(() => setLoading(false), 1000);
-        }
-      }>
-        <Icon type="email" />
-        Click me
-      </Button>
+      <Demo3 />
+      <TextArea defaultValue={demos['demo-3']} readOnly />
       <h3>Disabled</h3>
-      <Button type="primary" disabled>
-        Primary
-      </Button>
-      <Button disabled>
-        Default
-      </Button>
-      <Button type="dashed" disabled>
-        Dashed
-      </Button>
-      <Button type="link" disabled>
-        Link
-      </Button>
-      <Button type="text" disabled>
-        Text
-      </Button>
+      <Demo4 />
+      <TextArea defaultValue={demos['demo-4']} readOnly />
       <h3>Danger</h3>
-      <Button type="primary" danger>
-        Primary
-      </Button>
-      <Button danger>
-        Default
-      </Button>
-      <Button type="dashed" danger>
-        Dashed
-      </Button>
-      <Button type="link" danger>
-        Link
-      </Button>
-      <Button type="text" danger>
-        Text
-      </Button>
+      <Demo5 />
+      <TextArea defaultValue={demos['demo-5']} readOnly />
+      <h3>API</h3>
+      <Table columns={apiColumns} data={apiRows} />
     </div>
   );
 };

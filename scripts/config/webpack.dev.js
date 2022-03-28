@@ -1,6 +1,5 @@
 const { merge } = require('webpack-merge');
 const common = require('./webpack.common.js');
-const DocsParsePlugin = require('../plugins/docs-parse-plugin.js');
 
 module.exports = merge(common, {
   mode: 'development',
@@ -12,7 +11,4 @@ module.exports = merge(common, {
       overlay: false,
     },
   },
-  plugins: [
-    new DocsParsePlugin({ env: 'dev' }),
-  ],
 });

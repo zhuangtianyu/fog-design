@@ -1,6 +1,7 @@
 const path = require('path');
 const namespace = require('../../namespace.json');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const DocsParsePlugin = require('../plugins/docs-parse-plugin.js');
 
 module.exports = {
   entry: {
@@ -15,6 +16,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../../src/index.html'),
     }),
+    new DocsParsePlugin(),
   ],
   module: {
     rules: [
