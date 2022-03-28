@@ -1,0 +1,46 @@
+.@{prefix}-demo {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  border: 1px solid var(--fog-border-color);
+  border-radius: 2px;
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  &__options {
+    display: flex;
+    font-size: 14px;
+    font-weight: normal;
+  }
+
+  &__options .@{prefix}-icon {
+    padding: 0 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  &__description {
+    padding: 0 20px;
+  }
+
+  &__content {
+    padding: 0 20px 20px;
+  }
+
+  &__code {
+    padding: 20px;
+    border-top: 1px solid var(--fog-border-color);
+    overflow: auto;
+    margin: 0;
+  }
+}

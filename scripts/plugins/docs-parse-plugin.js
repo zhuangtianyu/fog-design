@@ -118,13 +118,15 @@ class DocsParsePlugin {
       if (compiler.modifiedFiles) {
         const filePaths = Array.from(compiler.modifiedFiles);
         const docsConfigPath = path.resolve('static/docs-config.json');
+        const componentsDir = path.resolve('src/components');
 
         if (filePaths.length === 1 && filePaths[0] === docsConfigPath) return;
 
         const componentNames =
           filePaths
             .filter(item => !fs.lstatSync(item).isDirectory())
-            .map(item => item.replace(`${path.resolve('src/components')}/`, '').split('/')[0]);
+            .filter(item => item.startsWith(componentsDir))
+            .map(item => item.replace(`${componentsDir}/`, '').split('/')[0]);
 
         writeDocsConfig(componentNames);
       }
