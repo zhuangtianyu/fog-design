@@ -97,8 +97,8 @@ const writeDocsConfig = componentNames => {
     fs.mkdirSync(outputDir);
     fs.writeFileSync(outputPath, configString);
   } else {
-    const existedJson = JSON.parse(fs.readFileSync(outputPath).toString());
-    const existedString = JSON.stringify(existedJson);
+    const existedString = fs.readFileSync(outputPath).toString();
+    const existedJson = JSON.parse(existedString);
 
     if (existedString !== configString) {
       const components = { ...existedJson.components, ...configJson.components };
