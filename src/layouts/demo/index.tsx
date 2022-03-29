@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
-import Icon from '@components/icon';
+import React, { useState, useContext, useRef, useLayoutEffect } from 'react';
 import namespace from '@namespace';
+import SyntaxHighlighter from 'react-syntax-highlighter';
+import { tomorrow, tomorrowNightBright } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { DarkContext } from '../../index';
+import Icon from '@components/icon';
 import './index.less';
 
 const { prefix } = namespace;
@@ -15,7 +18,27 @@ interface DemoProps {
 const Demo: React.FC<DemoProps> = props => {
   const { title, description, content, code } = props;
 
+  const dark = useContext(DarkContext);
+
   const [codeVisible, setCodeVisible] = useState<boolean>(false);
+
+  const [codeHeight, setCodeHeight] = useState<number | string>(() => ResizeObserver ? 0 : 'auto');
+
+  const codeRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (codeVisible && ResizeObserver && codeRef.current) {
+      const resizeObserver = new ResizeObserver(() => {
+        const { height } = codeRef.current.getBoundingClientRect();
+
+        setCodeHeight(height);
+      });
+
+      resizeObserver.observe(codeRef.current);
+
+      return () => resizeObserver.disconnect();
+    }
+  }, [codeVisible]);
 
   return (
     <div className={`${prefix}-demo`}>
@@ -36,11 +59,21 @@ const Demo: React.FC<DemoProps> = props => {
       <div className={`${prefix}-demo__content`}>
         {content}
       </div>
-      {codeVisible && (
-        <pre className={`${prefix}-demo__code`}>
-          {code}
-        </pre>
-      )}
+      <div
+        className={`${prefix}-demo__code-wrapper`}
+        style={{ height: codeVisible ? codeHeight : 0 }}
+      >
+        <div ref={codeRef}>
+          <SyntaxHighlighter
+            className={`${prefix}-demo__code`}
+            customStyle={{ padding: 20 }}
+            language="typescript"
+            style={!dark ? tomorrow : tomorrowNightBright}
+          >
+            {code}
+          </SyntaxHighlighter>
+        </div>
+      </div>
     </div>
   );
 };

@@ -17,6 +17,8 @@ const { Option } = Select;
 const previousDark = !!localStorage.getItem('dark');
 const previousThemeName = localStorage.getItem('themeName');
 
+export const DarkContext = React.createContext(false);
+
 const components: string[] = [
   'button',
   'checkbox',
@@ -114,55 +116,21 @@ const App = () => {
 
   return (
     <HashRouter>
-      <div className="app">
-        <div className="app__header">
-          <Link className="app__header-title" to="">
-            Fog Design
-          </Link>
-          {
-            !mobile
-              ? <>
-                  <div className="app__header-themes">
-                    <span>Theme:</span>
-                    <Select
-                      className="app__header-themes-select"
-                      value={themeName}
-                      onChange={setThemeName}
-                    >
-                      {themeNames.map(item => (
-                        <Option key={item} value={item}>
-                          {kebabCaseToPascalCase(item)}
-                        </Option>
-                      ))}
-                    </Select>
-                  </div>
-                  <div className="app__header-darkness">
-                    <span className="app__header-darkname">Darkness:</span>
-                    <Switch checked={dark} onChange={setDark} />
-                  </div>
-                  <GithubLink />
-                </>
-              : <>
-                  <div className="app__drawer-trigger">
-                    <Icon
-                      type="more"
-                      size={18}
-                      onClick={() => setVisible(true)}
-                    />
-                  </div>
-                  <Drawer
-                    visible={visible}
-                    onClose={() => setVisible(false)}
-                  >
-                    <div
-                      className="app__drawer-content"
-                      ref={drawerRef}
-                    >
-                      <h3>Themes</h3>
+      <DarkContext.Provider value={dark}>
+        <div className="app">
+          <div className="app__header">
+            <Link className="app__header-title" to="">
+              Fog Design
+            </Link>
+            {
+              !mobile
+                ? <>
+                    <div className="app__header-themes">
+                      <span>Theme:</span>
                       <Select
+                        className="app__header-themes-select"
                         value={themeName}
                         onChange={setThemeName}
-                        getPopupMountNode={() => drawerRef.current}
                       >
                         {themeNames.map(item => (
                           <Option key={item} value={item}>
@@ -170,39 +138,75 @@ const App = () => {
                           </Option>
                         ))}
                       </Select>
-                      <h3>Darkness</h3>
-                      <Switch checked={dark} onChange={setDark} />
-                      <h3>Github</h3>
-                      <GithubLink />
-                      <h3>Components</h3>
-                      <Routes>
-                        <Route
-                          path="/:name"
-                          element={<AppMenu className="app__drawer-menu" />}
-                        />
-                      </Routes>
                     </div>
-                  </Drawer>
-                </>
-          }
-        </div>
-        <div className="app__body">
-          {!mobile && (
-            <Routes>
-              <Route
-                path="/:name"
-                element={<AppMenu className="app__sidebar" />}
-              />
-            </Routes>
-          )}
-          <div className="app__content">
-            <Routes>
-              <Route path="/:name" element={<Demo />} />
-              <Route path="*" element={<Navigate to="/button" />} />
-            </Routes>
+                    <div className="app__header-darkness">
+                      <span className="app__header-darkname">Darkness:</span>
+                      <Switch checked={dark} onChange={setDark} />
+                    </div>
+                    <GithubLink />
+                  </>
+                : <>
+                    <div className="app__drawer-trigger">
+                      <Icon
+                        type="more"
+                        size={18}
+                        onClick={() => setVisible(true)}
+                      />
+                    </div>
+                    <Drawer
+                      visible={visible}
+                      onClose={() => setVisible(false)}
+                    >
+                      <div
+                        className="app__drawer-content"
+                        ref={drawerRef}
+                      >
+                        <h3>Themes</h3>
+                        <Select
+                          value={themeName}
+                          onChange={setThemeName}
+                          getPopupMountNode={() => drawerRef.current}
+                        >
+                          {themeNames.map(item => (
+                            <Option key={item} value={item}>
+                              {kebabCaseToPascalCase(item)}
+                            </Option>
+                          ))}
+                        </Select>
+                        <h3>Darkness</h3>
+                        <Switch checked={dark} onChange={setDark} />
+                        <h3>Github</h3>
+                        <GithubLink />
+                        <h3>Components</h3>
+                        <Routes>
+                          <Route
+                            path="/:name"
+                            element={<AppMenu className="app__drawer-menu" />}
+                          />
+                        </Routes>
+                      </div>
+                    </Drawer>
+                  </>
+            }
+          </div>
+          <div className="app__body">
+            {!mobile && (
+              <Routes>
+                <Route
+                  path="/:name"
+                  element={<AppMenu className="app__sidebar" />}
+                />
+              </Routes>
+            )}
+            <div className="app__content">
+              <Routes>
+                <Route path="/:name" element={<Demo />} />
+                <Route path="*" element={<Navigate to="/button" />} />
+              </Routes>
+            </div>
           </div>
         </div>
-      </div>
+      </DarkContext.Provider>
     </HashRouter>
   );
 };

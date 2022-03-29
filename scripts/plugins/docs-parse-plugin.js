@@ -59,14 +59,14 @@ const getDemos = componentName => {
   const demoPath = path.resolve(`src/components/${componentName}/demo`);
 
   return fs
-      .readdirSync(demoPath)
-      .filter(filename => filename.startsWith('demo-'))
-      .reduce((accumulator, filename) => {
-        const name = path.basename(filename, '.tsx');
-        const content = fs.readFileSync(path.join(demoPath, filename)).toString();
+    .readdirSync(demoPath)
+    .filter(filename => filename.startsWith('demo-'))
+    .reduce((accumulator, filename) => {
+      const name = path.basename(filename, '.tsx');
+      const content = fs.readFileSync(path.join(demoPath, filename)).toString();
 
-        return { ...accumulator, [name]: content };
-      }, {});
+      return { ...accumulator, [name]: content };
+    }, {});
 };
 
 const writeDocsConfig = componentNames => {

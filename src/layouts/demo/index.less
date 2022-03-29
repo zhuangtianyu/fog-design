@@ -24,8 +24,8 @@
   }
 
   &__options .@{prefix}-icon {
-    padding: 0 4px;
-    font-size: 16px;
+    padding: 4px;
+    user-select: none;
     cursor: pointer;
   }
 
@@ -37,10 +37,16 @@
     padding: 0 20px 20px;
   }
 
+  &__code-wrapper {
+    overflow: hidden;
+    transition: height 0.3s;
+  }
+
   &__code {
-    padding: 20px;
-    border-top: 1px solid var(--fog-border-color);
-    overflow: auto;
     margin: 0;
+    line-height: 18px;
+    border-radius: 2px;
+    border-top: 1px solid var(--fog-border-color);
+    transition: all 0.3s;
   }
 }
