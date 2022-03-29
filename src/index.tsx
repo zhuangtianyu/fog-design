@@ -94,6 +94,7 @@ const App = () => {
   const [themeName, setThemeName] = useState(previousThemeName || themeNames[0]);
   const [mobile, setMobile] = useState<boolean>(isMobile());
   const [visible, setVisible] = useState<boolean>(false);
+  const headerRef = useRef<HTMLDivElement>(null);
   const drawerRef = useRef<HTMLDivElement>(null);
 
   useTheme(themes[themeName], dark);
@@ -118,7 +119,7 @@ const App = () => {
     <HashRouter>
       <DarkContext.Provider value={dark}>
         <div className="app">
-          <div className="app__header">
+          <div className="app__header" ref={headerRef}>
             <Link className="app__header-title" to="">
               Fog Design
             </Link>
@@ -131,6 +132,7 @@ const App = () => {
                         className="app__header-themes-select"
                         value={themeName}
                         onChange={setThemeName}
+                        getPopupMountNode={() => headerRef.current}
                       >
                         {themeNames.map(item => (
                           <Option key={item} value={item}>
