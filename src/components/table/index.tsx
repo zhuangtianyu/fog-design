@@ -126,16 +126,18 @@ const Table: React.FC<TableProps> = props => {
   };
 
   useLayoutEffect(() => {
-    const observers = [];
+    if (ResizeObserver) {
+      const observers = [];
 
-    Object.keys(thRefs).forEach(key => {
-      const observer = new ResizeObserver(updateColumnsLayout);
+      Object.keys(thRefs).forEach(key => {
+        const observer = new ResizeObserver(updateColumnsLayout);
 
-      observer.observe(thRefs[key].current);
-      observers.push(observer);
-    });
+        observer.observe(thRefs[key].current);
+        observers.push(observer);
+      });
 
-    return () => observers.forEach(observer => observer.disconnect());
+      return () => observers.forEach(observer => observer.disconnect());
+    }
   }, [thRefs]);
 
   useLayoutEffect(() => {
