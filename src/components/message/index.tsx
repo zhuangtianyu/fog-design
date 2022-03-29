@@ -66,6 +66,7 @@ mountRoot.style.position = 'fixed';
 mountRoot.style.top = '0px';
 mountRoot.style.left = '0px';
 mountRoot.style.right = '0px';
+mountRoot.style.zIndex = '10';
 mountRoot.style.pointerEvents = 'none';
 
 document.body.appendChild(mountRoot);
