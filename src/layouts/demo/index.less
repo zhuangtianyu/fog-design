@@ -42,11 +42,19 @@
     transition: height 0.3s;
   }
 
-  &__code {
-    margin: 0;
-    line-height: 18px;
-    border-radius: 2px;
+  &__pre {
+    font-size: 13px !important;
+    font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace !important;
+    text-shadow: none !important;
     border-top: 1px solid var(--fog-border-color);
+    border-radius: 2px;
+    background-color: var(--fog-background-color) !important;
+    transition: all 0.3s;
+  }
+
+  &__pre code {
+    font-size: 13px !important;
+    font-family: Menlo, Monaco, Consolas, "Andale Mono", "Ubuntu Mono", "Courier New", monospace !important;
     transition: all 0.3s;
   }
 }

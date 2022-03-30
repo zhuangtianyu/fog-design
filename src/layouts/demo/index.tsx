@@ -1,12 +1,19 @@
 import React, { useState, useContext, useRef, useLayoutEffect } from 'react';
 import namespace from '@namespace';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { tomorrow, tomorrowNightBright } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
+import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
+import lightStyle from 'react-syntax-highlighter/dist/esm/styles/prism/prism';
+import darkStyle from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus';
 import { DarkContext } from '../../index';
 import Icon from '@components/icon';
 import './index.less';
 
+console.log(Object.keys(lightStyle));
+console.log(Object.values(lightStyle));
+
 const { prefix } = namespace;
+
+SyntaxHighlighter.registerLanguage('tsx', tsx);
 
 interface DemoProps {
   title: string;
@@ -65,10 +72,10 @@ const Demo: React.FC<DemoProps> = props => {
       >
         <div ref={codeRef}>
           <SyntaxHighlighter
-            className={`${prefix}-demo__code`}
-            customStyle={{ padding: 20 }}
-            language="typescript"
-            style={!dark ? tomorrow : tomorrowNightBright}
+            className={`${prefix}-demo__pre`}
+            customStyle={{ margin: 0, padding: 20 }}
+            language="tsx"
+            style={!dark ? lightStyle : darkStyle}
           >
             {code}
           </SyntaxHighlighter>
