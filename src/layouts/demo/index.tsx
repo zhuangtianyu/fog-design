@@ -6,10 +6,8 @@ import lightStyle from 'react-syntax-highlighter/dist/esm/styles/prism/prism';
 import darkStyle from 'react-syntax-highlighter/dist/esm/styles/prism/vsc-dark-plus';
 import { DarkContext } from '../../index';
 import Icon from '@components/icon';
+import Message from '@components/message';
 import './index.less';
-
-console.log(Object.keys(lightStyle));
-console.log(Object.values(lightStyle));
 
 const { prefix } = namespace;
 
@@ -47,11 +45,23 @@ const Demo: React.FC<DemoProps> = props => {
     }
   }, [codeVisible]);
 
+  const handleCopy = () => {
+    navigator
+      .clipboard
+      .writeText(code)
+      .then(() => Message.success({ content: 'Code copied' }))
+      .catch(() => Message.error({ content: 'Please copy manually' }));
+  };
+
   return (
     <div className={`${prefix}-demo`}>
       <h3 className={`${prefix}-demo__title`}>
         <span>{title}</span>
         <div className={`${prefix}-demo__options`}>
+          <Icon
+            type="copy"
+            onClick={handleCopy}
+          />
           <Icon
             type="code"
             onClick={() => setCodeVisible(!codeVisible)}
