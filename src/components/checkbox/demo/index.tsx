@@ -1,48 +1,45 @@
-import React, { useState } from 'react';
-import Checkbox from '@components/checkbox';
-import Switch from '@components/switch';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '../../../layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
+import Demo4 from './demo-4';
 import './index.less';
 
-const { Group } = Checkbox;
-
-const checkboxes = ['Cola', 'Pepsi', 'Fanta', 'Sprite'];
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.checkbox;
 
 const CheckboxDemo = () => {
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const [groupDisabled, setGroupDisabled] = useState<boolean>(false);
-  const [value, setValue] = useState(checkboxes.filter(item => item !== 'Pepsi'));
 
   return (
     <div className="checkbox-demo">
-      <h2>Checkbox</h2>
-      <h3>Basic Usage</h3>
-      <Checkbox defaultChecked>Cola</Checkbox>
-      <h3>Disabled</h3>
-      <Checkbox defaultChecked disabled={disabled}>Cola</Checkbox>
-      <Checkbox disabled={disabled}>Fanta</Checkbox>
-      <Switch checked={disabled} onChange={setDisabled} />
-      <h3>Group</h3>
-      <Group defaultValue={['Cola']} disabled={groupDisabled}>
-        <Checkbox value="Cola" key="Cola">Cola</Checkbox>
-        <Checkbox value="Pepsi" key="Pepsi" disabled>Pepsi</Checkbox>
-        <Checkbox value="Fanta" key="Fanta">Fanta</Checkbox>
-        <Checkbox value="Sprite" key="Sprite">Sprite</Checkbox>
-      </Group>
-      <Switch checked={groupDisabled} onChange={setGroupDisabled} />
-      <h3>Indeterminate</h3>
-      <Checkbox
-        style={{ display: 'block', marginBottom: 20 }}
-        indeterminate={value.length && value.length < checkboxes.length}
-        checked={value.length === checkboxes.length}
-        onChange={event => setValue(event.target.checked ? checkboxes : [])}
-      >
-        Check all
-      </Checkbox>
-      <Group value={value} onChange={setValue}>
-        {checkboxes.map(item => (
-          <Checkbox value={item} key={item}>{item}</Checkbox>
-        ))}
-      </Group>
+      <h1>Checkbox</h1>
+      <p>Checkbox is used to make choice by toggled.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Disabled"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Group"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <Demo
+        title="Indeterminate"
+        content={<Demo4 />}
+        code={demos['demo-4']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows} />
     </div>
   );
 };

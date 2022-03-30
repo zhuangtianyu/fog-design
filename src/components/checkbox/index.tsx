@@ -21,11 +21,7 @@ export interface CheckboxProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export interface CheckboxTypes extends React.FC<CheckboxProps> {
-  Group: typeof Group;
-}
-
-const Checkbox: CheckboxTypes = props => {
+export const Checkbox = (props: CheckboxProps) => {
   const {
     className,
     style,
@@ -76,10 +72,6 @@ const Checkbox: CheckboxTypes = props => {
       </label>
     </div>
   );
-};
-
-Checkbox.defaultProps = {
-  style: {},
 };
 
 Checkbox.Group = Group;

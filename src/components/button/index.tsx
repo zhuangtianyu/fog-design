@@ -10,14 +10,12 @@ export type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
 export type ChildrenType = React.ReactNode | React.ReactElement;
 
 export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  /** --skip */
   className?: string;
   type?: ButtonType;
   danger?: boolean;
   loading?: boolean;
   disabled?: boolean;
   children?: ChildrenType | ChildrenType[];
-  /** --skip */
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   [propName: string]: any;
 }
