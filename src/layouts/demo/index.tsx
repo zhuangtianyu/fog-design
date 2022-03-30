@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect, useContext, useRef, useLayoutEffect } from 'react';
 import namespace from '@namespace';
 import { PrismLight as SyntaxHighlighter } from 'react-syntax-highlighter';
 import tsx from 'react-syntax-highlighter/dist/esm/languages/prism/tsx';
@@ -44,6 +44,8 @@ const Demo: React.FC<DemoProps> = props => {
       return () => resizeObserver.disconnect();
     }
   }, [codeVisible]);
+
+  useEffect(() => Message.destroyAll, []);
 
   const handleCopy = () => {
     navigator
