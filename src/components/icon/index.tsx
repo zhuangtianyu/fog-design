@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import { TYPE_PATH_MAP } from './constants';
@@ -6,7 +6,8 @@ import './index.less';
 
 const { prefix } = namespace;
 
-interface IconProps {
+export interface IconProps {
+  /** --skip */
   className?: string;
   type: keyof typeof TYPE_PATH_MAP;
   size?: number | string;
@@ -14,7 +15,7 @@ interface IconProps {
   [propName: string]: any;
 }
 
-const Icon: React.FC<IconProps> = props => {
+export const Icon: React.FC<IconProps> = props => {
   const { className, type, size, color, ...restProps } = props;
 
   return (
