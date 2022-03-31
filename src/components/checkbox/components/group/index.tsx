@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Checkbox from '@components/checkbox';
@@ -18,7 +19,7 @@ export interface CheckboxGroupProps {
   onChange?: (value: ValueType[]) => void;
 }
 
-const CheckboxGroup: React.FC<CheckboxGroupProps> = props => {
+export const CheckboxGroup: React.FC<CheckboxGroupProps> = props => {
   const {
     className,
     value: valueFromProps,

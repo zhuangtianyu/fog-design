@@ -41,7 +41,10 @@ const CheckboxDemo = () => {
         code={demos['demo-4']}
       />
       <h2>API</h2>
-      <Table columns={apiColumns} data={apiRows} />
+      <h3>Checkbox</h3>
+      <Table columns={apiColumns} data={apiRows.default} />
+      <h3>Checkbox.Group</h3>
+      <Table columns={apiColumns} data={apiRows.group} />
     </div>
   );
 };

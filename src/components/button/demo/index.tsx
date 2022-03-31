@@ -50,7 +50,7 @@ const ButtonDemo = () => {
         code={demos['demo-5']}
       />
       <h2>API</h2>
-      <Table columns={apiColumns} data={apiRows} />
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

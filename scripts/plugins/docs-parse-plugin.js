@@ -17,9 +17,8 @@ const { parse } = docgen.withDefaultConfig({
   savePropValueAsString: true,
 });
 
-const getApiRows = componentName => {
-  const componentPath = path.resolve(`src/components/${componentName}/index.tsx`);
-  const [component] = parse(componentPath);
+const getApiRows = filePath => {
+  const [component] = parse(filePath);
 
   if (!component) return [];
 
@@ -73,11 +72,25 @@ const writeDocsConfig = componentNames => {
   componentNames = componentNames || fs.readdirSync(path.resolve('src/components/'));
 
   const components = componentNames.reduce((accumulator, componentName) => {
+    const componentDir = path.resolve(`src/components/${componentName}`);
+    const componentPath = path.join(componentDir, './index.tsx');
     const demos = getDemos(componentName);
-    const apiRows = getApiRows(componentName);
-    const configItem = { demos, apiRows };
+    const apiRows = { default: getApiRows(componentPath) };
+    const subcomponentDir = path.join(componentDir, './components');
 
-    return { ...accumulator, [componentName]: configItem };
+    if (fs.existsSync(subcomponentDir)) {
+      const subcomponentPayload = {};
+      const subcomponentNames = fs.readdirSync(subcomponentDir);
+
+      subcomponentNames.forEach(subcomponentName => {
+        subcomponentPath = path.join(subcomponentDir, subcomponentName, './index.tsx');
+        subcomponentPayload[subcomponentName] = getApiRows(subcomponentPath);
+      });
+
+      Object.assign(apiRows, subcomponentPayload);
+    }
+
+    return { ...accumulator, [componentName]: { demos, apiRows } };
   }, {});
 
   const apiColumns = [
