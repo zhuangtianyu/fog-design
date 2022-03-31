@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Transition from '@components/transition';
@@ -9,6 +10,7 @@ import './index.less';
 const { prefix } = namespace;
 
 interface DrawerProps {
+  /** --skip */
   className?: string;
   visible?: boolean;
   width?: number | string;
@@ -23,7 +25,7 @@ interface DrawerProps {
   afterClose?: () => void;
 }
 
-const Drawer: React.FC<DrawerProps> = props => {
+export const Drawer: React.FC<DrawerProps> = props => {
   const {
     className,
     visible,

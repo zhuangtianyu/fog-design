@@ -1,66 +1,35 @@
-import React, { useState } from 'react';
-import Drawer from '@components/drawer';
-import Button from '@components/button';
-import Radio from '@components/radio';
-import { kebabCaseToPascalCase } from '@utils/index';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '../../../layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
 import './index.less';
 
-const placements = ['top', 'right', 'bottom', 'left'];
-
-const DrawerContent = () => {
-  const [count, setCount] = useState<number>(0);
-
-  return (
-    <div className="drawer-content">
-      <p>Clicked {count} times, state preserved.</p>
-      <Button onClick={() => setCount(count + 1)}>
-        Click me
-      </Button>
-    </div>
-  );
-};
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.drawer;
 
 const DrawerDemo = () => {
-  const [visible, setVisible] = useState<boolean>(false);
-  const [visibleForPlacement, setVisibleForPlacement] = useState<boolean>(false);
-  const [placement, setPlacement] = useState<string>(placements[1]);
 
   return (
     <div className="drawer-demo">
-      <h2>Drawer</h2>
-      <h3>Basic Usage</h3>
-      <Button onClick={() => setVisible(true)}>
-        Open
-      </Button>
-      <Drawer
+      <h1>Drawer</h1>
+      <p>Drawer is used as a popup layer from side of window.</p>
+      <h2>Demo</h2>
+      <Demo
         title="Basic Usage"
-        visible={visible}
-        onClose={() => setVisible(false)}
-      >
-        Drawer Content
-      </Drawer>
-      <h3>Placement</h3>
-      <Radio.Group
-        value={placement}
-        onChange={event => setPlacement(event.target.value)}
-      >
-        {placements.map(item => (
-          <Radio value={item} key={item}>
-            {kebabCaseToPascalCase(item)}
-          </Radio>
-        ))}
-      </Radio.Group>
-      <Button onClick={() => setVisibleForPlacement(true)}>
-        Open
-      </Button>
-      <Drawer
-        title="Basic Usage"
-        visible={visibleForPlacement}
-        placement={placement}
-        onClose={() => setVisibleForPlacement(false)}
-      >
-        <DrawerContent />
-      </Drawer>
+        description="Open drawer on the right side of window."
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Placement"
+        description="Open drawer with custom popup placement."
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

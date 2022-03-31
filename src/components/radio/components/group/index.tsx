@@ -11,7 +11,10 @@ const { prefix } = namespace;
 export type ValueType = string;
 
 export interface RadioGroupProps {
+  /** --skip */
   className?: string;
+  /** --skip */
+  style?: React.CSSProperties;
   value?: ValueType;
   defaultValue?: ValueType;
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
@@ -23,6 +26,7 @@ export interface RadioGroupProps {
 const RadioGroup: React.FC<RadioGroupProps> = props => {
   const {
     className,
+    style,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -67,7 +71,10 @@ const RadioGroup: React.FC<RadioGroupProps> = props => {
   }, [childrenFromProps, value]);
 
   return (
-    <div className={classnames(`${prefix}-radio-group`, className)}>
+    <div
+      className={classnames(`${prefix}-radio-group`, className)}
+      style={style}
+    >
       {children}
     </div>
   );
