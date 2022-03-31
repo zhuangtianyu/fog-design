@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Group from './components/group';
@@ -10,7 +11,9 @@ const { prefix } = namespace;
 export type ValueType = string;
 
 export interface CheckboxProps {
+  /** --skip */
   className?: string;
+  /** --skip */
   style?: React.CSSProperties;
   value?: ValueType;
   checked?: boolean;
@@ -21,7 +24,11 @@ export interface CheckboxProps {
   onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
-export const Checkbox = (props: CheckboxProps) => {
+export interface CheckboxTypes extends React.FC<CheckboxProps> {
+  Group: typeof Group;
+}
+
+export const Checkbox: CheckboxTypes = props => {
   const {
     className,
     style,
@@ -75,5 +82,7 @@ export const Checkbox = (props: CheckboxProps) => {
 };
 
 Checkbox.Group = Group;
+
+Checkbox.defaultProps = {};
 
 export default Checkbox;

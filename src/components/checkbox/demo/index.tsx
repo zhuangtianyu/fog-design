@@ -16,7 +16,7 @@ const CheckboxDemo = () => {
   return (
     <div className="checkbox-demo">
       <h1>Checkbox</h1>
-      <p>Checkbox is used to make choice by toggled.</p>
+      <p>Checkbox is used to check item or not.</p>
       <h2>Demo</h2>
       <Demo
         title="Basic Usage"
@@ -30,11 +30,13 @@ const CheckboxDemo = () => {
       />
       <Demo
         title="Group"
+        description="Combine several checkboxes into a group."
         content={<Demo3 />}
         code={demos['demo-3']}
       />
       <Demo
         title="Indeterminate"
+        description="Indeterminate state is usually used to describe checked state of checkbox group."
         content={<Demo4 />}
         code={demos['demo-4']}
       />

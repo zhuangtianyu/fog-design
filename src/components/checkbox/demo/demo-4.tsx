@@ -12,7 +12,7 @@ const Demo = () => {
   return (
     <>
       <Checkbox
-        style={{ display: 'block', marginBottom: 20 }}
+        style={{ display: 'block', marginBottom: 12 }}
         indeterminate={value.length && value.length < checkboxes.length}
         checked={value.length === checkboxes.length}
         onChange={event => setValue(event.target.checked ? checkboxes : [])}
