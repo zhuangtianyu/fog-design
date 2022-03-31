@@ -21,27 +21,31 @@ const ButtonDemo = () => {
       <h2>Demo</h2>
       <Demo
         title="Type"
-        description="Use different type in different scenes."
+        description="The following types are provided in different scenes."
         content={<Demo1 />}
         code={demos['demo-1']}
       />
       <Demo
         title="Icon"
+        description="Add icon for better operation awareness."
         content={<Demo2 />}
         code={demos['demo-2']}
       />
       <Demo
         title="Loading"
+        description="Loading state, and disable click event at the same time."
         content={<Demo3 />}
         code={demos['demo-3']}
       />
       <Demo
         title="Disabled"
+        description="Disable all interactive events, including keyboard events."
         content={<Demo4 />}
         code={demos['demo-4']}
       />
       <Demo
         title="Danger"
+        description="Add danger property to improve operation caution."
         content={<Demo5 />}
         code={demos['demo-5']}
       />
