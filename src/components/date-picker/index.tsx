@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Input from '@components/input';
@@ -45,7 +46,7 @@ interface DatePickerProps  {
   renderFooter?: () => React.ReactElement;
 }
 
-const DatePicker: React.FC<DatePickerProps> = props => {
+export const DatePicker: React.FC<DatePickerProps> = props => {
   const {
     className,
     placeholder,
