@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLAttributes, useState, useRef, useEffect } from 'react';
+import * as React from 'react';
+import { forwardRef, HTMLAttributes, useState, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import InputWrapper from './components/wrapper';
@@ -11,6 +12,7 @@ const prefixClassName = namespace.prefix;
 export type InputValue = string | undefined | null;
 
 export interface InputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'prefix'> {
+  /** --skip */
   className?: string;
   value?: InputValue;
   disabled?: boolean;
@@ -26,7 +28,7 @@ export interface InputTypes extends React.ForwardRefExoticComponent<InputProps &
   TextArea: typeof TextArea;
 }
 
-const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
+export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     className,
     value: valueFromProps,
