@@ -1,115 +1,39 @@
-import React, { useState } from 'react';
-import Button from '@components/button';
-import Modal from '@components/modal';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
 import './index.less';
 
-const promiseHandler = (duration = 1000) => new Promise(resolve => {
-  const timer = setTimeout(() => {
-    resolve(null);
-    clearTimeout(timer);
-  }, duration);
-});
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.modal;
 
 const ModalDemo = () => {
-  const [visible, setVisible] = useState<boolean>(false);
-  const [asyncVisible, setAsyncVisible] = useState<boolean>(false);
 
   return (
     <div className="modal-demo">
-      <h2>Modal</h2>
-      <h3>Basic Usage</h3>
-      <Button onClick={() => setVisible(true)}>
-        Open modal
-      </Button>
-      <Modal
-        title="Title"
-        visible={visible}
-        onCancel={() => setVisible(false)}
-        onConfirm={() => setVisible(false)}
-      >
-        Basic usage.
-      </Modal>
-      <h3>By Method</h3>
-      <Button
-        onClick={() => {
-          Modal.confirm({
-            title: 'Hi',
-            content: 'Beach, waves, and night.',
-          });
-        }}
-      >
-        Modal.confirm
-      </Button>
-      <Button
-        onClick={() => {
-          const modal = Modal.confirm({
-            title: 'Hi',
-            content: (
-              <>
-                <span style={{ marginRight: 12 }}>
-                  Beach, waves, and night.
-                </span>
-                <Button
-                  onClick={() => {
-                    modal.update({
-                      content: (
-                        <span style={{ lineHeight: '32px' }}>
-                          Catch the moment.
-                        </span>
-                      ),
-                    });
-                  }}
-                >
-                  Update
-                </Button>
-              </>
-            ),
-          });
-        }}
-      >
-        Update reference
-      </Button>
-      <Button
-        onClick={() => {
-          for (let i = 0; i < 3 ; i++) {
-            setTimeout(() => {
-              Modal.confirm({
-                title: 'Hi',
-                content: (
-                  <Button onClick={Modal.destroyAll}>
-                    Destroy all
-                  </Button>
-                ),
-              });
-            }, i * 300);
-          }
-        }}
-      >
-        Modal.destroyAll
-      </Button>
-      <h3>Async Logic</h3>
-      <Modal
-        title="Async modal"
-        visible={asyncVisible}
-        onCancel={() => setAsyncVisible(false)}
-        onConfirm={() => promiseHandler().then(() => setAsyncVisible(false))}
-      >
-        Async logic in basic usage.
-      </Modal>
-      <Button onClick={() => setAsyncVisible(true)}>
-        Open modal
-      </Button>
-      <Button
-        onClick={() => {
-          Modal.confirm({
-            title: 'Async method',
-            content: 'Async logic by method.',
-            onConfirm: promiseHandler,
-          });
-        }}
-      >
-        Modal.confirm
-      </Button>
+      <h1>Modal</h1>
+      <p>Modal is used to confirm prompts or interception operations.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="By Method"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Async Logic"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

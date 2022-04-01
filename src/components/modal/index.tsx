@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef } from 'react';
 import ReactDOM from 'react-dom';
 import namespace from '@namespace';
 import classnames from 'classnames';
@@ -28,6 +29,7 @@ const asyncHandler = (handler, onPending, onFinally) => {
 };
 
 interface ModalProps {
+  /** --skip */
   className?: string;
   visible?: boolean;
   width?: number;
@@ -59,7 +61,7 @@ interface ModalTypes extends React.FC<ModalProps> {
   destroyAll: () => void;
 }
 
-const Modal: ModalTypes = props => {
+export const Modal: ModalTypes = props => {
   const {
     className,
     visible,
