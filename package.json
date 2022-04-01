@@ -4,8 +4,8 @@
   "description": "Light as fog, React UI library.",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack serve --config ./scripts/config/webpack.dev.js",
-    "build": "webpack --config ./scripts/config/webpack.prod.js",
+    "dev": "webpack serve --config ./scripts/config/webpack.dev.ts",
+    "build": "webpack --config ./scripts/config/webpack.prod.ts",
     "docs": "tsnd --respawn --quiet --watch src ./scripts/docs/index.ts"
   },
   "repository": {
@@ -32,6 +32,7 @@
     "@types/node": "^17.0.19",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
+    "@types/webpack-dev-server": "^4.7.2",
     "babel-loader": "^8.2.3",
     "classnames": "^2.3.1",
     "css-loader": "^6.5.1",

@@ -1,9 +1,10 @@
-const path = require('path');
-const namespace = require('../../namespace.json');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const DocsParsePlugin = require('../plugins/docs-parse-plugin.js');
+import path from 'path';
+import { Configuration } from 'webpack';
+import namespace from '../../namespace.json';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import DocsParsePlugin from '../plugins/docs-parse-plugin';
 
-module.exports = {
+const config: Configuration = {
   entry: {
     index: path.resolve(__dirname, '../../src/index.tsx'),
   },
@@ -21,7 +22,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx)?$/,
         use: 'babel-loader',
         exclude: /node_modules/,
       },
@@ -53,3 +54,5 @@ module.exports = {
     },
   },
 };
+
+export default config;

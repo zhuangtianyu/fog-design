@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const docgen = require('react-docgen-typescript');
+import fs from 'fs';
+import path from 'path';
+import * as docgen from 'react-docgen-typescript';
 
 const { parse } = docgen.withDefaultConfig({
   propFilter: prop => {
@@ -55,21 +55,21 @@ const getApiRows = filePath => {
 };
 
 const getDemos = componentName => {
-  const demoPath = path.resolve(`src/components/${componentName}/demo`);
+  const componentDemoDir = path.resolve(`src/components/${componentName}/demo`);
 
   return fs
-    .readdirSync(demoPath)
+    .readdirSync(componentDemoDir)
     .filter(filename => filename.startsWith('demo-'))
     .reduce((accumulator, filename) => {
-      const name = path.basename(filename, '.tsx');
-      const content = fs.readFileSync(path.join(demoPath, filename)).toString();
+      const demoName = path.basename(filename, '.tsx');
+      const demoContent = fs.readFileSync(path.join(componentDemoDir, filename)).toString();
 
-      return { ...accumulator, [name]: content };
+      return { ...accumulator, [demoName]: demoContent };
     }, {});
 };
 
-const writeDocsConfig = componentNames => {
-  componentNames = componentNames || fs.readdirSync(path.resolve('src/components/'));
+const writeDocsConfig = (componentNames?: string[]) => {
+  componentNames = componentNames || fs.readdirSync(path.resolve('src/components'));
 
   const components = componentNames.reduce((accumulator, componentName) => {
     const componentDir = path.resolve(`src/components/${componentName}`);
@@ -79,15 +79,16 @@ const writeDocsConfig = componentNames => {
     const subcomponentDir = path.join(componentDir, './components');
 
     if (fs.existsSync(subcomponentDir)) {
-      const subcomponentPayload = {};
+      const apiRowsPayload: Record<string, any> = {};
       const subcomponentNames = fs.readdirSync(subcomponentDir);
 
       subcomponentNames.forEach(subcomponentName => {
-        subcomponentPath = path.join(subcomponentDir, subcomponentName, './index.tsx');
-        subcomponentPayload[subcomponentName] = getApiRows(subcomponentPath);
+        const subcomponentPath = path.join(subcomponentDir, subcomponentName, './index.tsx');
+
+        apiRowsPayload[subcomponentName] = getApiRows(subcomponentPath);
       });
 
-      Object.assign(apiRows, subcomponentPayload);
+      Object.assign(apiRows, apiRowsPayload);
     }
 
     return { ...accumulator, [componentName]: { demos, apiRows } };
@@ -129,7 +130,7 @@ class DocsParsePlugin {
 
     compiler.hooks.watchRun.tap('DocsParsePlugin', () => {
       if (compiler.modifiedFiles) {
-        const filePaths = Array.from(compiler.modifiedFiles);
+        const filePaths: string[] = Array.from(compiler.modifiedFiles);
         const docsConfigPath = path.resolve('static/docs-config.json');
         const componentsDir = path.resolve('src/components');
 
@@ -147,4 +148,4 @@ class DocsParsePlugin {
   }
 }
 
-module.exports = DocsParsePlugin;
+export default DocsParsePlugin;
