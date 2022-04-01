@@ -1,99 +1,52 @@
-import React, { useEffect, useRef } from 'react';
-import Message, { MessageReference } from '@components/message';
-import Button from '@components/button';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
+import Demo4 from './demo-4';
+import Demo5 from './demo-5';
 import './index.less';
 
-const MessageDemo = () => {
-  const manualRef = useRef<MessageReference>(null);
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.message;
 
-  useEffect(() => {
-    return () => {
-      Message.destroyAll();
-      manualRef.current = null;
-    };
-  }, []);
+const MessageDemo = () => {
 
   return (
     <div className="message-demo">
-      <h2>Message</h2>
-      <h3>Basic Usage</h3>
-      <Button onClick={() => Message.info({ content: 'Basic usage' })}>
-        Click me
-      </Button>
-      <h3>Method</h3>
-      <Button onClick={() => Message.info({ content: 'Subscribe the news' })}>
-        Info
-      </Button>
-      <Button onClick={() => Message.error({ content: 'Login required' })}>
-        Error
-      </Button>
-      <Button onClick={() => Message.warning({ content: 'Remember password' })}>
-        Warning
-      </Button>
-      <Button onClick={() => Message.success({ content: 'Login success' })}>
-        Success
-      </Button>
-      <h3>Customized Icon</h3>
-      <Button
-        onClick={() => Message.info({
-          icon: '🍷',
-          content: 'Hot drinks and cold days',
-        })}
-      >
-        Emoji
-      </Button>
-      <Button
-        onClick={() => Message.info({
-          icon: null,
-          content: 'No icon makes me look so cool',
-        })}
-      >
-        Without icon
-      </Button>
-      <h3>Manual Close</h3>
-      <Button
-        onClick={() => {
-          if (!manualRef.current) {
-            manualRef.current = Message.info({
-              icon: '🌊',
-              content: 'The waves lapping the shore endlessly',
-              duration: 0,
-            });
-          }
-        }}
-      >
-        Open
-      </Button>
-      <Button
-        onClick={() => {
-          if (manualRef.current) {
-            manualRef.current.destroy();
-            manualRef.current = null;
-          }
-        }}
-      >
-        Close
-      </Button>
-      <h3>DestroyAll</h3>
-      <p>Destroy all references at some time, e.g. a route change happens.</p>
-      <Button
-        onClick={() => {
-          Message.info({
-            icon: '🌙',
-            content: 'The signal disappears into the night',
-          });
-        }}
-      >
-        Click me
-      </Button>
-      <Button
-        onClick={() => {
-          Message.destroyAll();
-          manualRef.current = null;
-        }}
-      >
-        DestroyAll
-      </Button>
+      <h1>Message</h1>
+      <p>Message is used for push message notifications.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Method"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Customized Icon"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <Demo
+        title="Manual Close"
+        content={<Demo4 />}
+        code={demos['demo-4']}
+      />
+      <Demo
+        title="DestroyAll"
+        description="Destroy all references at some time, e.g. a route change happens."
+        content={<Demo5 />}
+        code={demos['demo-5']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

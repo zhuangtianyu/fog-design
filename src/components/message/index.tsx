@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
 import namespace from '@namespace';
@@ -10,6 +10,7 @@ import './index.less';
 const { prefix } = namespace;
 
 export interface MessageProps  {
+  /** --skip */
   className?: string;
   icon?: React.ReactNode;
   content?: React.ReactChild;
@@ -37,7 +38,7 @@ const ErrorIcon = () => <Icon type="close-circle-fill" color="var(--fog-danger-c
 const WarningIcon = () => <Icon type="sigh-circle-fill" color="var(--fog-warning-color)" />;
 const SuccessIcon = () => <Icon type="success-circle-fill" color="var(--fog-success-color)" />;
 
-const Message: MessageTypes = props => {
+export const Message: MessageTypes = props => {
   const { className, icon, content } = props;
 
   return (
