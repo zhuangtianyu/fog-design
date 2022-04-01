@@ -1,23 +1,25 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useControlled from '@hooks/useControlled';
-import SubMenu from './components/submenu';
-import MenuItemGroup from './components/menu-item-group';
-import MenuItem from './components/menu-item';
+import SubMenu, { SubMenuProps } from './components/submenu';
+import MenuItemGroup, { MenuItemGroupProps } from './components/menu-item-group';
+import MenuItem, { MenuItemProps } from './components/menu-item';
 import { MenuContext, renderChildren } from './utils';
 import './index.less';
 
+export {
+  SubMenuProps,
+  MenuItemGroupProps,
+  MenuItemProps,
+};
+
 export type ValueType = number | string | null | any;
 
-export interface MenuItemProps {
-  label?: string;
-  value: ValueType;
-  children?: React.ReactElement;
-}
-
 export interface MenuProps  {
+  /** --skip */
   className?: string;
+  /** --skip */
   style?: React.CSSProperties;
   value?: ValueType;
   defaultValue?: ValueType;
@@ -36,7 +38,7 @@ export interface MenuTypes extends React.FC<MenuProps> {
 
 const { prefix } = namespace;
 
-const Menu: MenuTypes = props => {
+export const Menu: MenuTypes = props => {
   const {
     className,
     style,
@@ -80,9 +82,7 @@ const Menu: MenuTypes = props => {
   );
 };
 
-Menu.defaultProps = {
-  style: {},
-};
+Menu.defaultProps = {};
 
 Menu.SubMenu = SubMenu;
 Menu.ItemGroup = MenuItemGroup;

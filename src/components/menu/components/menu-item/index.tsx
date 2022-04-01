@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import * as React from 'react';
+import { useContext } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import { MenuContext } from '../../utils';
@@ -10,12 +11,13 @@ export interface MenuItemProps {
   label?: string;
   value?: ValueType;
   children?: React.ReactElement | React.ReactElement[];
+  /** --skip */
   floorIndex?: number;
 }
 
 const { prefix } = namespace;
 
-const MenuItem: React.FC<MenuItemProps> = props => {
+export const MenuItem: React.FC<MenuItemProps> = props => {
   const {
     label,
     value,

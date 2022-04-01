@@ -1,4 +1,5 @@
-import React, { useState, useLayoutEffect, useRef, useMemo, useContext } from 'react';
+import * as React from 'react';
+import { useState, useLayoutEffect, useRef, useMemo, useContext } from 'react';
 import namespace from '@namespace';
 import Icon from '@components/icon';
 import { MenuContext, renderChildren } from '../../utils';
@@ -10,12 +11,13 @@ export interface SubMenuProps {
   label: string;
   value?: ValueType;
   children: React.ReactElement | React.ReactElement[];
+  /** --skip */
   floorIndex?: number;
 }
 
 const { prefix } = namespace;
 
-const SubMenu: React.FC<SubMenuProps> = props => {
+export const SubMenu: React.FC<SubMenuProps> = props => {
   const {
     label,
     value,

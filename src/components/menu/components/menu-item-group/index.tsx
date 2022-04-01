@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import namespace from '@namespace';
 import { renderChildren } from '../../utils';
 import './index.less';
@@ -9,12 +9,13 @@ export interface MenuItemGroupProps {
   label: string;
   value?: ValueType;
   children: React.ReactElement | React.ReactElement[];
+  /** --skip */
   floorIndex?: number;
 }
 
 const { prefix } = namespace;
 
-const MenuItemGroup: React.FC<MenuItemGroupProps> = props => {
+export const MenuItemGroup: React.FC<MenuItemGroupProps> = props => {
   const {
     label,
     value,

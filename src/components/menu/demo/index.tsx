@@ -1,44 +1,34 @@
 import React from 'react';
-import Menu from '@components/menu';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
 import './index.less';
 
-const { SubMenu, ItemGroup, Item } = Menu;
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.menu;
 
 const MenuDemo = () => {
 
   return (
     <div className="menu-demo">
-      <h2>Menu</h2>
-      <h3>Basic Usage</h3>
-      <Menu
-        style={{
-          width: 240,
-          borderRight: '1px solid var(--fog-border-color)',
-        }}
-        defaultOpens={['Navigation 1', 'Navigation 2', 'SubMenu']}
-        defaultValue="Option 1"
-      >
-        <SubMenu label="Navigation 1" key="Navigation 1">
-          <ItemGroup label="Group-1" key="Group-1">
-            <Item label="Option 1" key="Option 1" />
-            <Item label="Option 2" key="Option 2" />
-          </ItemGroup>
-          <ItemGroup label="Group-2" key="Group-2">
-            <Item label="Option 3" key="Option 3" />
-            <Item label="Option 4" key="Option 4" />
-          </ItemGroup>
-        </SubMenu>
-        <SubMenu label="Navigation 2" key="Navigation 2">
-          <Item label="Option 5" key="Option 5" />
-          <Item label="Option 6" key="Option 6" />
-          <SubMenu label="SubMenu" key="SubMenu">
-            <Item label="Option 7" key="Option 7" />
-            <Item label="Option 8" key="Option 8" />
-          </SubMenu>
-        </SubMenu>
-        <Item label="Option 9" key="Option 9" />
-        <Item label="Option 10" key="Option 10" />
-      </Menu>
+      <h1>Menu</h1>
+      <p>Menu is used to display the collection of entries.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <h2>API</h2>
+      <h3>Menu</h3>
+      <Table columns={apiColumns} data={apiRows.default} />
+      <h3>Menu.Item</h3>
+      <Table columns={apiColumns} data={apiRows['menu-item']} />
+      <h3>Menu.ItemGroup</h3>
+      <Table columns={apiColumns} data={apiRows['menu-item-group']} />
+      <h3>Menu.SubMenu</h3>
+      <Table columns={apiColumns} data={apiRows.submenu} />
     </div>
   );
 };
