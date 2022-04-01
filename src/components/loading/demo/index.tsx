@@ -1,54 +1,45 @@
-import React, { useState } from 'react';
-import Loading from '@components/loading';
-import Switch from '@components/switch';
-import Icon from '@components/icon';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
+import Demo4 from './demo-4';
 import './index.less';
 
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.loading;
+
 const LoadingDemo = () => {
-  const [loading, setLoading] = useState<boolean>(true);
-  const [tipLoading, setTipLoading] = useState<boolean>(true);
-  const [iconLoading, setIconLoading] = useState<boolean>(true);
 
   return (
     <div className="loading-demo">
-      <h2>Loading</h2>
-      <h3>Basic Usage</h3>
-      <Loading />
-      <h3>Container Usage</h3>
-      <Loading
-        wrapperClassName="loading-container"
-        loading={loading}
-      >
-        <div className="loading-content">
-          <div className="date">2022-03-01</div>
-          <div>Dancing by the sea till night falls.</div>
-        </div>
-      </Loading>
-      <Switch checked={loading} onChange={setLoading} />
-      <h3>Tip</h3>
-      <Loading
-        wrapperClassName="loading-container"
-        loading={tipLoading}
-        tip="Loading..."
-      >
-        <div className="loading-content">
-          <div className="date">2022-03-01</div>
-          <div>Dancing by the sea till night falls.</div>
-        </div>
-      </Loading>
-      <Switch checked={tipLoading} onChange={setTipLoading} />
-      <h3>Customized Icon</h3>
-      <Loading
-        wrapperClassName="loading-container"
-        loading={iconLoading}
-        icon={<Icon type="loading-3/4" />}
-      >
-        <div className="loading-content">
-          <div className="date">2022-03-01</div>
-          <div>Dancing by the sea till night falls.</div>
-        </div>
-      </Loading>
-      <Switch checked={iconLoading} onChange={setIconLoading} />
+      <h1>Loading</h1>
+      <p>Loading is used to indicate the in progress state.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Container Usage"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Tip"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <Demo
+        title="Customized Icon"
+        content={<Demo4 />}
+        code={demos['demo-4']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

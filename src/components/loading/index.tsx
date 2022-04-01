@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';
@@ -6,7 +6,7 @@ import './index.less';
 
 const { prefix } = namespace;
 
-interface LoadingProps {
+export interface LoadingProps {
   className?: string;
   wrapperClassName?: string;
   loading?: boolean;
@@ -16,7 +16,7 @@ interface LoadingProps {
   children?: React.ReactElement;
 }
 
-const Loading: React.FC<LoadingProps> = props => {
+export const Loading: React.FC<LoadingProps> = props => {
   const {
     className,
     wrapperClassName,
