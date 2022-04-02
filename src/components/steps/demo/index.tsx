@@ -1,57 +1,33 @@
 import React from 'react';
-import Steps from '@components/steps';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
 import './index.less';
 
-const steps1 = [
-  {
-    value: 1,
-    title: 'Title',
-    description: 'Description',
-  },
-  {
-    value: 2,
-    title: 'Title',
-    description: 'Description',
-  },
-  {
-    value: 3,
-    title: 'Title',
-    description: 'Description',
-  },
-  {
-    value: 4,
-    title: 'Title',
-    description: 'Description',
-  },
-];
-
-const steps2 = [
-  {
-    value: 1,
-    title: 'S1',
-    description: 'Harry Potter and the Philosopher\'s Stone',
-  },
-  {
-    value: 2,
-    title: 'S2',
-    description: 'Harry Potter and the Chamber of Secrets',
-  },
-  {
-    value: 3,
-    title: 'S3',
-    description: 'Harry Potter and the Prisoner of Azkaban',
-  },
-];
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.steps;
 
 const StepsDemo = () => {
 
   return (
-    <div className="steps-demo">
-      <h2>Steps</h2>
-      <h3>Basic Usage</h3>
-      <Steps defaultValue={3} steps={steps1} />
-      <h3>Vertical</h3>
-      <Steps defaultValue={3} steps={steps2} vertical />
+    <div className="button-demo">
+      <h1>Steps</h1>
+      <p>Steps is used to display the current step.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Vertical"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

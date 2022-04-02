@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useControlled from '@hooks/useControlled';
@@ -13,6 +14,7 @@ export interface Step {
 }
 
 export interface StepsProps  {
+  /** --skip */
   className?: string;
   steps: Step[];
   value?: ValueType;
@@ -23,8 +25,9 @@ export interface StepsProps  {
 
 const { prefix } = namespace;
 
-const Steps: React.FC<StepsProps> = props => {
+export const Steps: React.FC<StepsProps> = props => {
   const {
+    /** --skip */
     className,
     steps,
     value: valueFromProps,
