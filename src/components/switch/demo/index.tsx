@@ -1,38 +1,39 @@
-import React, { useState } from 'react';
-import Switch from '@components/switch';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
 import './index.less';
 
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.switch;
+
 const SwitchDemo = () => {
-  const [checked, setChecked] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [loadingChecked, setLoadingChecked] = useState<boolean>(false);
-
-  const handleLoadingCheckChange = nextChecked => {
-    setLoading(true);
-
-    let timer = setTimeout(() => {
-      setLoading(false);
-      setLoadingChecked(nextChecked);
-
-      timer = null;
-    }, 1000);
-  };
 
   return (
     <div className="switch-demo">
-      <h2>Switch</h2>
-      <h3>Basic Usage</h3>
-      <Switch checked={checked} onChange={setChecked} />
-      <Switch checked={checked} disabled />
-      <h3>Uncontrolled</h3>
-      <Switch />
-      <Switch defaultChecked />
-      <h3>Loading</h3>
-      <Switch
-        loading={loading}
-        checked={loadingChecked}
-        onChange={handleLoadingCheckChange}
+      <h1>Switch</h1>
+      <p>Switch is used to check or uncheck item.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
       />
+      <Demo
+        title="Uncontrolled"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Loading"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

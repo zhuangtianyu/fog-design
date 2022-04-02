@@ -1,11 +1,13 @@
-import React, { useEffect, useRef } from 'react';
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';
 import useControlled from '@hooks/useControlled';
 import './index.less';
 
-interface SwitchProps  {
+export interface SwitchProps  {
+  /** --skip */
   className?: string;
   checked?: boolean;
   defaultChecked?: boolean;
@@ -16,7 +18,7 @@ interface SwitchProps  {
 
 const { prefix } = namespace;
 
-const Switch: React.FC<SwitchProps> = props => {
+export const Switch: React.FC<SwitchProps> = props => {
   const {
     className,
     checked: checkedFromProps,
