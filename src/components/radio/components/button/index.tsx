@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Radio from '@components/radio';
@@ -11,6 +11,7 @@ export type ValueType = string;
 export type ButtonStyle = 'outline' | 'solid';
 
 export interface RadioButtonProps {
+  /** --skip */
   className?: string;
   value?: ValueType;
   checked?: boolean;
@@ -20,7 +21,7 @@ export interface RadioButtonProps {
   onClick?: React.MouseEventHandler<HTMLInputElement>;
 }
 
-const RadioButton: React.FC<RadioButtonProps> = props => {
+export const RadioButton: React.FC<RadioButtonProps> = props => {
   const {
     className,
     value,

@@ -1,55 +1,50 @@
-import React, { useState } from 'react';
-import Radio from '@components/radio';
-import Switch from '@components/switch';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
+import Demo3 from './demo-3';
+import Demo4 from './demo-4';
 import './index.less';
 
-const { Group, Button } = Radio;
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.radio;
 
 const RadioDemo = () => {
-  const [disabled, setDisabled] = useState<boolean>(false);
-  const [groupDisabled, setGroupDisabled] = useState<boolean>(false);
-  const [outlineDisabled, setOutlineDisabled] = useState<boolean>(false);
-  const [solidDisabled, setSolidDisabled] = useState<boolean>(false);
 
   return (
     <div className="radio-demo">
-      <h2>Radio</h2>
-      <h3>Basic Usage</h3>
-      <Radio checked>Cola</Radio>
-      <Radio>Fanta</Radio>
-      <h3>Disabled</h3>
-      <Radio disabled={disabled} checked>Cola</Radio>
-      <Radio disabled={disabled}>Fanta</Radio>
-      <Switch checked={disabled} onChange={setDisabled} />
-      <h3>Group</h3>
-      <Group defaultValue="Cola" disabled={groupDisabled}>
-        <Radio value="Cola" key="Cola">Cola</Radio>
-        <Radio value="Pepsi" key="Pepsi" disabled>Pepsi</Radio>
-        <Radio value="Fanta" key="Fanta">Fanta</Radio>
-        <Radio value="Sprite" key="Sprite">Sprite</Radio>
-      </Group>
-      <Switch checked={groupDisabled} onChange={setGroupDisabled} />
-      <h3>Button Group</h3>
-      <p>
-        <code>buttonStyle="outline"</code>
-      </p>
-      <Group defaultValue="Cola" disabled={outlineDisabled}>
-        <Button value="Cola" key="Cola">Cola</Button>
-        <Button value="Pepsi" key="Pepsi" disabled>Pepsi</Button>
-        <Button value="Fanta" key="Fanta">Fanta</Button>
-        <Button value="Sprite" key="Sprite">Sprite</Button>
-      </Group>
-      <Switch checked={outlineDisabled} onChange={setOutlineDisabled} />
-      <p>
-        <code>buttonStyle="solid"</code>
-      </p>
-      <Group defaultValue="Cola" buttonStyle="solid" disabled={solidDisabled}>
-        <Button value="Cola" key="Cola">Cola</Button>
-        <Button value="Pepsi" key="Pepsi" disabled>Pepsi</Button>
-        <Button value="Fanta" key="Fanta">Fanta</Button>
-        <Button value="Sprite" key="Sprite">Sprite</Button>
-      </Group>
-      <Switch checked={solidDisabled} onChange={setSolidDisabled} />
+      <h1>Radio</h1>
+      <p>Radio is used to select unique value.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Disabled"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <Demo
+        title="Group"
+        content={<Demo3 />}
+        code={demos['demo-3']}
+      />
+      <Demo
+        title="Button Group"
+        content={<Demo4 />}
+        code={demos['demo-4']}
+      />
+      <h2>API</h2>
+      <h3>Radio</h3>
+      <Table columns={apiColumns} data={apiRows.default} />
+      <h3>Radio.Group</h3>
+      <Table columns={apiColumns} data={apiRows.group} />
+      <h3>Radio.Button</h3>
+      <Table columns={apiColumns} data={apiRows.button} />
     </div>
   );
 };

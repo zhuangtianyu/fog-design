@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Group from './components/group';
@@ -12,6 +12,7 @@ const { prefix } = namespace;
 export type ValueType = string;
 
 export interface RadioProps {
+  /** --skip */
   className?: string;
   value?: ValueType;
   checked?: boolean;
@@ -26,7 +27,7 @@ export interface RadioTypes extends React.FC<RadioProps> {
   Button: typeof Button;
 }
 
-const Radio: RadioTypes = props => {
+export const Radio: RadioTypes = props => {
   const {
     className,
     value,

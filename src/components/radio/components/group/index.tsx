@@ -1,4 +1,5 @@
-import React, { useMemo } from 'react';
+import * as React from 'react';
+import { useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Radio from '@components/radio';
@@ -23,7 +24,7 @@ export interface RadioGroupProps {
   children?: React.ReactElement[];
 }
 
-const RadioGroup: React.FC<RadioGroupProps> = props => {
+export const RadioGroup: React.FC<RadioGroupProps> = props => {
   const {
     className,
     style,
