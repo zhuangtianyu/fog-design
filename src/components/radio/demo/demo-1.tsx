@@ -1,6 +1,5 @@
 import React from 'react';
 import Radio from '@components/radio';
-import './index.less';
 
 const Demo = () => {
 

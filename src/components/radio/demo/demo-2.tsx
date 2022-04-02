@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Radio from '@components/radio';
 import Switch from '@components/switch';
-import './index.less';
 
 const Demo = () => {
   const [disabled, setDisabled] = useState<boolean>(false);

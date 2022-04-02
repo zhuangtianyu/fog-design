@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Trigger from '@components/trigger';
@@ -15,7 +16,9 @@ export type ValueType = number | string | null | any;
 export type SelectValueType = ValueType | ValueType[];
 
 export interface SelectProps {
+  /** --skip */
   className?: string;
+  /** --skip */
   style?: React.CSSProperties;
   value?: SelectValueType;
   defaultValue?: SelectValueType;
@@ -33,7 +36,7 @@ export interface SelectTypes extends React.FC<SelectProps> {
   Option: typeof Option;
 }
 
-const Select: SelectTypes = props => {
+export const Select: SelectTypes = props => {
   const {
     className,
     style,
