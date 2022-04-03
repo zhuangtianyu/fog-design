@@ -1,28 +1,27 @@
 import React from 'react';
-import Tabs from '@components/tabs';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
 import './index.less';
 
-const { TabPane } = Tabs;
-
-const tabs = [
-  { label: '🚊 Line 4', value: 4, content: 'The center of the universe is here, I heard.' },
-  { label: '🚊 Line 10', value: 10, content: 'Transfer a subway, transfer a station.' },
-  { label: '🚊 Line 13', value: 13, content: 'Happy hot pot, happy day and night.' },
-];
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.tabs;
 
 const TabsDemo = () => {
 
   return (
     <div className="tabs-demo">
-      <h2>Tabs</h2>
-      <h3>Basic Usage</h3>
-      <Tabs defaultValue={tabs[0].value}>
-        {tabs.map(item => (
-          <TabPane key={item.value} label={item.label} value={item.value}>
-            {item.content}
-          </TabPane>
-        ))}
-      </Tabs>
+      <h1>Tabs</h1>
+      <p>Tabs is used to display a set of navigation options.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

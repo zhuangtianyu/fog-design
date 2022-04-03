@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useControlled from '@hooks/useControlled';
@@ -14,9 +15,10 @@ export interface TabPaneProps {
   children?: React.ReactChild;
 }
 
-export const TabPane = (props: TabPaneProps) => null;
+const TabPane = (props: TabPaneProps) => null;
 
 export interface TabsProps  {
+  /** --skip */
   className?: string;
   value?: ValueType;
   defaultValue?: ValueType;
@@ -33,7 +35,7 @@ const { prefix } = namespace;
 
 const initialInkStyle = { left: 0, width: 0 };
 
-const Tabs: TabsTypes = props => {
+export const Tabs: TabsTypes = props => {
   const {
     className,
     value: valueFromProps,
