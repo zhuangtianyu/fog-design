@@ -59,7 +59,7 @@ const getDemos = componentName => {
 
   return fs
     .readdirSync(componentDemoDir)
-    .filter(filename => filename.startsWith('demo-'))
+    .filter(filename => filename.startsWith('demo-') && filename.endsWith('.tsx'))
     .reduce((accumulator, filename) => {
       const demoName = path.basename(filename, '.tsx');
       const demoContent = fs.readFileSync(path.join(componentDemoDir, filename)).toString();

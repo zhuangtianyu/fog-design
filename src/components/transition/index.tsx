@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import * as React from 'react';
+import { useState, useEffect } from 'react';
 import classnames from 'classnames';
 import { setRafTimeout, cancelRafTimeout, isFunction } from '@utils/index';
 
@@ -16,7 +17,7 @@ export interface TransitionProps  {
 
 export type Stage = 'beforeEnter' | 'entering' | 'entered' | 'leaving';
 
-const Transition: React.FC<TransitionProps> = props => {
+export const Transition: React.FC<TransitionProps> = props => {
   const {
     visible: visibleFromProps,
     timeout,
