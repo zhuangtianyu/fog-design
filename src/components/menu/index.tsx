@@ -2,17 +2,11 @@ import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useControlled from '@hooks/useControlled';
-import SubMenu, { SubMenuProps } from './components/submenu';
-import MenuItemGroup, { MenuItemGroupProps } from './components/menu-item-group';
-import MenuItem, { MenuItemProps } from './components/menu-item';
+import SubMenu from './components/submenu';
+import MenuItemGroup from './components/menu-item-group';
+import MenuItem from './components/menu-item';
 import { MenuContext, renderChildren } from './utils';
 import './index.less';
-
-export {
-  SubMenuProps,
-  MenuItemGroupProps,
-  MenuItemProps,
-};
 
 export type ValueType = number | string | null | any;
 

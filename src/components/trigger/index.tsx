@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useLayoutEffect, useMemo, useRef, cloneElement } from 'react';
+import * as React from 'react';
+import { useState, useEffect, useLayoutEffect, useMemo, useRef, cloneElement } from 'react';
 import ReactDOM from 'react-dom';
 import namespace from '@namespace';
 import classnames from 'classnames';
@@ -27,7 +28,7 @@ type TriggerPlacement =
   'rightTop' | 'right' | 'rightBottom' |
   'bottomLeft' | 'bottom' | 'bottomRight';
 
-interface TriggerProps {
+export interface TriggerProps {
   visible?: boolean;
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
@@ -42,7 +43,7 @@ interface TriggerProps {
   getPopupMountNode?: () => HTMLElement;
 }
 
-const Trigger: React.FC<TriggerProps> = props => {
+export const Trigger: React.FC<TriggerProps> = props => {
   const {
     visible: visibleFromProps,
     defaultVisible: defaultVisibleFromProps,
