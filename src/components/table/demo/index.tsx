@@ -1,149 +1,34 @@
 import React from 'react';
-import Table, { ColumnType } from '@components/table';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
 import './index.less';
 
-const columns1: ColumnType[] = [
-  {
-    key: 'id',
-    name: 'Line',
-    render: value => `Line ${value}`,
-  },
-  {
-    key: 'starting',
-    name: 'Starting',
-  },
-  {
-    key: 'terminal',
-    name: 'Terminal',
-  },
-];
-
-const data1 = [
-  {
-    id: 4,
-    starting: 'Anheqiao North',
-    terminal: 'Tiangongyuan',
-  },
-  {
-    id: 10,
-    starting: 'Suzhoujie',
-    terminal: 'Huoqiying',
-  },
-  {
-    id: 13,
-    starting: 'Xizhimen',
-    terminal: 'Dongzhimen',
-  },
-];
-
-const columns2: ColumnType[] = [
-  {
-    key: 'id',
-    name: 'No',
-    width: 100,
-    fixed: 'left',
-  },
-  {
-    key: 'name',
-    name: 'Name',
-    width: 160,
-    fixed: 'left',
-  },
-  {
-    key: 'math',
-    name: 'Math',
-  },
-  {
-    key: 'program',
-    name: 'Program',
-  },
-  {
-    key: 'physics',
-    name: 'Physics',
-  },
-  {
-    key: 'psychology',
-    name: 'Psychology',
-  },
-  {
-    key: 'philosophy',
-    name: 'Philosophy',
-  },
-  {
-    key: 'natural',
-    name: 'Natural',
-  },
-  {
-    key: 'music',
-    name: 'Music',
-  },
-  {
-    key: 'total',
-    name: 'Total',
-    fixed: 'right',
-  },
-];
-
-const data2 = [
-  {
-    id: 1001,
-    name: 'A',
-    math: 100,
-    program: 100,
-    physics: 100,
-    psychology: 100,
-    philosophy: 100,
-    natural: 100,
-    music: 100,
-    total: 700,
-  },
-  {
-    id: 1002,
-    name: 'Dan',
-    math: 100,
-    program: 100,
-    physics: 100,
-    psychology: 100,
-    philosophy: 100,
-    natural: 100,
-    music: 100,
-    total: 700,
-  },
-  {
-    id: 1003,
-    name: 'Evan',
-    math: 100,
-    program: 100,
-    physics: 100,
-    psychology: 100,
-    philosophy: 100,
-    natural: 100,
-    music: 100,
-    total: 700,
-  },
-  {
-    id: 1004,
-    name: 'Johnson',
-    math: 100,
-    program: 100,
-    physics: 100,
-    psychology: 100,
-    philosophy: 100,
-    natural: 100,
-    music: 100,
-    total: 700,
-  },
-];
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.table;
 
 const TableDemo = () => {
 
   return (
     <div className="table-demo">
-      <h2>Table</h2>
-      <h3>Basic Usage</h3>
-      <Table columns={columns1} data={data1} />
-      <h3>Fixed Column</h3>
-      <Table columns={columns2} data={data2} contentWidth={2000} />
+      <h1>Table</h1>
+      <p>Table is used to display a set of data horizontally.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Fixed Column"
+        description="Fixed column for better visuals."
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };

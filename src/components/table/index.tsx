@@ -1,4 +1,5 @@
-import React, { useState, useLayoutEffect, useMemo, useRef } from 'react';
+import * as React from 'react';
+import { useState, useLayoutEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useArray from '@hooks/useArray';
@@ -24,6 +25,7 @@ export interface ColumnType {
 }
 
 export interface TableProps {
+  /** --skip */
   className?: string;
   data?: RowType[];
   rowKey?: string;
@@ -37,7 +39,7 @@ export type FixedStyles = Record<string, React.CSSProperties>;
 
 const isUsableFixed = fixed => ['left', 'right'].includes(fixed);
 
-const Table: React.FC<TableProps> = props => {
+export const Table: React.FC<TableProps> = props => {
   const {
     className,
     rowKey,
