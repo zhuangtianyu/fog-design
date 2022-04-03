@@ -1,20 +1,21 @@
-import React from 'react';
+import * as React from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';
 import { isFunction } from '@utils/index';
 import './index.less';
 
-interface TagProps  {
+const { prefix } = namespace;
+
+export interface TagProps  {
+  /** --skip */
   className?: string;
   closable?: boolean;
   onClose?: (event: React.MouseEvent) => void;
   [propName: string]: any;
 }
 
-const { prefix } = namespace;
-
-const Tag: React.FC<TagProps> = props => {
+export const Tag: React.FC<TagProps> = props => {
   const {
     className,
     closable,

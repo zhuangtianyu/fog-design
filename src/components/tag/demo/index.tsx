@@ -1,32 +1,33 @@
-import React, { useEffect } from 'react';
-import Tag from '@components/tag';
-import Message from '@components/message';
+import React from 'react';
+import docsConfig from '@static/docs-config.json';
+import Table from '@components/table';
+import Demo from '@layouts/demo';
+import Demo1 from './demo-1';
+import Demo2 from './demo-2';
 import './index.less';
 
-const tags = ['React', 'Vue', 'Angular'];
+const { components, apiColumns } = docsConfig;
+const { demos, apiRows } = components.tag;
 
 const TagDemo = () => {
-  useEffect(() => Message.destroyAll, []);
 
   return (
     <div className="tag-demo">
-      <h2>Tag</h2>
-      <h3>Basic Usage</h3>
-      {tags.map(tag => (
-        <Tag key={tag}>
-          {tag}
-        </Tag>
-      ))}
-      <h3>Closable</h3>
-      {tags.map(tag => (
-        <Tag
-          key={tag}
-          closable
-          onClose={() => Message.success({ content: 'Tag closed!' })}
-        >
-          {tag}
-        </Tag>
-      ))}
+      <h1>Tag</h1>
+      <p>Tag is used to display the content properties.</p>
+      <h2>Demo</h2>
+      <Demo
+        title="Basic Usage"
+        content={<Demo1 />}
+        code={demos['demo-1']}
+      />
+      <Demo
+        title="Closable"
+        content={<Demo2 />}
+        code={demos['demo-2']}
+      />
+      <h2>API</h2>
+      <Table columns={apiColumns} data={apiRows.default} />
     </div>
   );
 };
