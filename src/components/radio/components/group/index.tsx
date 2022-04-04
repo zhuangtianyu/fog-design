@@ -5,6 +5,7 @@ import namespace from '@namespace';
 import Radio from '@components/radio';
 import RadioButton, { ButtonStyle } from '../button';
 import useControlled from '@hooks/useControlled';
+import { isFunction } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
@@ -55,14 +56,20 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
         childrenParsed.push(React.cloneElement(item, {
           checked: item.props.value === value,
           disabled: item.props.disabled || disabled,
-          onClick: handleRadioClick,
+          onClick: event => {
+            handleRadioClick(event);
+            isFunction(item.props.onClick) && item.props.onClick(event);
+          },
         }));
       }
       if (item.type === RadioButton) {
         childrenParsed.push(React.cloneElement(item, {
           checked: item.props.value === value,
           disabled: item.props.disabled || disabled,
-          onClick: handleRadioClick,
+          onClick: event => {
+            handleRadioClick(event);
+            isFunction(item.props.onClick) && item.props.onClick(event);
+          },
           buttonStyle,
         }));
       }

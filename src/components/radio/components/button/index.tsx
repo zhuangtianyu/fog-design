@@ -14,8 +14,10 @@ export interface RadioButtonProps {
   /** --skip */
   className?: string;
   value?: ValueType;
+  /** --skip */
   checked?: boolean;
   disabled?: boolean;
+  /** --skip */
   buttonStyle?: ButtonStyle;
   children?: React.ReactChild;
   onClick?: React.MouseEventHandler<HTMLInputElement>;
