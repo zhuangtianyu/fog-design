@@ -102,7 +102,7 @@ Message.info = (props: MessageMethodProps) => {
         entering={`${prefix}-message--entering`}
         entered={`${prefix}-message--entered`}
         leaving={`${prefix}-message--leaving`}
-        onLeft={() => {
+        afterLeave={() => {
           ReactDOM.unmountComponentAtNode(messageItemRoot);
           mountRoot.contains(messageItemRoot) && mountRoot.removeChild(messageItemRoot);
         }}

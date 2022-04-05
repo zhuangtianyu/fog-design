@@ -96,7 +96,7 @@ export const Drawer: React.FC<DrawerProps> = props => {
       entered={`${prefix}-drawer--entered`}
       leaving={`${prefix}-drawer--leaving`}
       unmountNodeAfterLeave={unmountNodeAfterLeave}
-      onLeft={() => {
+      afterLeave={() => {
         isFunction(afterClose) && afterClose();
         setDelayedVisible(false);
       }}

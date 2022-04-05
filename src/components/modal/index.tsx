@@ -133,7 +133,7 @@ export const Modal: ModalTypes = props => {
       entered={`${prefix}-modal--entered`}
       leaving={`${prefix}-modal--leaving`}
       unmountNodeAfterLeave={unmountNodeAfterLeave}
-      onLeft={afterClose}
+      afterLeave={afterClose}
     >
       <div
         className={classnames(`${prefix}-modal`, className)}

@@ -12,7 +12,7 @@ export interface TransitionProps  {
   entered?: string;
   leaving?: string;
   children?: React.ReactElement;
-  onLeft?: () => void;
+  afterLeave?: () => void;
 }
 
 export type Stage = 'beforeEnter' | 'entering' | 'entered' | 'leaving';
@@ -23,7 +23,7 @@ export const Transition: React.FC<TransitionProps> = props => {
     timeout,
     unmountNodeAfterLeave,
     children,
-    onLeft,
+    afterLeave,
   } = props;
 
   const [stage, setStage] = useState<Stage>('beforeEnter');
@@ -46,7 +46,7 @@ export const Transition: React.FC<TransitionProps> = props => {
       timers.push(setRafTimeout(() => {
         setVisible(false);
         setStage('beforeEnter');
-        isFunction(onLeft) && onLeft();
+        isFunction(afterLeave) && afterLeave();
       }, timeout));
     }
 
