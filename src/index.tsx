@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter, Routes, Route, Link, NavLink, Navigate, useParams } from 'react-router-dom';
 import Switch from '@components/switch';
@@ -6,6 +6,7 @@ import Select from '@components/select';
 import Icon from '@components/icon';
 import Drawer from '@components/drawer';
 import Menu from '@components/menu';
+import Loading from '@components/loading';
 import useTheme from '@hooks/useTheme';
 import { themes, themeNames } from '@constants/themes';
 import { kebabCaseToPascalCase, isMobile } from '@utils/index';
@@ -41,6 +42,11 @@ const components: string[] = [
   'trigger',
 ];
 
+const componentDemoMap = components.reduce((accumulator, componentName) =>({
+  ...accumulator,
+  [componentName]: lazy(() => import(`@components/${componentName}/demo`)),
+}), {});
+
 const AppMenu = ({ className }) => {
   const { name } = useParams();
 
@@ -72,22 +78,30 @@ const GithubLink = () => (
   </a>
 );
 
-const Demo = () => {
-  const { name } = useParams();
-  const [component, setComponent] = useState(null);
+const Fallback = () => (
+  <div className="app__fallback">
+    <Loading />
+  </div>
+);
 
-  useEffect(() => {
-    if (name) {
-      import(`@components/${name}/demo`)
-        .then(setComponent)
-        .catch(error => {
-          setComponent({ default: () => <span>{error.message}</span> });
-        });
-    }
-  }, [name]);
+const AppRoutes = () => (
+  <Suspense fallback={<Fallback />}>
+    <Routes>
+      {components.map(componentName => {
+        const ComponentDemo = componentDemoMap[componentName];
 
-  return component ? <component.default /> : null;
-};
+        return (
+          <Route
+            key={componentName}
+            path={componentName}
+            element={<ComponentDemo />}
+          />
+        );
+      })}
+      <Route path="*" element={<Navigate to="/button" />} />
+    </Routes>
+  </Suspense>
+);
 
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);
@@ -201,10 +215,7 @@ const App = () => {
               </Routes>
             )}
             <div className="app__content">
-              <Routes>
-                <Route path="/:name" element={<Demo />} />
-                <Route path="*" element={<Navigate to="/button" />} />
-              </Routes>
+              <AppRoutes />
             </div>
           </div>
         </div>
