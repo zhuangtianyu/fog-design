@@ -149,14 +149,35 @@
 
   .@{prefix}-icon {
     vertical-align: -0.13em;
+  }
 
-    &:first-child {
-      margin-right: 0.52em;
-    }
+  &--icon-isolated {
+    padding: 4px;
+    width: 32px;
+    height: 32px;
+  }
 
-    &:last-child {
-      margin-left: 0.52em;
-    }
+  &--icon-isolated .@{prefix}-icon {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  &:not(&--icon-isolated) .@{prefix}-icon:first-child {
+    margin-right: 0.52em;
+  }
+
+  &:not(&--icon-isolated) .@{prefix}-icon:last-child {
+    margin-left: 0.52em;
+  }
+
+  &--round {
+    border-radius: 16px;
+  }
+
+  &--circle {
+    padding: 4px;
+    min-width: 32px;
+    border-radius: 16px;
   }
 
   @keyframes spin {
