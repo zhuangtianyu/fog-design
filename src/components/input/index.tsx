@@ -20,6 +20,7 @@ export interface InputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'pref
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   clearable?: boolean;
+  placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
 }
@@ -35,6 +36,7 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
     clearable: clearableFromProps,
+    placeholder,
     disabled,
     readOnly,
     prefix,
@@ -73,10 +75,11 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
         suffix={suffix}
         onClear={handleWrapperClear}
         onClick={() => inputRef.current.focus()}
+        {...restProps}
       >
         {InputElement}
       </InputWrapper>
-    : InputElement;
+    : React.cloneElement(InputElement, restProps);
 
   return getWrappedInput(
     <input
@@ -85,10 +88,10 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
       value={value || ''}
       disabled={disabled}
       readOnly={readOnly}
+      placeholder={placeholder}
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       onChange={onChange}
-      {...restProps}
     />
   );
 }) as InputTypes;

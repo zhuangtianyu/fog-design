@@ -18,6 +18,7 @@ export interface InputWrapperProps {
   addonAfter?: React.ReactNode;
   onClear?: React.MouseEventHandler<HTMLDivElement>;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  [propName: string]: any;
 }
 
 const InputWrapper: React.FC<InputWrapperProps> = props => {
@@ -34,6 +35,7 @@ const InputWrapper: React.FC<InputWrapperProps> = props => {
     addonAfter,
     onClear,
     onClick,
+    ...restProps
   } = props;
 
   return (
@@ -45,6 +47,7 @@ const InputWrapper: React.FC<InputWrapperProps> = props => {
         [`${prefixClassName}-input-wrapper--readOnly`]: readOnly,
       })}
       onClick={onClick}
+      {...restProps}
     >
       {addonBefore && (
         <div className={`${prefixClassName}-input-wrapper__before`}>

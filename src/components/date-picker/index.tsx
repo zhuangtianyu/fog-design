@@ -31,36 +31,42 @@ const { prefix } = namespace;
 type ModeType = 'date' | 'month' | 'year';
 
 interface DatePickerProps  {
+  /** --skip */
   className?: string;
-  placeholder?: string;
+  /** --skip */
+  style?: React.CSSProperties;
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
   open?: boolean;
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
+  placeholder?: string;
   format?: string;
   disabled?: boolean;
   disabledDate?: (value: number) => boolean;
   mode?: ModeType;
   renderFooter?: () => React.ReactElement;
+  clearable?: boolean;
 }
 
 export const DatePicker: React.FC<DatePickerProps> = props => {
   const {
     className,
-    placeholder,
+    style,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
     open: openFromProps,
     defaultOpen: defaultOpenFromProps,
     onOpenChange: onOpenChangeFromProps,
+    placeholder,
     format,
     disabled,
     disabledDate,
     renderFooter,
     mode,
+    clearable,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -74,6 +80,8 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
     defaultValue: defaultOpenFromProps,
     onChange: onOpenChangeFromProps,
   });
+
+  const [entered, setEntered] = useState<boolean>(false);
 
   // panelValue is zero o'clock on the first day of the panel month
   const [panelValue, setPanelValue] = useState<number>(undefined);
@@ -156,6 +164,11 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
     }
   };
 
+  const handleClear = event => {
+    onChange(null);
+    event.stopPropagation();
+  };
+
   const popup = (
     <div
       className={`${prefix}-date-picker__popup`}
@@ -200,9 +213,12 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
   );
 
   return (
-    <div className={classnames(`${prefix}-date-picker`, className, {
-      [`${prefix}-date-picker--open`]: open,
-    })}>
+    <div
+      className={classnames(`${prefix}-date-picker`, className, {
+        [`${prefix}-date-picker--open`]: open,
+      })}
+      style={style}
+    >
       <Trigger
         visible={open}
         onVisibleChange={onOpenChange}
@@ -222,9 +238,19 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
             ref={inputRef}
             value={inputValue}
             placeholder={placeholder}
-            suffix={<Icon type="calendar" />}
+            suffix={
+              value && clearable && !disabled && entered
+                ? <Icon
+                    className={`${prefix}-date-picker__clear`}
+                    type="close-circle-fill"
+                    onClick={handleClear}
+                  />
+                : <Icon type="calendar" />
+            }
             disabled={disabled}
             readOnly
+            onMouseEnter={() => setEntered(true)}
+            onMouseLeave={() => setEntered(false)}
           />
         </div>
       </Trigger>
@@ -234,6 +260,7 @@ export const DatePicker: React.FC<DatePickerProps> = props => {
 
 DatePicker.defaultProps = {
   mode: 'date',
+  clearable: true,
 };
 
 export default DatePicker;
