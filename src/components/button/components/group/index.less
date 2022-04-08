@@ -1,0 +1,48 @@
+.@{prefix}-button-group {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: inline-block;
+
+  .@{prefix}-button {
+    position: relative;
+    margin-left: -1px;
+
+    &:not([disabled]) {
+      z-index: 1;
+    }
+
+    &:not([disabled]):hover,
+    &:not([disabled]):focus {
+      z-index: 2;
+    }
+
+    &:not([disabled]).@{prefix}-button--primary {
+      z-index: 3;
+    }
+
+    &:not([disabled]).@{prefix}-button--primary + .@{prefix}-button--primary:not([disabled]) {
+      border-left-color: var(--fog-primary-color-hover);
+    }
+
+    &:first-child {
+      margin-left: 0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:last-child {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(&:first-child):not(&:last-child) {
+      border-radius: 0;
+    }
+  }
+}

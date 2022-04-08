@@ -3,6 +3,7 @@ import { forwardRef, HTMLAttributes, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Icon from '@components/icon';
+import Group from './components/group';
 import './index.less';
 
 export type ButtonType = 'primary' | 'dashed' | 'link' | 'text';
@@ -25,9 +26,13 @@ export interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   [propName: string]: any;
 }
 
+export interface ButtonTypes extends React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>> {
+  Group: typeof Group;
+}
+
 const { prefix } = namespace;
 
-export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+export const Button: ButtonTypes = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
   const {
     className,
     type,
@@ -89,6 +94,8 @@ export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, Butto
       {children}
     </button>
   );
-});
+}) as ButtonTypes;
+
+Button.Group = Group;
 
 export default Button;

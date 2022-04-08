@@ -8,6 +8,7 @@ import Demo3 from './demo-3';
 import Demo4 from './demo-4';
 import Demo5 from './demo-5';
 import Demo6 from './demo-6';
+import Demo7 from './demo-7';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -52,9 +53,15 @@ const ButtonDemo = () => {
       />
       <Demo
         title="Shape"
-        description="Declare shape to adapt to different scenes."
+        description="Use shape to adapt to different scenes."
         content={<Demo6 />}
         code={demos['demo-6']}
+      />
+      <Demo
+        title="Group"
+        description="Use group to make a button group."
+        content={<Demo7 />}
+        code={demos['demo-7']}
       />
       <h2>API</h2>
       <Table columns={apiColumns} data={apiRows.default} />
