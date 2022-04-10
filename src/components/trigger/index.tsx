@@ -251,10 +251,9 @@ export const Trigger: React.FC<TriggerProps> = props => {
         visible && onVisibleChange(false); // switch visible to false
       };
 
-      // handle click event in capture phase (in case of children updated)
-      document.addEventListener('click', handleClick, true);
+      document.addEventListener('click', handleClick);
 
-      return () => document.removeEventListener('click', handleClick, true);
+      return () => document.removeEventListener('click', handleClick);
     }
   }, [visible, containerNode, trigger]);
 

@@ -54,14 +54,20 @@ const DatePanel: React.FC<DatePanelProps> = props => {
           <Button
             className={`${prefix}-date-picker__overview-item`}
             type="link"
-            onClick={onMonthClick}
+            onClick={event => {
+              event.stopPropagation();
+              onMonthClick();
+            }}
           >
             {MONTHS[timestampToDate(value).monthIndex]}
           </Button>
           <Button
             className={`${prefix}-date-picker__overview-item`}
             type="link"
-            onClick={onYearClick}
+            onClick={event => {
+              event.stopPropagation();
+              onYearClick();
+            }}
           >
             {timestampToDate(value).YYYY}
           </Button>

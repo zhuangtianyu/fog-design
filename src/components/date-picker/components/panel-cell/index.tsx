@@ -18,7 +18,7 @@ export interface CellType {
 }
 
 export interface PanelCellProps extends CellType {
-  onClick: () => void;
+  onClick: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const PanelCell: React.FC<PanelCellProps> = props => {
@@ -48,7 +48,10 @@ const PanelCell: React.FC<PanelCellProps> = props => {
       })}
       key={value}
       title={title}
-      onClick={onClick}
+      onClick={event => {
+        event.stopPropagation();
+        onClick(event);
+      }}
     >
       <div className={`${prefix}-date-picker__cell-content`}>
         {content}
