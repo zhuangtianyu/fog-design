@@ -8,6 +8,7 @@ import Icon from '@components/icon';
 import DatePanel from './components/date-panel';
 import YearPanel from './components/year-panel';
 import MonthPanel from './components/month-panel';
+import RangePicker from './components/range-picker';
 import useControlled from '@hooks/useControlled';
 import { setRafTimeout } from '@utils/index';
 import {
@@ -30,7 +31,7 @@ const { prefix } = namespace;
 
 type ModeType = 'date' | 'month' | 'year';
 
-interface DatePickerProps  {
+export interface DatePickerProps  {
   /** --skip */
   className?: string;
   /** --skip */
@@ -50,7 +51,11 @@ interface DatePickerProps  {
   clearable?: boolean;
 }
 
-export const DatePicker: React.FC<DatePickerProps> = props => {
+export interface DatePickerTypes extends React.FC<DatePickerProps> {
+  RangePicker: typeof RangePicker;
+}
+
+export const DatePicker: DatePickerTypes = props => {
   const {
     className,
     style,
@@ -262,5 +267,7 @@ DatePicker.defaultProps = {
   mode: 'date',
   clearable: true,
 };
+
+DatePicker.RangePicker = RangePicker;
 
 export default DatePicker;

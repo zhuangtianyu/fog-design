@@ -1,0 +1,49 @@
+.@{prefix}-range-picker {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  display: block;
+
+  .@{prefix}-input-wrapper {
+    width: 300px;
+  }
+
+  &__popup {
+    width: 600px;
+    display: flex;
+    align-items: flex-start;
+  }
+
+  &__panel {
+    width: 50%;
+  }
+
+  &__connector {
+    padding: 0 8px;
+  }
+
+  &__popup--before-enter {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+
+  &__popup--entering {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--entered {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+
+  &__popup--leaving {
+    transform: scaleY(0);
+    opacity: 0;
+  }
+}

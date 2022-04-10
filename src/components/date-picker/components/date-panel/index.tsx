@@ -12,6 +12,7 @@ import './index.less';
 const { prefix } = namespace;
 
 interface DatePanelProps  {
+  className?: string;
   value: number;
   list: CellType[];
   onLastYearClick: () => void;
@@ -26,6 +27,7 @@ interface DatePanelProps  {
 
 const DatePanel: React.FC<DatePanelProps> = props => {
   const {
+    className,
     value,
     list,
     onLastYearClick,
@@ -42,6 +44,7 @@ const DatePanel: React.FC<DatePanelProps> = props => {
     <div className={classnames(
       `${prefix}-date-picker__panel`,
       `${prefix}-date-picker__date-panel`,
+      className,
     )}>
       <div className={`${prefix}-date-picker__header`}>
         <div className={`${prefix}-date-picker__trigger`} onClick={onLastYearClick}>
