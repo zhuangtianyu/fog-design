@@ -7,35 +7,49 @@
     box-sizing: border-box;
   }
 
-  padding: 0 8px;
   display: inline-block;
+  vertical-align: middle;
+  padding: 0 8px;
   font-size: 0;
-  line-height: 22px;
   border: 1px solid var(--fog-border-color);
   border-radius: 2px;
   background-color: var(--fog-background-color);
 
-  &--closable {
-    padding-right: 0;
-  }
-
-  &__text,
-  &__close {
+  > span,
+  > .@{prefix}-icon {
     display: inline-block;
     vertical-align: middle;
   }
 
-  &__text {
+  > span {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  > .@{prefix}-icon {
     font-size: 14px;
   }
 
-  &__close {
-    padding: 0 8px 0 4px;
-    user-select: none;
-    cursor: pointer;
+  .@{prefix}-icon:not(&__close):first-child {
+    margin-right: 6px;
   }
 
-  &__close-icon {
-    vertical-align: middle;
+  &__close:last-child {
+    margin-left: 4px;
+  }
+
+  &__close {
+    position: relative;
+    user-select: none;
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      bottom: -4px;
+      left: -4px;
+    }
   }
 }

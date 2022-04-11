@@ -4,6 +4,7 @@ import Table from '@components/table';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
+import Demo3 from './demo-3';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -25,6 +26,11 @@ const TagDemo = () => {
         title="Closable"
         content={<Demo2 />}
         code={demos['demo-2']}
+      />
+      <Demo
+        title="With Icon"
+        content={<Demo3 />}
+        code={demos['demo-3']}
       />
       <h2>API</h2>
       <Table columns={apiColumns} data={apiRows.default} />
