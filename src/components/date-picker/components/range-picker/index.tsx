@@ -19,10 +19,15 @@ import './index.less';
 
 const { prefix } = namespace;
 
-type Focused = 'first' | 'last';
+const defaultValue = [null, null];
 
-export interface RangePickerProps extends Omit<DatePickerProps, 'value' | 'placeholder'> {
+const getElementFocused = element => document.activeElement === element;
+
+type Focused = 'start' | 'end';
+
+export interface RangePickerProps extends Omit<DatePickerProps, 'value' | 'defaultValue' | 'placeholder'> {
   value?: number[];
+  defaultValue?: number[];
   placeholder?: string[];
 }
 
@@ -45,7 +50,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     clearable,
   } = props;
 
-  const { value, onChange } = useControlled({
+  const { value = defaultValue, onChange } = useControlled({
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -57,28 +62,23 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     onChange: onOpenChangeFromProps,
   });
 
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const startInputRef = useRef<HTMLInputElement>(null);
+  const endInputRef = useRef<HTMLInputElement>(null);
+
   const [focused, setFocused] = useState<Focused | null>(null);
   const [entered, setEntered] = useState<boolean>(false);
 
-  const triggerRef = useRef<HTMLDivElement>(null);
-  const firstInputRef = useRef<HTMLInputElement>(null);
-  const lastInputRef = useRef<HTMLInputElement>(null);
+  // panelValue is zero o'clock on the first day of the corresponding panel
+  const [panelValue, setPanelValue] = useState<(number | null)[]>([null, null]);
+
+  const [pickingValue, setPickingValue] = useState<(number | null)[]>([null, null]);
 
   const isValueValid = useMemo(() => {
-    const valueValidator = valueItem =>
-      valueItem !== undefined && valueItem !== null;
+    const isNumber = item => typeof item === 'number';
 
-    return Array.isArray(value) && valueValidator(value[0]) && valueValidator(value[1]);
+    return Array.isArray(value) && isNumber(value[0]) && isNumber(value[1]);
   }, [value]);
-
-  // firstPanelValue is zero o'clock on the first day of the first panel
-  const [firstPanelValue, setFirstPanelValue] = useState<number>(undefined);
-
-  const lastPanelValue = useMemo(() => {
-    if (!firstPanelValue) return undefined;
-
-    return getNextMonthDate(firstPanelValue);
-  }, [firstPanelValue]);
 
   const inputValue = useMemo(() => {
     if (!isValueValid) return [undefined, undefined];
@@ -91,43 +91,105 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
   useEffect(() => {
     if (!isValueValid) {
-      setFirstPanelValue(getMonthStartDate(Date.now()));
+      const startDate = getMonthStartDate(Date.now());
+      const endDate = getNextMonthDate(startDate);
+
+      setPanelValue([startDate, endDate]);
     } else {
-      setFirstPanelValue(getMonthStartDate(value[0]));
+      setPanelValue(value.map(item => getMonthStartDate(item)));
     }
   }, [value, isValueValid]);
 
+  const handleInputWrapperClick = event => {
+    if (open) event.stopPropagation();
+
+    if (!getElementFocused(endInputRef.current)) {
+      startInputRef.current.focus();
+    } else {
+      endInputRef.current.focus();
+    }
+  };
+
   const handleClear = event => {
-    onChange(null);
     event.stopPropagation();
+    onChange(null);
+    startInputRef.current.focus();
+  };
+
+  const handleCellClick = (cellValue: number, updateIndex: 0 | 1) => {
+    const nextValue = [...value];
+
+    nextValue[updateIndex] = cellValue;
+
+    onChange(nextValue);
+  };
+
+  const handleInputBlur = () => {
+    setTimeout(() => {
+      if (!triggerRef.current.contains(document.activeElement)) {
+        handleOpenChange(false);
+        setFocused(null);
+      }
+    });
+  };
+
+  const handleInputKeyDown = event => {
+    if (open) {
+      event.key === 'Escape' && handleOpenChange(false);
+    } else {
+      event.key === 'Enter' && handleOpenChange(true);
+    }
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    const existFocusedInput =
+      getElementFocused(startInputRef.current) ||
+      getElementFocused(endInputRef.current);
+
+    if (!nextOpen && !existFocusedInput) {
+      setFocused(null);
+    }
+
+    onOpenChange(nextOpen);
   };
 
   const popup = (
-    <div className={`${prefix}-range-picker__popup`}>
+    <div
+      className={`${prefix}-range-picker__popup`}
+      onMouseDown={event => event.preventDefault()}
+    >
       <DatePanel
         className={`${prefix}-range-picker__panel`}
-        value={firstPanelValue}
-        list={getDates(firstPanelValue, null, disabledDate)}
+        value={panelValue[0]}
+        list={getDates(
+          panelValue[0] ?? value[0],
+          isValueValid ? value[0] : null,
+          disabledDate,
+        )}
         onLastYearClick={() => {}}
         onLastMonthClick={() => {}}
         onNextMonthClick={() => {}}
         onNextYearClick={() => {}}
         onYearClick={() => {}}
         onMonthClick={() => {}}
-        onCellClick={() => {}}
+        onCellClick={(cellValue: number) => handleCellClick(cellValue, 0)}
         renderFooter={renderFooter}
       />
       <DatePanel
         className={`${prefix}-range-picker__panel`}
-        value={lastPanelValue}
-        list={getDates(lastPanelValue, null, disabledDate)}
+        value={panelValue[1]}
+        list={getDates(
+          panelValue[1] ?? value[1],
+          isValueValid ? value[1] : null,
+          disabledDate,
+        )}
         onLastYearClick={() => {}}
         onLastMonthClick={() => {}}
         onNextMonthClick={() => {}}
         onNextYearClick={() => {}}
         onYearClick={() => {}}
         onMonthClick={() => {}}
-        onCellClick={() => {}}
+        onCellClick={(cellValue: number) => handleCellClick(cellValue, 1)}
         renderFooter={renderFooter}
       />
     </div>
@@ -140,7 +202,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     >
       <Trigger
         visible={open}
-        onVisibleChange={onOpenChange}
+        onVisibleChange={handleOpenChange}
         popup={popup}
         popupClassName={`${prefix}-range-picker__popup`}
         popupTransitionProps={{
@@ -153,46 +215,59 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       >
         <div ref={triggerRef}>
           <InputWrapper
-            focused={focused || open}
+            focused={!!focused || open}
             suffix={
               isValueValid && clearable && !disabled && entered
                 ? <Icon
-                    className={`${prefix}-date-picker__clear`}
+                    className={`${prefix}-range-picker__clear`}
                     type="close-circle-fill"
+                    onMouseDown={event => event.preventDefault()}
                     onClick={handleClear}
                   />
-                : <Icon type="calendar" />
+                : <Icon
+                    type="calendar"
+                    onMouseDown={event => event.preventDefault()}
+                  />
             }
-            onClick={() => firstInputRef.current.focus()}
+            onClick={handleInputWrapperClick}
             onMouseEnter={() => setEntered(true)}
             onMouseLeave={() => setEntered(false)}
           >
             <Input
-              ref={firstInputRef}
-              readOnly
+              className={classnames({
+                [`${prefix}-range-picker__input`]: true,
+                [`${prefix}-range-picker__input--focused`]: focused === 'start',
+              })}
+              ref={startInputRef}
               value={inputValue[0]}
               placeholder={placeholder?.[0]}
-              onFocus={() => setFocused('first')}
-              onBlur={() => setFocused(null)}
+              onFocus={() => setFocused('start')}
+              onBlur={handleInputBlur}
+              onKeyDown={handleInputKeyDown}
               onClick={event => {
                 event.stopPropagation();
-                !open && onOpenChange(true);
+                !open && handleOpenChange(true);
               }}
             />
             <Icon
               className={`${prefix}-range-picker__connector`}
               type="exchange"
+              onMouseDown={event => event.preventDefault()}
             />
             <Input
-              ref={lastInputRef}
-              readOnly
+              className={classnames({
+                [`${prefix}-range-picker__input`]: true,
+                [`${prefix}-range-picker__input--focused`]: focused === 'end',
+              })}
+              ref={endInputRef}
               value={inputValue[1]}
               placeholder={placeholder?.[1]}
-              onFocus={() => setFocused('last')}
-              onBlur={() => setFocused(null)}
+              onFocus={() => setFocused('end')}
+              onBlur={handleInputBlur}
+              onKeyDown={handleInputKeyDown}
               onClick={event => {
                 event.stopPropagation();
-                !open && onOpenChange(true);
+                !open && handleOpenChange(true);
               }}
             />
           </InputWrapper>

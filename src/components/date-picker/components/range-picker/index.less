@@ -13,6 +13,24 @@
     width: 300px;
   }
 
+  &__input {
+    background-color: var(--fog-transparent) !important;
+    transition: 0.3s;
+  }
+
+  &__input--focused {
+    background-color: var(--fog-background-color-preset) !important;
+  }
+
+  &__clear {
+    color: var(--fog-internal-color);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--fog-internal-color-hover);
+    }
+  }
+
   &__popup {
     width: 600px;
     display: flex;
