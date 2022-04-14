@@ -375,6 +375,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
         <div ref={triggerRef}>
           <InputWrapper
             focused={!!focused || open}
+            disabled={disabled}
             suffix={
               isValueValid && clearable && !disabled && entered
                 ? <Icon
@@ -400,6 +401,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
               })}
               ref={startInputRef}
               value={inputText[0]}
+              disabled={disabled}
               placeholder={placeholder?.[0]}
               onFocus={() => handleInputFocus('start')}
               onBlur={handleInputBlur}
@@ -422,6 +424,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
               })}
               ref={endInputRef}
               value={inputText[1]}
+              disabled={disabled}
               placeholder={placeholder?.[1]}
               onFocus={() => handleInputFocus('end')}
               onBlur={handleInputBlur}

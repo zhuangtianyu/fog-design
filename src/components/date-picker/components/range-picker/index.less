@@ -13,12 +13,9 @@
     width: 300px;
   }
 
-  &__input {
+  &__input:not([disabled]) {
     background-color: var(--fog-transparent) !important;
-    transition: 0.3s;
   }
-
-  &__input--focused {}
 
   &__input--picking {
     color: var(--fog-placeholder-color) !important;
