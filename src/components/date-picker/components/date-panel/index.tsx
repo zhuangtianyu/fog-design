@@ -22,6 +22,8 @@ interface DatePanelProps  {
   onYearClick: () => void;
   onMonthClick: () => void;
   onCellClick: (value: number) => void;
+  onCellEnter?: (value: number) => void;
+  onCellLeave?: (value: number) => void;
   renderFooter?: (clickHandler: (value: number) => void) => React.ReactElement;
 }
 
@@ -37,6 +39,8 @@ const DatePanel: React.FC<DatePanelProps> = props => {
     onYearClick,
     onMonthClick,
     onCellClick,
+    onCellEnter,
+    onCellLeave,
     renderFooter,
   } = props;
 
@@ -95,6 +99,8 @@ const DatePanel: React.FC<DatePanelProps> = props => {
             <PanelCell
               key={item.value}
               onClick={() => !item.disabled && onCellClick(item.value)}
+              onMouseEnter={() => !item.disabled && isFunction(onCellEnter) && onCellEnter(item.value)}
+              onMouseLeave={() => !item.disabled && isFunction(onCellLeave) && onCellLeave(item.value)}
               {...item}
             />
           ))}

@@ -119,7 +119,9 @@ export const getNextGroupYearDate = (timestamp: number = Date.now()) => {
   return new Date(year + 12, monthIndex).valueOf();
 };
 
-export const getDates = (panelValue: number, value: number, disabledDate: Function) => {
+export const getDates = (panelValue: number, value: number | number[], disabledDate: Function) => {
+  value = Array.isArray(value) ? value : [value];
+
   const mainStartDate = panelValue;
   const mainEndDate = getMonthEndDate(panelValue);
   const mainDateCount = timestampToDate(mainEndDate).date;
@@ -130,7 +132,7 @@ export const getDates = (panelValue: number, value: number, disabledDate: Functi
     const currentValue = lastStartDate + index * ONE_DAY;
     const dateInfo = timestampToDate(currentValue, 'YYYY-MM-DD');
     const within = index >= lastDateCount && index < (lastDateCount + mainDateCount);
-    const active = currentValue === value;
+    const active = (value as number[]).includes(currentValue);
     const disabled = isFunction(disabledDate) && disabledDate(currentValue);
     const lastDisabled = isFunction(disabledDate) && disabledDate(currentValue - ONE_DAY);
     const nextDisabled = isFunction(disabledDate) && disabledDate(currentValue + ONE_DAY);

@@ -19,6 +19,8 @@ export interface CellType {
 
 export interface PanelCellProps extends CellType {
   onClick: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const PanelCell: React.FC<PanelCellProps> = props => {
@@ -33,6 +35,8 @@ const PanelCell: React.FC<PanelCellProps> = props => {
     disabledIsolated,
     content,
     onClick,
+    onMouseEnter,
+    onMouseLeave,
   } = props;
 
   return (
@@ -52,6 +56,8 @@ const PanelCell: React.FC<PanelCellProps> = props => {
         event.stopPropagation();
         onClick(event);
       }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className={`${prefix}-date-picker__cell-content`}>
         {content}

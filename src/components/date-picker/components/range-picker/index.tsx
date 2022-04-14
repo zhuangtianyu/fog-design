@@ -12,18 +12,37 @@ import {
   FORMAT_DEFAULT,
   timestampToDate,
   getDates,
+  getLastYearDate,
+  getNextYearDate,
+  getLastMonthDate,
   getNextMonthDate,
   getMonthStartDate,
 } from '../../utils';
+import { isFunction, setRafTimeout } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
 
 const defaultValue = [null, null];
 
+const focusedIndexMap = { start: 0, end: 1 };
+
+const valueValidator = (list: (number | any)[]) => {
+  const isNumber = item => typeof item === 'number';
+
+  return Array.isArray(list) && isNumber(list[0]) && isNumber(list[1]);
+};
+
 const getElementFocused = element => document.activeElement === element;
 
 type Focused = 'start' | 'end';
+
+type PanelName = 'start' | 'end';
+
+type ClickedRef = {
+  start: boolean;
+  end: boolean;
+}
 
 export interface RangePickerProps extends Omit<DatePickerProps, 'value' | 'defaultValue' | 'placeholder'> {
   value?: number[];
@@ -41,10 +60,10 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     open: openFromProps,
     defaultOpen: defaultOpenFromProps,
     onOpenChange: onOpenChangeFromProps,
+    disabledDate: disabledDateFromProps,
     placeholder,
     format,
     disabled,
-    disabledDate,
     renderFooter,
     mode,
     clearable,
@@ -68,26 +87,33 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
   const [focused, setFocused] = useState<Focused | null>(null);
   const [entered, setEntered] = useState<boolean>(false);
+  const [picking, setPicking] = useState<boolean>(false);
+
+  const clickedRef = useRef<ClickedRef>({ start: false, end: false });
 
   // panelValue is zero o'clock on the first day of the corresponding panel
   const [panelValue, setPanelValue] = useState<(number | null)[]>([null, null]);
 
+  const [presetValue, setPresetValue] = useState<(number | null)[]>([null, null]);
+
   const [pickingValue, setPickingValue] = useState<(number | null)[]>([null, null]);
 
-  const isValueValid = useMemo(() => {
-    const isNumber = item => typeof item === 'number';
+  const isValueValid = useMemo(() => valueValidator(value), [value]);
 
-    return Array.isArray(value) && isNumber(value[0]) && isNumber(value[1]);
-  }, [value]);
+  const isPresetValueValid = useMemo(() => valueValidator(presetValue), [presetValue]);
 
-  const inputValue = useMemo(() => {
-    if (!isValueValid) return [undefined, undefined];
+  const inputText = useMemo(() => {
+    const inputValue = !open
+      ? value
+      : presetValue.map((item, index) => pickingValue[index] ?? item);
 
-    return [
-      timestampToDate(value[0], format || FORMAT_DEFAULT[mode]).dateString,
-      timestampToDate(value[1], format || FORMAT_DEFAULT[mode]).dateString,
-    ];
-  }, [value, isValueValid]);
+    return inputValue
+      .map(
+        item => item !== null
+          ? timestampToDate(item, format || FORMAT_DEFAULT[mode]).dateString
+          : undefined
+      );
+  }, [value, isValueValid, open, presetValue, pickingValue]);
 
   useEffect(() => {
     if (!isValueValid) {
@@ -95,8 +121,13 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       const endDate = getNextMonthDate(startDate);
 
       setPanelValue([startDate, endDate]);
+      setPresetValue([null, null]);
     } else {
-      setPanelValue(value.map(item => getMonthStartDate(item)));
+      const startDate = getMonthStartDate(value[0]);
+      const endDate = getNextMonthDate(startDate);
+
+      setPanelValue([startDate, endDate]);
+      setPresetValue([...value]);
     }
   }, [value, isValueValid]);
 
@@ -112,16 +143,91 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
   const handleClear = event => {
     event.stopPropagation();
-    onChange(null);
-    startInputRef.current.focus();
+    onChange([null, null]);
   };
 
-  const handleCellClick = (cellValue: number, updateIndex: 0 | 1) => {
-    const nextValue = [...value];
+  const handleCellClick = (cellValue: number, panelName: PanelName) => {
+    const nextPresetValue = [...presetValue];
 
-    nextValue[updateIndex] = cellValue;
+    if (focused === 'start') {
+      nextPresetValue[0] = cellValue;
+      clickedRef.current.start = true;
+      clickedRef.current.end === false && endInputRef.current.focus();
+    }
 
-    onChange(nextValue);
+    if (focused === 'end') {
+      nextPresetValue[1] = cellValue;
+      clickedRef.current.end = true;
+      clickedRef.current.start === false && startInputRef.current.focus();
+    }
+
+
+    if (panelName === 'start') {
+      const startDate = getMonthStartDate(cellValue);
+      const endDate = getNextMonthDate(startDate);
+
+      setPanelValue([startDate, endDate]);
+    }
+
+    if (panelName === 'end') {
+      const endDate = getMonthStartDate(cellValue);
+      const startDate = getLastMonthDate(endDate);
+
+      setPanelValue([startDate, endDate]);
+    }
+
+    setPresetValue(nextPresetValue);
+
+    if (clickedRef.current.start && clickedRef.current.end) {
+      handleOpenChange(false);
+      handlePresetSubmit(nextPresetValue);
+    }
+  };
+
+  const handleCellEnter = (cellValue: number) => {
+    setPicking(true);
+
+    const nextPickingValue = [...pickingValue];
+    const updateIndex = focusedIndexMap[focused];
+
+    nextPickingValue[updateIndex] = cellValue;
+
+    setPickingValue(nextPickingValue);
+  };
+
+  const handleCellLeave = () => {
+    setPicking(false);
+
+    const nextPickingValue = [...pickingValue];
+    const updateIndex = focusedIndexMap[focused];
+
+    nextPickingValue[updateIndex] = null;
+
+    setPickingValue(nextPickingValue);
+  };
+
+  const handleInputFocus = (nextFocused: Focused) => {
+    setFocused(nextFocused);
+
+    if (isValueValid) {
+      const shouldUpdatePanelValue = getMonthStartDate(value[0]) !== getMonthStartDate(value[1]);
+
+      if (shouldUpdatePanelValue) {
+        if (nextFocused === 'start') {
+          const startDate = getMonthStartDate(value[0]);
+          const endDate = getNextMonthDate(startDate);
+
+          setPanelValue([startDate, endDate]);
+        }
+
+        if (nextFocused === 'end') {
+          const endDate = getMonthStartDate(value[1]);
+          const startDate = getLastMonthDate(endDate);
+
+          setPanelValue([startDate, endDate]);
+        }
+      }
+    }
   };
 
   const handleInputBlur = () => {
@@ -142,15 +248,64 @@ const RangePicker: React.FC<RangePickerProps> = props => {
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    const existFocusedInput =
-      getElementFocused(startInputRef.current) ||
-      getElementFocused(endInputRef.current);
+    if (nextOpen) {
+      clickedRef.current.start = false;
+      clickedRef.current.end = false;
+      onOpenChange(true);
+    } else {
+      const existFocusedInput =
+        getElementFocused(startInputRef.current) ||
+        getElementFocused(endInputRef.current);
 
-    if (!nextOpen && !existFocusedInput) {
-      setFocused(null);
+      setPicking(false);
+      setPickingValue([null, null]);
+      !existFocusedInput && setFocused(null);
+      !isPresetValueValid && handlePresetClear();
+
+      setRafTimeout(() => {
+        onOpenChange(false);
+      }, 200);
+    }
+  };
+
+  const handlePresetSubmit = nextPresetValue => {
+    onChange(nextPresetValue);
+  };
+
+  const handlePresetClear = () => {
+    setPresetValue([null, null]);
+  };
+
+  const handleLastYearClick = () => {
+    setPanelValue(panelValue.map(item => getLastYearDate(item)));
+  };
+
+  const handleLastMonthClick = () => {
+    setPanelValue(panelValue.map(item => getLastMonthDate(item)));
+  };
+
+  const handleNextMonthClick = () => {
+    setPanelValue(panelValue.map(item => getNextMonthDate(item)));
+  };
+
+  const handleNextYearClick = () => {
+    setPanelValue(panelValue.map(item => getNextYearDate(item)));
+  };
+
+  const disabledDate = (dateValue: number) => {
+    const propsDisabled = isFunction(disabledDateFromProps) && disabledDateFromProps(dateValue);
+
+    let rangeDisabled = false;
+
+    if (focused === 'start' && clickedRef.current.end) {
+      rangeDisabled = presetValue[1] !== null ? dateValue > presetValue[1] : false;
     }
 
-    onOpenChange(nextOpen);
+    if (focused === 'end' && clickedRef.current.start) {
+      rangeDisabled = presetValue[0] !== null ? dateValue < presetValue[0] : false;
+    }
+
+    return propsDisabled || rangeDisabled;
   };
 
   const popup = (
@@ -163,16 +318,18 @@ const RangePicker: React.FC<RangePickerProps> = props => {
         value={panelValue[0]}
         list={getDates(
           panelValue[0] ?? value[0],
-          isValueValid ? value[0] : null,
+          presetValue,
           disabledDate,
         )}
-        onLastYearClick={() => {}}
-        onLastMonthClick={() => {}}
-        onNextMonthClick={() => {}}
-        onNextYearClick={() => {}}
+        onLastYearClick={handleLastYearClick}
+        onLastMonthClick={handleLastMonthClick}
+        onNextMonthClick={handleNextMonthClick}
+        onNextYearClick={handleNextYearClick}
         onYearClick={() => {}}
         onMonthClick={() => {}}
-        onCellClick={(cellValue: number) => handleCellClick(cellValue, 0)}
+        onCellClick={(cellValue: number) => handleCellClick(cellValue, 'start')}
+        onCellEnter={(cellValue: number) => handleCellEnter(cellValue)}
+        onCellLeave={() => handleCellLeave()}
         renderFooter={renderFooter}
       />
       <DatePanel
@@ -180,16 +337,18 @@ const RangePicker: React.FC<RangePickerProps> = props => {
         value={panelValue[1]}
         list={getDates(
           panelValue[1] ?? value[1],
-          isValueValid ? value[1] : null,
+          presetValue,
           disabledDate,
         )}
-        onLastYearClick={() => {}}
-        onLastMonthClick={() => {}}
-        onNextMonthClick={() => {}}
-        onNextYearClick={() => {}}
+        onLastYearClick={handleLastYearClick}
+        onLastMonthClick={handleLastMonthClick}
+        onNextMonthClick={handleNextMonthClick}
+        onNextYearClick={handleNextYearClick}
         onYearClick={() => {}}
         onMonthClick={() => {}}
-        onCellClick={(cellValue: number) => handleCellClick(cellValue, 1)}
+        onCellClick={(cellValue: number) => handleCellClick(cellValue, 'end')}
+        onCellEnter={(cellValue: number) => handleCellEnter(cellValue)}
+        onCellLeave={() => handleCellLeave()}
         renderFooter={renderFooter}
       />
     </div>
@@ -237,11 +396,12 @@ const RangePicker: React.FC<RangePickerProps> = props => {
               className={classnames({
                 [`${prefix}-range-picker__input`]: true,
                 [`${prefix}-range-picker__input--focused`]: focused === 'start',
+                [`${prefix}-range-picker__input--picking`]: focused === 'start' && picking,
               })}
               ref={startInputRef}
-              value={inputValue[0]}
+              value={inputText[0]}
               placeholder={placeholder?.[0]}
-              onFocus={() => setFocused('start')}
+              onFocus={() => handleInputFocus('start')}
               onBlur={handleInputBlur}
               onKeyDown={handleInputKeyDown}
               onClick={event => {
@@ -258,11 +418,12 @@ const RangePicker: React.FC<RangePickerProps> = props => {
               className={classnames({
                 [`${prefix}-range-picker__input`]: true,
                 [`${prefix}-range-picker__input--focused`]: focused === 'end',
+                [`${prefix}-range-picker__input--picking`]: focused === 'end' && picking,
               })}
               ref={endInputRef}
-              value={inputValue[1]}
+              value={inputText[1]}
               placeholder={placeholder?.[1]}
-              onFocus={() => setFocused('end')}
+              onFocus={() => handleInputFocus('end')}
               onBlur={handleInputBlur}
               onKeyDown={handleInputKeyDown}
               onClick={event => {
