@@ -12,7 +12,7 @@ const { demos, apiRows } = components.steps;
 const StepsDemo = () => {
 
   return (
-    <div className="button-demo">
+    <div className="steps-demo">
       <h1>Steps</h1>
       <p>Steps is used to display the current step.</p>
       <h2>Demo</h2>
