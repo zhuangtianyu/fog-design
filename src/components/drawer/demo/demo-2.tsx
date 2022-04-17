@@ -29,7 +29,7 @@ const Demo = () => {
       <Radio.Group
         style={{ marginRight: 12 }}
         value={placement}
-        onChange={event => setPlacement(event.target.value)}
+        onChange={setPlacement}
       >
         {placements.map(item => (
           <Radio value={item} key={item}>

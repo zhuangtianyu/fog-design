@@ -19,7 +19,7 @@ export interface RadioGroupProps {
   style?: React.CSSProperties;
   value?: ValueType;
   defaultValue?: ValueType;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  onChange?: (value: ValueType) => void;
   disabled?: boolean;
   buttonStyle?: ButtonStyle;
   children?: React.ReactElement[];
@@ -41,11 +41,12 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
-    innerValueGetter: event => event.target.value,
   });
 
   const handleRadioClick = event => {
-    event.target.value !== value && onChange(event);
+    if (event.target.value !== value) {
+      onChange(event.target.value);
+    }
   };
 
   const children = useMemo(() => {
