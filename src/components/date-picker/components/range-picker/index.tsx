@@ -113,23 +113,49 @@ const RangePicker: React.FC<RangePickerProps> = props => {
           ? timestampToDate(item, format || FORMAT_DEFAULT[mode]).dateString
           : undefined
       );
-  }, [value, isValueValid, open, presetValue, pickingValue]);
+  }, [value, open, presetValue, pickingValue]);
 
   useEffect(() => {
-    if (!isValueValid) {
+    if (isValueValid) {
+      setPresetValue([...value]);
+    } else {
+      setPresetValue([null, null]);
+    }
+  }, [value, isValueValid]);
+
+  const handlePanelValueUpdate = () => {
+    if (isValueValid) {
+      const { activeElement } = document;
+
+      if (startInputRef.current === activeElement) {
+        const startDate = getMonthStartDate(value[0]);
+        const endDate = getNextMonthDate(startDate);
+
+        setPanelValue([startDate, endDate]);
+      }
+
+      if (endInputRef.current === activeElement) {
+        const sameMonth = getMonthStartDate(value[0]) === getMonthStartDate(value[1]);
+        let startDate;
+        let endDate;
+
+        if (sameMonth) {
+          startDate = getMonthStartDate(value[0]);
+          endDate = getNextMonthDate(value[0]);
+        } else {
+          endDate = getMonthStartDate(value[1]);
+          startDate = getLastMonthDate(endDate);
+        }
+
+        setPanelValue([startDate, endDate]);
+      }
+    } else {
       const startDate = getMonthStartDate(Date.now());
       const endDate = getNextMonthDate(startDate);
 
       setPanelValue([startDate, endDate]);
-      setPresetValue([null, null]);
-    } else {
-      const startDate = getMonthStartDate(value[0]);
-      const endDate = getNextMonthDate(startDate);
-
-      setPanelValue([startDate, endDate]);
-      setPresetValue([...value]);
     }
-  }, [value, isValueValid]);
+  };
 
   const handleInputWrapperClick = event => {
     if (open) event.stopPropagation();
@@ -210,23 +236,12 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     setFocused(nextFocused);
 
     if (isValueValid) {
-      const shouldUpdatePanelValue = getMonthStartDate(value[0]) !== getMonthStartDate(value[1]);
+      // update panel when date interval is greater than two months
+      const shouldUpdatePanelValue =
+        getLastMonthDate(getLastMonthDate(getMonthStartDate(value[1]))) >=
+        getMonthStartDate(value[0]);
 
-      if (shouldUpdatePanelValue) {
-        if (nextFocused === 'start') {
-          const startDate = getMonthStartDate(value[0]);
-          const endDate = getNextMonthDate(startDate);
-
-          setPanelValue([startDate, endDate]);
-        }
-
-        if (nextFocused === 'end') {
-          const endDate = getMonthStartDate(value[1]);
-          const startDate = getLastMonthDate(endDate);
-
-          setPanelValue([startDate, endDate]);
-        }
-      }
+      shouldUpdatePanelValue && handlePanelValueUpdate();
     }
   };
 
@@ -249,9 +264,8 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
-      clickedRef.current.start = false;
-      clickedRef.current.end = false;
       onOpenChange(true);
+      handlePanelValueUpdate();
     } else {
       const existFocusedInput =
         getElementFocused(startInputRef.current) ||
@@ -259,6 +273,10 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
       setPicking(false);
       setPickingValue([null, null]);
+
+      clickedRef.current.start = false;
+      clickedRef.current.end = false;
+
       !existFocusedInput && setFocused(null);
       !isPresetValueValid && handlePresetClear();
 
@@ -369,6 +387,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
           entering: `${prefix}-range-picker__popup--entering`,
           entered: `${prefix}-range-picker__popup--entered`,
           leaving: `${prefix}-range-picker__popup--leaving`,
+          onLeave: handlePanelValueUpdate,
         }}
         disabled={disabled}
       >
