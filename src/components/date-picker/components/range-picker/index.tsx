@@ -123,6 +123,8 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     }
   }, [value, isValueValid]);
 
+  useEffect(() => () => open && handleOpenChange(false), [open]);
+
   const handlePanelValueUpdate = () => {
     if (isValueValid) {
       const { activeElement } = document;
