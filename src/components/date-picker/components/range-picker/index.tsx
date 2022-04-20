@@ -116,12 +116,14 @@ const RangePicker: React.FC<RangePickerProps> = props => {
   }, [value, open, presetValue, pickingValue]);
 
   useEffect(() => {
-    if (isValueValid) {
-      setPresetValue([...value]);
-    } else {
-      setPresetValue([null, null]);
+    if (open) {
+      if (isValueValid) {
+        setPresetValue([...value]);
+      } else {
+        setPresetValue([null, null]);
+      }
     }
-  }, [value, isValueValid]);
+  }, [value, isValueValid, open]);
 
   useEffect(() => () => handleOpenChange(false), []);
 
@@ -181,14 +183,27 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       nextPresetValue[0] = cellValue;
       clickedRef.current.start = true;
       clickedRef.current.end === false && endInputRef.current.focus();
+
+      if (
+        nextPresetValue[1] !== null &&
+        nextPresetValue[0] > nextPresetValue[1]
+      ) {
+        nextPresetValue[1] = null;
+      }
     }
 
     if (focused === 'end') {
       nextPresetValue[1] = cellValue;
       clickedRef.current.end = true;
       clickedRef.current.start === false && startInputRef.current.focus();
-    }
 
+      if (
+        nextPresetValue[0] !== null &&
+        nextPresetValue[0] > nextPresetValue[1]
+      ) {
+        nextPresetValue[0] = null;
+      }
+    }
 
     if (panelName === 'start') {
       const startDate = getMonthStartDate(cellValue);
@@ -205,12 +220,13 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     }
 
     setPresetValue(nextPresetValue);
+  };
 
+  useEffect(() => {
     if (clickedRef.current.start && clickedRef.current.end) {
       handleOpenChange(false);
-      handlePresetSubmit(nextPresetValue);
     }
-  };
+  }, [presetValue, isPresetValueValid]);
 
   const handleCellEnter = (cellValue: number) => {
     setPicking(true);
@@ -248,12 +264,9 @@ const RangePicker: React.FC<RangePickerProps> = props => {
   };
 
   const handleInputBlur = () => {
-    setTimeout(() => {
-      if (!triggerRef.current.contains(document.activeElement)) {
-        handleOpenChange(false);
-        setFocused(null);
-      }
-    });
+    if (!triggerRef.current.contains(document.activeElement)) {
+      setFocused(null);
+    }
   };
 
   const handleInputKeyDown = event => {
@@ -262,6 +275,10 @@ const RangePicker: React.FC<RangePickerProps> = props => {
     } else {
       event.key === 'Enter' && handleOpenChange(true);
     }
+  };
+
+  const handlePresetValueSubmit = () => {
+    onChange([...presetValue]);
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -280,20 +297,12 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       clickedRef.current.end = false;
 
       !existFocusedInput && setFocused(null);
-      !isPresetValueValid && handlePresetClear();
+      isPresetValueValid && handlePresetValueSubmit();
 
       setRafTimeout(() => {
         onOpenChange(false);
       }, 200);
     }
-  };
-
-  const handlePresetSubmit = nextPresetValue => {
-    onChange(nextPresetValue);
-  };
-
-  const handlePresetClear = () => {
-    setPresetValue([null, null]);
   };
 
   const handleLastYearClick = () => {
@@ -389,7 +398,6 @@ const RangePicker: React.FC<RangePickerProps> = props => {
           entering: `${prefix}-range-picker__popup--entering`,
           entered: `${prefix}-range-picker__popup--entered`,
           leaving: `${prefix}-range-picker__popup--leaving`,
-          onLeave: handlePanelValueUpdate,
         }}
         disabled={disabled}
       >
