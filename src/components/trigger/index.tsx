@@ -255,7 +255,7 @@ export const Trigger: React.FC<TriggerProps> = props => {
 
       return () => document.removeEventListener('click', handleClick);
     }
-  }, [visible, containerNode, trigger]);
+  }, [visible, containerNode, trigger, onVisibleChange]);
 
   useLayoutEffect(() => {
     if (visible && containerNode) {
