@@ -174,6 +174,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
   const handleClear = event => {
     event.stopPropagation();
     onChange([null, null]);
+    setPresetValue([null, null]);
   };
 
   const handleCellClick = (cellValue: number, panelName: PanelName) => {
