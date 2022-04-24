@@ -52,7 +52,7 @@
     z-index: 1;
   }
 
-  &:hover:not(&--active):not(&--disabled) &-content {
+  &:hover:not(&--active):not(&--disabled):not(&--preset):not(&--picked):not(&--picking) &-content {
     background-color: var(--fog-background-color-preset);
   }
 
@@ -72,5 +72,27 @@
 
   &--disabled:not(&--active) &-content {
     color: var(--fog-color-disabled);
+  }
+
+  &--preset &-content {
+    background-color: var(--fog-primary-color-blushed);
+  }
+
+  &--picked &-content {
+    background-color: var(--fog-primary-color-slight);
+  }
+
+  &--picking::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 24px;
+    border-top: 1px dashed var(--fog-primary-color);
+    border-bottom: 1px dashed var(--fog-primary-color);
+    transition: all 0.3s;
+    margin: auto;
   }
 }

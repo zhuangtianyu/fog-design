@@ -119,7 +119,33 @@ export const getNextGroupYearDate = (timestamp: number = Date.now()) => {
   return new Date(year + 12, monthIndex).valueOf();
 };
 
-export const getDates = (panelValue: number, value: number | number[], disabledDate: Function) => {
+export const isRangeValid = (list: (number | any)[]) => {
+  const isNumber = item => typeof item === 'number';
+
+  return Array.isArray(list) &&
+    isNumber(list[0]) &&
+    isNumber(list[1]) &&
+    isNumber(list[0]) <= isNumber(list[1]);
+};
+
+export const isValueInRange = (range, date) =>
+  isRangeValid(range) &&
+  date >= range[0] &&
+  date <= range[1];
+
+export const getDates = ({
+  panelValue,
+  value,
+  presetValue,
+  pickingValue,
+  disabledDate,
+}: {
+  panelValue: number,
+  value: number | (number | null)[];
+  presetValue?: (number | null)[];
+  pickingValue?: (number | null)[];
+  disabledDate?: Function;
+}) => {
   value = Array.isArray(value) ? value : [value];
 
   const mainStartDate = panelValue;
@@ -132,13 +158,53 @@ export const getDates = (panelValue: number, value: number | number[], disabledD
     const currentValue = lastStartDate + index * ONE_DAY;
     const dateInfo = timestampToDate(currentValue, 'YYYY-MM-DD');
     const within = index >= lastDateCount && index < (lastDateCount + mainDateCount);
-    const active = (value as number[]).includes(currentValue);
+    const active =
+      Array.isArray(presetValue)
+        ? presetValue.includes(currentValue)
+        : (value as number[]).includes(currentValue);
     const disabled = isFunction(disabledDate) && disabledDate(currentValue);
     const lastDisabled = isFunction(disabledDate) && disabledDate(currentValue - ONE_DAY);
     const nextDisabled = isFunction(disabledDate) && disabledDate(currentValue + ONE_DAY);
     const disabledFirstChild = disabled && !lastDisabled && nextDisabled;
     const disabledLastChild = disabled && lastDisabled && !nextDisabled;
     const disabledIsolated = disabled && !lastDisabled && !nextDisabled;
+
+    let preset = false;
+
+    if (within && !active) {
+      if (isValueInRange(presetValue, currentValue)) {
+        let presettingValue = [...presetValue];
+
+        if (Array.isArray(pickingValue)) {
+          if (pickingValue[0] !== null) {
+            presettingValue[0] = Math.max(presettingValue[0], pickingValue[0]);
+          }
+          if (pickingValue[1] !== null) {
+            presettingValue[1] = Math.min(presettingValue[1], pickingValue[1]);
+          }
+        }
+
+        preset = isValueInRange(presettingValue, currentValue);
+      }
+    }
+
+    const picked = !disabled && within && !active && !preset && isValueInRange(value, currentValue);
+
+    let picking = false;
+
+    if (within && !preset && !picked) {
+      if (isValueInRange(pickingValue, currentValue)) {
+        picking = true;
+      } else {
+        if (Array.isArray(pickingValue) && isRangeValid(presetValue)) {
+          if (pickingValue[0] !== null) {
+            picking = currentValue >= pickingValue[0] && currentValue < presetValue[0];
+          } else {
+            picking = currentValue <= pickingValue[1] && currentValue > presetValue[1];
+          }
+        }
+      }
+    }
 
     return {
       value: currentValue,
@@ -150,6 +216,9 @@ export const getDates = (panelValue: number, value: number | number[], disabledD
       disabledFirstChild,
       disabledLastChild,
       disabledIsolated,
+      preset,
+      picked,
+      picking,
     };
   });
 

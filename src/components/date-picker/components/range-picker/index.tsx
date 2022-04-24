@@ -17,6 +17,7 @@ import {
   getLastMonthDate,
   getNextMonthDate,
   getMonthStartDate,
+  isRangeValid,
 } from '../../utils';
 import { isFunction, setRafTimeout } from '@utils/index';
 import './index.less';
@@ -26,12 +27,6 @@ const { prefix } = namespace;
 const defaultValue = [null, null];
 
 const focusedIndexMap = { start: 0, end: 1 };
-
-const valueValidator = (list: (number | any)[]) => {
-  const isNumber = item => typeof item === 'number';
-
-  return Array.isArray(list) && isNumber(list[0]) && isNumber(list[1]);
-};
 
 const getElementFocused = element => document.activeElement === element;
 
@@ -98,9 +93,9 @@ const RangePicker: React.FC<RangePickerProps> = props => {
 
   const [pickingValue, setPickingValue] = useState<(number | null)[]>([null, null]);
 
-  const isValueValid = useMemo(() => valueValidator(value), [value]);
+  const isValueValid = useMemo(() => isRangeValid(value), [value]);
 
-  const isPresetValueValid = useMemo(() => valueValidator(presetValue), [presetValue]);
+  const isPresetValueValid = useMemo(() => isRangeValid(presetValue), [presetValue]);
 
   const inputText = useMemo(() => {
     const inputValue = !open
@@ -346,11 +341,13 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       <DatePanel
         className={`${prefix}-range-picker__panel`}
         value={panelValue[0]}
-        list={getDates(
-          panelValue[0] ?? value[0],
+        list={getDates({
+          panelValue: panelValue[0],
+          value,
           presetValue,
+          pickingValue,
           disabledDate,
-        )}
+        })}
         onLastYearClick={handleLastYearClick}
         onLastMonthClick={handleLastMonthClick}
         onNextMonthClick={handleNextMonthClick}
@@ -365,11 +362,13 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       <DatePanel
         className={`${prefix}-range-picker__panel`}
         value={panelValue[1]}
-        list={getDates(
-          panelValue[1] ?? value[1],
+        list={getDates({
+          panelValue: panelValue[1],
+          value,
           presetValue,
+          pickingValue,
           disabledDate,
-        )}
+        })}
         onLastYearClick={handleLastYearClick}
         onLastMonthClick={handleLastMonthClick}
         onNextMonthClick={handleNextMonthClick}

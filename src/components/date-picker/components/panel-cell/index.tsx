@@ -14,13 +14,16 @@ export interface CellType {
   disabledFirstChild: boolean;
   disabledLastChild: boolean;
   disabledIsolated: boolean;
+  preset?: boolean;
+  picked?: boolean;
+  picking?: boolean;
   content: React.ReactChild;
 }
 
 export interface PanelCellProps extends CellType {
-  onClick: React.MouseEventHandler<HTMLDivElement>;
-  onMouseEnter: React.MouseEventHandler<HTMLDivElement>;
-  onMouseLeave: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseEnter?: React.MouseEventHandler<HTMLDivElement>;
+  onMouseLeave?: React.MouseEventHandler<HTMLDivElement>;
 };
 
 const PanelCell: React.FC<PanelCellProps> = props => {
@@ -33,6 +36,9 @@ const PanelCell: React.FC<PanelCellProps> = props => {
     disabledFirstChild,
     disabledLastChild,
     disabledIsolated,
+    preset,
+    picked,
+    picking,
     content,
     onClick,
     onMouseEnter,
@@ -49,6 +55,9 @@ const PanelCell: React.FC<PanelCellProps> = props => {
         [`${prefix}-date-picker__cell--disabled-first-child`]: disabledFirstChild,
         [`${prefix}-date-picker__cell--disabled-last-child`]: disabledLastChild,
         [`${prefix}-date-picker__cell--disabled-isolated`]: disabledIsolated,
+        [`${prefix}-date-picker__cell--preset`]: preset,
+        [`${prefix}-date-picker__cell--picked`]: picked,
+        [`${prefix}-date-picker__cell--picking`]: picking,
       })}
       key={value}
       title={title}

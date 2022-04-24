@@ -182,7 +182,7 @@ export const DatePicker: DatePickerTypes = props => {
       {mode === 'date' && panelMode === 'date' && (
         <DatePanel
           value={panelValue}
-          list={getDates(panelValue, value, disabledDate)}
+          list={getDates({ value, panelValue, disabledDate })}
           onLastYearClick={() => setPanelValue(getLastYearDate(panelValue))}
           onLastMonthClick={() => setPanelValue(getLastMonthDate(panelValue))}
           onNextMonthClick={() => setPanelValue(getNextMonthDate(panelValue))}
