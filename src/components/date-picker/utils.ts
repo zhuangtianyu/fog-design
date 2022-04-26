@@ -161,6 +161,90 @@ export const getDateDisabled = (date: number, disabledDate?: Function) => {
   };
 };
 
+export const getWithin = (index, lastDateCount, mainDateCount) =>
+  index >= 0 && // considering first day's last day
+  index <= DATES_COUNT - 1 && // considering last day's next day
+  index >= lastDateCount &&
+  index < (lastDateCount + mainDateCount);
+
+export const getDatePreset = ({
+  date,
+  index,
+  presetValue,
+  pickingValue,
+  lastDateCount,
+  mainDateCount,
+}: {
+  date: number;
+  index: number;
+  presetValue: (number | null)[];
+  pickingValue: (number | null)[];
+  lastDateCount: number,
+  mainDateCount: number,
+}) => {
+  const getPreset = ({
+    date,
+    index,
+    presetValue,
+    lastDateCount,
+    mainDateCount,
+  }: {
+    date: number;
+    index: number;
+    presetValue: (number | null)[];
+    lastDateCount: number,
+    mainDateCount: number,
+  }) => {
+    let preset = false;
+    const within = getWithin(index, lastDateCount, mainDateCount);
+
+    if (within && isValueInRange(presetValue, date)) {
+      const presettingValue = [...presetValue];
+
+      if (pickingValue[0] !== null) {
+        presettingValue[0] = Math.max(presettingValue[0], pickingValue[0]);
+      }
+
+      if (pickingValue[1] !== null) {
+        presettingValue[1] = Math.min(presettingValue[1], pickingValue[1]);
+      }
+
+      preset = isValueInRange(presettingValue, date);
+    }
+
+    return preset;
+  };
+
+  const presetParams = {
+    date,
+    index,
+    presetValue,
+    lastDateCount,
+    mainDateCount,
+  };
+
+  const nonPreset = {
+    preset: false,
+    presetFirstChild: false,
+    presetLastChild: false,
+    presetIsolated: false,
+  };
+
+  const preset = getPreset(presetParams);
+
+  if (!preset) return nonPreset;
+
+  const lastPreset = getPreset({ ...presetParams, date: date - ONE_DAY, index: index - 1 });
+  const nextPreset = getPreset({ ...presetParams, date: date + ONE_DAY, index: index + 1 });
+
+  return {
+    preset,
+    presetFirstChild: !lastPreset && nextPreset,
+    presetLastChild: lastPreset && !nextPreset,
+    presetIsolated: !lastPreset && !nextPreset,
+  };
+};
+
 export const getDates = ({
   panelValue,
   value,
@@ -185,7 +269,7 @@ export const getDates = ({
   const dates = Array.from({ length: DATES_COUNT }).map((_, index) => {
     const currentValue = lastStartDate + index * ONE_DAY;
     const dateInfo = timestampToDate(currentValue, 'YYYY-MM-DD');
-    const within = index >= lastDateCount && index < (lastDateCount + mainDateCount);
+    const within = getWithin(index, lastDateCount, mainDateCount);
     const active = range ? presetValue.includes(currentValue) : value === currentValue;
 
     const {
@@ -207,24 +291,19 @@ export const getDates = ({
       disabledIsolated,
     };
 
-    let preset = false;
-
-    if (within && !active) {
-      if (isValueInRange(presetValue, currentValue)) {
-        let presettingValue = [...presetValue];
-
-        if (Array.isArray(pickingValue)) {
-          if (pickingValue[0] !== null) {
-            presettingValue[0] = Math.max(presettingValue[0], pickingValue[0]);
-          }
-          if (pickingValue[1] !== null) {
-            presettingValue[1] = Math.min(presettingValue[1], pickingValue[1]);
-          }
-        }
-
-        preset = isValueInRange(presettingValue, currentValue);
-      }
-    }
+    const {
+      preset,
+      presetFirstChild,
+      presetLastChild,
+      presetIsolated,
+    } = getDatePreset({
+      date: currentValue,
+      index,
+      presetValue,
+      pickingValue,
+      lastDateCount,
+      mainDateCount,
+    });
 
     const picked = !disabled && within && !active && !preset && isValueInRange(value, currentValue);
 
@@ -255,6 +334,9 @@ export const getDates = ({
       disabledLastChild,
       disabledIsolated,
       preset,
+      presetFirstChild,
+      presetLastChild,
+      presetIsolated,
       picked,
       picking,
     };

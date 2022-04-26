@@ -74,8 +74,34 @@
     color: var(--fog-color-disabled);
   }
 
-  &--preset &-content {
+  &--preset::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 24px;
     background-color: var(--fog-primary-color-blushed);
+    transition: all 0.3s;
+    margin: auto;
+  }
+
+  &--preset-first-child::after {
+    left: calc((100% - 24px) / 2);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &--preset-last-child::after {
+    right: calc((100% - 24px) / 2);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &--preset-isolated-child::after {
+    width: 24px;
+    border-radius: 2px;
   }
 
   &--picked &-content {
