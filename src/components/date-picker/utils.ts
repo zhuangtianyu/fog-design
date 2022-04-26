@@ -133,21 +133,49 @@ export const isValueInRange = (range, date) =>
   date >= range[0] &&
   date <= range[1];
 
+export const LINE_START_DAY = 0;
+export const LINE_END_DAY = 6;
+
+export const getDateDisabled = (date: number, disabledDate?: Function) => {
+  const nonDisabled = {
+    disabled: false,
+    disabledFirstChild: false,
+    disabledLastChild: false,
+    disabledIsolated: false,
+  };
+
+  if (!isFunction(disabledDate)) return nonDisabled;
+
+  const disabled = disabledDate(date);
+
+  if (!disabled) return nonDisabled;
+
+  const lastDisabled = disabledDate(date - ONE_DAY);
+  const nextDisabled = disabledDate(date + ONE_DAY);
+
+  return {
+    disabled,
+    disabledFirstChild: !lastDisabled && nextDisabled,
+    disabledLastChild: lastDisabled && !nextDisabled,
+    disabledIsolated: !lastDisabled && !nextDisabled,
+  };
+};
+
 export const getDates = ({
   panelValue,
   value,
+  range,
   presetValue,
   pickingValue,
   disabledDate,
 }: {
   panelValue: number,
   value: number | (number | null)[];
+  range?: boolean;
   presetValue?: (number | null)[];
   pickingValue?: (number | null)[];
   disabledDate?: Function;
 }) => {
-  value = Array.isArray(value) ? value : [value];
-
   const mainStartDate = panelValue;
   const mainEndDate = getMonthEndDate(panelValue);
   const mainDateCount = timestampToDate(mainEndDate).date;
@@ -158,16 +186,26 @@ export const getDates = ({
     const currentValue = lastStartDate + index * ONE_DAY;
     const dateInfo = timestampToDate(currentValue, 'YYYY-MM-DD');
     const within = index >= lastDateCount && index < (lastDateCount + mainDateCount);
-    const active =
-      Array.isArray(presetValue)
-        ? presetValue.includes(currentValue)
-        : (value as number[]).includes(currentValue);
-    const disabled = isFunction(disabledDate) && disabledDate(currentValue);
-    const lastDisabled = isFunction(disabledDate) && disabledDate(currentValue - ONE_DAY);
-    const nextDisabled = isFunction(disabledDate) && disabledDate(currentValue + ONE_DAY);
-    const disabledFirstChild = disabled && !lastDisabled && nextDisabled;
-    const disabledLastChild = disabled && lastDisabled && !nextDisabled;
-    const disabledIsolated = disabled && !lastDisabled && !nextDisabled;
+    const active = range ? presetValue.includes(currentValue) : value === currentValue;
+
+    const {
+      disabled,
+      disabledFirstChild,
+      disabledLastChild,
+      disabledIsolated,
+    } = getDateDisabled(currentValue, disabledDate);
+
+    if (!range) return {
+      value: currentValue,
+      title: dateInfo.dateString,
+      content: dateInfo.date,
+      within,
+      active,
+      disabled,
+      disabledFirstChild,
+      disabledLastChild,
+      disabledIsolated,
+    };
 
     let preset = false;
 

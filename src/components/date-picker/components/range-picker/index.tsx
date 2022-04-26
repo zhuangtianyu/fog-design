@@ -344,6 +344,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
         list={getDates({
           panelValue: panelValue[0],
           value,
+          range: true,
           presetValue,
           pickingValue,
           disabledDate,
@@ -365,6 +366,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
         list={getDates({
           panelValue: panelValue[1],
           value,
+          range: true,
           presetValue,
           pickingValue,
           disabledDate,
