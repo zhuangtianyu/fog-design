@@ -136,16 +136,16 @@ export const themes: Themes = themeNames.reduce((accumulator, themeName) => {
     light: {
       ...lightColors,
       ...primaryColors,
-      'primary-color-slight': getTransformedColor(primaryColor, 0.93),
-      'primary-color-blushed': getTransformedColor(primaryColor, 0.8),
+      'primary-color-slight': getTransformedColor(primaryColor, 0.9),
+      'primary-color-blushed': getTransformedColor(primaryColor, 0.75),
       'primary-color-disabled': getTransformedColor(primaryColor, 0.6),
     },
     dark: {
       ...darkColors,
       ...primaryColors,
-      'primary-color-slight': getTransformedColor(primaryColor, -0.83),
-      'primary-color-blushed': getTransformedColor(primaryColor, -0.7),
-      'primary-color-disabled': getTransformedColor(primaryColor, -0.5),
+      'primary-color-slight': getTransformedColor(primaryColor, -0.7),
+      'primary-color-blushed': getTransformedColor(primaryColor, -0.5),
+      'primary-color-disabled': getTransformedColor(primaryColor, -0.4),
     },
   };
 
