@@ -182,23 +182,10 @@ export const getDatePreset = ({
   lastDateCount: number,
   mainDateCount: number,
 }) => {
-  const getPreset = ({
-    date,
-    index,
-    presetValue,
-    lastDateCount,
-    mainDateCount,
-  }: {
-    date: number;
-    index: number;
-    presetValue: (number | null)[];
-    lastDateCount: number,
-    mainDateCount: number,
-  }) => {
+  const getPreset = (date, presetValue) => {
     let preset = false;
-    const within = getWithin(index, lastDateCount, mainDateCount);
 
-    if (within && isValueInRange(presetValue, date)) {
+    if (isValueInRange(presetValue, date)) {
       const presettingValue = [...presetValue];
 
       if (pickingValue[0] !== null) {
@@ -215,14 +202,6 @@ export const getDatePreset = ({
     return preset;
   };
 
-  const presetParams = {
-    date,
-    index,
-    presetValue,
-    lastDateCount,
-    mainDateCount,
-  };
-
   const nonPreset = {
     preset: false,
     presetFirstChild: false,
@@ -230,12 +209,12 @@ export const getDatePreset = ({
     presetIsolated: false,
   };
 
-  const preset = getPreset(presetParams);
+  const preset = getWithin(index, lastDateCount, mainDateCount) && getPreset(date, presetValue);
 
   if (!preset) return nonPreset;
 
-  const lastPreset = getPreset({ ...presetParams, date: date - ONE_DAY, index: index - 1 });
-  const nextPreset = getPreset({ ...presetParams, date: date + ONE_DAY, index: index + 1 });
+  const lastPreset = getPreset(date - ONE_DAY, presetValue);
+  const nextPreset = getPreset(date + ONE_DAY, presetValue);
 
   return {
     preset,
