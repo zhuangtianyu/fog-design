@@ -279,6 +279,43 @@ export const getDatePicking = ({
   };
 };
 
+export const getDatePicked = ({
+  date,
+  index,
+  value,
+  lastDateCount,
+  mainDateCount,
+}: {
+  date: number;
+  index: number;
+  value: (number | null)[];
+  lastDateCount: number,
+  mainDateCount: number,
+}) => {
+  const getPicked = (date, value) => isValueInRange(value, date);
+
+  const nonPicked = {
+    picked: false,
+    pickedFirstChild: false,
+    pickedLastChild: false,
+    pickedIsolated: false,
+  };
+
+  const picked = getWithin(index, lastDateCount, mainDateCount) && getPicked(date, value);
+
+  if (!picked) return nonPicked;
+
+  const lastPicked = getPicked(date - ONE_DAY, value);
+  const nextPicked = getPicked(date + ONE_DAY, value);
+
+  return {
+    picked,
+    pickedFirstChild: !lastPicked && nextPicked,
+    pickedLastChild: lastPicked && !nextPicked,
+    pickedIsolated: !lastPicked && !nextPicked,
+  };
+};
+
 export const getDates = ({
   panelValue,
   value,
@@ -339,7 +376,18 @@ export const getDates = ({
       mainDateCount,
     });
 
-    const picked = !disabled && within && !active && !preset && isValueInRange(value, currentValue);
+    const {
+      picked,
+      pickedFirstChild,
+      pickedLastChild,
+      pickedIsolated,
+    } = getDatePicked({
+      date: currentValue,
+      index,
+      value: value as (number | null)[],
+      lastDateCount,
+      mainDateCount,
+    });
 
     const {
       picking,
@@ -370,6 +418,9 @@ export const getDates = ({
       presetLastChild,
       presetIsolated,
       picked,
+      pickedFirstChild,
+      pickedLastChild,
+      pickedIsolated,
       picking,
       pickingFirstChild,
       pickingLastChild,

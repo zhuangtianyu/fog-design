@@ -16,6 +16,9 @@ export interface CellType {
   disabledIsolated: boolean;
   preset?: boolean;
   picked?: boolean;
+  pickedFirstChild?: boolean;
+  pickedLastChild?: boolean;
+  pickedIsolated?: boolean;
   presetFirstChild?: boolean;
   presetLastChild?: boolean;
   presetIsolated?: boolean;
@@ -47,6 +50,9 @@ const PanelCell: React.FC<PanelCellProps> = props => {
     presetLastChild,
     presetIsolated,
     picked,
+    pickedFirstChild,
+    pickedLastChild,
+    pickedIsolated,
     picking,
     pickingFirstChild,
     pickingLastChild,
@@ -72,6 +78,9 @@ const PanelCell: React.FC<PanelCellProps> = props => {
         [`${prefix}-date-picker__cell--preset-last-child`]: presetLastChild,
         [`${prefix}-date-picker__cell--preset-isolated-child`]: presetIsolated,
         [`${prefix}-date-picker__cell--picked`]: picked,
+        [`${prefix}-date-picker__cell--picked-first-child`]: pickedFirstChild,
+        [`${prefix}-date-picker__cell--picked-last-child`]: pickedLastChild,
+        [`${prefix}-date-picker__cell--picked-isolated-child`]: pickedIsolated,
         [`${prefix}-date-picker__cell--picking`]: picking,
         [`${prefix}-date-picker__cell--picking-first-child`]: pickingFirstChild,
         [`${prefix}-date-picker__cell--picking-last-child`]: pickingLastChild,

@@ -104,8 +104,34 @@
     border-radius: 2px;
   }
 
-  &--picked &-content {
+  &--picked::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 24px;
     background-color: var(--fog-primary-color-slight);
+    transition: all 0.3s;
+    margin: auto;
+  }
+
+  &--picked-first-child::before {
+    left: calc((100% - 24px) / 2);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  &--picked-last-child::before {
+    right: calc((100% - 24px) / 2);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+
+  &--picked-isolated-child::before {
+    width: 24px;
+    border-radius: 2px;
   }
 
   &--picking::before {
