@@ -20,7 +20,7 @@ export interface OptionProps {
   disabled?: boolean;
   /** --skip */
   multiple?: boolean;
-  children?: React.ReactChild,
+  children?: React.ReactNode,
   [propName: string]: any;
 }
 

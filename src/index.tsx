@@ -8,7 +8,7 @@ import Drawer from '@components/drawer';
 import Menu from '@components/menu';
 import Loading from '@components/loading';
 import useTheme from '@hooks/useTheme';
-import { themes, themeNames } from '@constants/themes';
+import { themes, themeNames, themeColors } from '@constants/themes';
 import { kebabCaseToPascalCase, isMobile } from '@utils/index';
 import '@styles/index.less';
 import './index.less';
@@ -103,6 +103,27 @@ const AppRoutes = () => (
   </Suspense>
 );
 
+const ThemesSelect = props => (
+  <Select {...props}>
+    {themeNames.map(item => {
+        const label = kebabCaseToPascalCase(item);
+        const backgroundColor = themeColors[item];
+
+        return (
+          <Option
+            className="app__themes-option"
+            key={item}
+            label={label}
+            value={item}
+          >
+            <span className="app__themes-label">{label}</span>
+            <span className="app__themes-block" style={{ backgroundColor }} />
+          </Option>
+        );
+    })}
+  </Select>
+);
+
 const App = () => {
   const [dark, setDark] = useState(previousDark || false);
   const [themeName, setThemeName] = useState(previousThemeName || themeNames[0]);
@@ -142,18 +163,12 @@ const App = () => {
                 ? <>
                     <div className="app__header-themes">
                       <span>Theme:</span>
-                      <Select
+                      <ThemesSelect
                         className="app__header-themes-select"
                         value={themeName}
                         onChange={setThemeName}
                         getPopupMountNode={() => headerRef.current}
-                      >
-                        {themeNames.map(item => (
-                          <Option key={item} value={item}>
-                            {kebabCaseToPascalCase(item)}
-                          </Option>
-                        ))}
-                      </Select>
+                      />
                     </div>
                     <div className="app__header-darkness">
                       <span className="app__header-darkname">Darkness:</span>
@@ -178,17 +193,11 @@ const App = () => {
                         ref={drawerRef}
                       >
                         <h3>Themes</h3>
-                        <Select
+                        <ThemesSelect
                           value={themeName}
                           onChange={setThemeName}
                           getPopupMountNode={() => drawerRef.current}
-                        >
-                          {themeNames.map(item => (
-                            <Option key={item} value={item}>
-                              {kebabCaseToPascalCase(item)}
-                            </Option>
-                          ))}
-                        </Select>
+                        />
                         <h3>Darkness</h3>
                         <Switch checked={dark} onChange={setDark} />
                         <h3>Github</h3>
