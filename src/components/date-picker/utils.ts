@@ -224,6 +224,61 @@ export const getDatePreset = ({
   };
 };
 
+export const getDatePicking = ({
+  date,
+  index,
+  presetValue,
+  pickingValue,
+  lastDateCount,
+  mainDateCount,
+}: {
+  date: number;
+  index: number;
+  presetValue: (number | null)[];
+  pickingValue: (number | null)[];
+  lastDateCount: number,
+  mainDateCount: number,
+}) => {
+  const getPicking = (date, pickingValue, presetValue) => {
+    let picking = false;
+
+    if (isValueInRange(pickingValue, date)) {
+      picking = true;
+    } else {
+      if (Array.isArray(pickingValue) && isRangeValid(presetValue)) {
+        if (pickingValue[0] !== null) {
+          picking = date >= pickingValue[0] && date <= presetValue[0];
+        } else {
+          picking = date <= pickingValue[1] && date >= presetValue[1];
+        }
+      }
+    }
+
+    return picking;
+  };
+
+  const nonPicking = {
+    picking: false,
+    pickingFirstChild: false,
+    pickingLastChild: false,
+    pickingIsolated: false,
+  };
+
+  const picking = getWithin(index, lastDateCount, mainDateCount) && getPicking(date, pickingValue, presetValue);
+
+  if (!picking) return nonPicking;
+
+  const lastPicking = getPicking(date - ONE_DAY, pickingValue, presetValue);
+  const nextPicking = getPicking(date + ONE_DAY, pickingValue, presetValue);
+
+  return {
+    picking,
+    pickingFirstChild: !lastPicking && nextPicking,
+    pickingLastChild: lastPicking && !nextPicking,
+    pickingIsolated: !lastPicking && !nextPicking,
+  };
+};
+
 export const getDates = ({
   panelValue,
   value,
@@ -286,21 +341,19 @@ export const getDates = ({
 
     const picked = !disabled && within && !active && !preset && isValueInRange(value, currentValue);
 
-    let picking = false;
-
-    if (within && !preset && !picked) {
-      if (isValueInRange(pickingValue, currentValue)) {
-        picking = true;
-      } else {
-        if (Array.isArray(pickingValue) && isRangeValid(presetValue)) {
-          if (pickingValue[0] !== null) {
-            picking = currentValue >= pickingValue[0] && currentValue < presetValue[0];
-          } else {
-            picking = currentValue <= pickingValue[1] && currentValue > presetValue[1];
-          }
-        }
-      }
-    }
+    const {
+      picking,
+      pickingFirstChild,
+      pickingLastChild,
+      pickingIsolated,
+    } = getDatePicking({
+      date: currentValue,
+      index,
+      presetValue,
+      pickingValue,
+      lastDateCount,
+      mainDateCount,
+    });
 
     return {
       value: currentValue,
@@ -318,6 +371,9 @@ export const getDates = ({
       presetIsolated,
       picked,
       picking,
+      pickingFirstChild,
+      pickingLastChild,
+      pickingIsolated,
     };
   });
 

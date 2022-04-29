@@ -108,7 +108,7 @@
     background-color: var(--fog-primary-color-slight);
   }
 
-  &--picking::after {
+  &--picking::before {
     content: '';
     position: absolute;
     top: 0;
@@ -120,5 +120,25 @@
     border-bottom: 1px dashed var(--fog-primary-color);
     transition: all 0.3s;
     margin: auto;
+  }
+
+  &--picking-first-child::before {
+    left: calc((100% - 24px) / 2);
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-left: 1px dashed var(--fog-primary-color);
+  }
+
+  &--picking-last-child::before {
+    right: calc((100% - 24px) / 2);
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    border-right: 1px dashed var(--fog-primary-color);
+  }
+
+  &--picking-isolated-child::before {
+    width: 24px;
+    border: 1px dashed var(--fog-primary-color);
+    border-radius: 2px;
   }
 }
