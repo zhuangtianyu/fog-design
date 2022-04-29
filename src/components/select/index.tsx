@@ -78,6 +78,7 @@ export const Select: SelectTypes = props => {
   const options = useMemo<OptionProps[]>(() => (
     children
       ? React.Children.map(children, (item: React.ReactElement) => ({
+          className: item.props.className,
           label: item.props.label || item.props.children,
           value: item.props.value,
           disabled: item.props.disabled,
@@ -212,6 +213,7 @@ export const Select: SelectTypes = props => {
     <div className={`${prefix}-select__options`}>
       {options.map(item => (
         <Option
+          className={item.className}
           key={item.value}
           label={item.label}
           value={item.value}

@@ -50,10 +50,13 @@ export const Option: React.FC<OptionProps> = props => {
       )}
       {...restProps}
     >
-      <div className={`${prefix}-select-option__content`}>
-        {children || label}
-      </div>
-      {multiple && active && <Icon type="check" />}
+      {children || label}
+      {multiple && active && (
+        <Icon
+          className={`${prefix}-select-option__check`}
+          type="check"
+        />
+      )}
     </div>
   );
 };

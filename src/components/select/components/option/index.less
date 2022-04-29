@@ -7,9 +7,7 @@
     box-sizing: border-box;
   }
 
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  position: relative;
   padding: 4px 12px;
   font-size: 14px;
   line-height: 24px;
@@ -18,8 +16,19 @@
   cursor: pointer;
 
   &--active {
+    padding-right: 30px;
     color: var(--fog-primary-color);
     background-color: var(--fog-panel-color-active);
+  }
+
+  &__check {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    bottom: 0;
+    width: 14px;
+    height: 14px;
+    margin: auto;
   }
 
   &--picking {
@@ -29,9 +38,5 @@
   &--disabled {
     color: var(--fog-color-disabled);
     cursor: not-allowed;
-  }
-
-  &__content {
-    margin-right: auto;
   }
 }
