@@ -49,7 +49,7 @@
     text-align: center;
     border-radius: 2px;
     transition: all 0.3s;
-    z-index: 1;
+    z-index: 4;
   }
 
   &:hover:not(&--active):not(&--disabled):not(&--preset):not(&--picked):not(&--picking) &-content {
@@ -74,95 +74,82 @@
     color: var(--fog-color-disabled);
   }
 
-  &--preset::after {
-    content: '';
+  &-background {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     height: 24px;
+    transition: all 0.3s;
+    margin: auto;
+  }
+
+  &--preset &-background--preset {
     background-color: var(--fog-primary-color-blushed);
-    transition: all 0.3s;
-    margin: auto;
+    z-index: 3;
   }
 
-  &--preset-first-child::after {
+  &--preset-first-child &-background--preset {
     left: calc((100% - 24px) / 2);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
-  &--preset-last-child::after {
+  &--preset-last-child &-background--preset {
     right: calc((100% - 24px) / 2);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
 
-  &--preset-isolated-child::after {
+  &--preset-isolated-child &-background--preset {
     width: 24px;
     border-radius: 2px;
   }
 
-  &--picked::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 24px;
+  &--picked &-background--picked {
     background-color: var(--fog-primary-color-slight);
-    transition: all 0.3s;
-    margin: auto;
+    z-index: 2;
   }
 
-  &--picked-first-child::before {
+  &--picked-first-child &-background--picked {
     left: calc((100% - 24px) / 2);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
 
-  &--picked-last-child::before {
+  &--picked-last-child &-background--picked {
     right: calc((100% - 24px) / 2);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
 
-  &--picked-isolated-child::before {
+  &--picked-isolated-child &-background--picked {
     width: 24px;
     border-radius: 2px;
   }
 
-  &--picking::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 24px;
+  &--picking &-background--picking {
     border-top: 1px dashed var(--fog-primary-color);
     border-bottom: 1px dashed var(--fog-primary-color);
-    transition: all 0.3s;
-    margin: auto;
+    z-index: 1;
   }
 
-  &--picking-first-child::before {
+  &--picking-first-child &-background--picking {
     left: calc((100% - 24px) / 2);
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     border-left: 1px dashed var(--fog-primary-color);
   }
 
-  &--picking-last-child::before {
+  &--picking-last-child &-background--picking {
     right: calc((100% - 24px) / 2);
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
     border-right: 1px dashed var(--fog-primary-color);
   }
 
-  &--picking-isolated-child::before {
+  &--picking-isolated-child &-background--picking {
     width: 24px;
     border: 1px dashed var(--fog-primary-color);
     border-radius: 2px;

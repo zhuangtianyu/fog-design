@@ -247,9 +247,9 @@ export const getDatePicking = ({
     } else {
       if (Array.isArray(pickingValue) && isRangeValid(presetValue)) {
         if (pickingValue[0] !== null) {
-          picking = date >= pickingValue[0] && date <= presetValue[0];
+          picking = date >= pickingValue[0] && date <= presetValue[1];
         } else {
-          picking = date <= pickingValue[1] && date >= presetValue[1];
+          picking = date <= pickingValue[1] && date >= presetValue[0];
         }
       }
     }

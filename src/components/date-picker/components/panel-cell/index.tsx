@@ -98,6 +98,30 @@ const PanelCell: React.FC<PanelCellProps> = props => {
       <div className={`${prefix}-date-picker__cell-content`}>
         {content}
       </div>
+      {preset && (
+        <div
+          className={classnames([
+            `${prefix}-date-picker__cell-background`,
+            `${prefix}-date-picker__cell-background--preset`,
+          ])}
+        />
+      )}
+      {picked && (
+        <div
+          className={classnames([
+            `${prefix}-date-picker__cell-background`,
+            `${prefix}-date-picker__cell-background--picked`,
+          ])}
+        />
+      )}
+      {picking && (
+        <div
+          className={classnames([
+            `${prefix}-date-picker__cell-background`,
+            `${prefix}-date-picker__cell-background--picking`,
+          ])}
+        />
+      )}
     </div>
   );
 };
