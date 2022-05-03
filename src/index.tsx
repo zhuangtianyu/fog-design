@@ -31,6 +31,7 @@ const components: string[] = [
   'menu',
   'message',
   'modal',
+  'pagination',
   'radio',
   'select',
   'steps',
