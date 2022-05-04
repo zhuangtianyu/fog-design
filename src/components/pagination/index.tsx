@@ -87,9 +87,10 @@ export const Pagination: React.FC<PaginationProps> = props => {
           ? <>
               <Button
                 className={`${prefix}-pagination__item`}
+                disabled={page <= 1}
                 onClick={event => {
                   event.currentTarget.blur();
-                  page > 1 && handlePageChange(page - 1);
+                  handlePageChange(page - 1);
                 }}
               >
                 <Icon type="left" />
@@ -108,9 +109,10 @@ export const Pagination: React.FC<PaginationProps> = props => {
               ))}
               <Button
                 className={`${prefix}-pagination__item`}
+                disabled={page >= length}
                 onClick={event => {
                   event.currentTarget.blur();
-                  page < length && handlePageChange(page + 1);
+                  handlePageChange(page + 1);
                 }}
               >
                 <Icon type="right" />
