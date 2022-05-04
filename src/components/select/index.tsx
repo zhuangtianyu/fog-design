@@ -28,6 +28,7 @@ export interface SelectProps {
   onOpenChange?: (open: boolean) => void;
   options?: OptionProps[];
   multiple?: boolean;
+  disabled?: boolean;
   placeholder?: string;
   getPopupMountNode?: () => HTMLElement;
 }
@@ -48,6 +49,7 @@ export const Select: SelectTypes = props => {
     onOpenChange: onOpenChangeFromProps,
     options: optionsFromProps,
     multiple,
+    disabled,
     placeholder,
     getPopupMountNode,
     children,
@@ -246,6 +248,7 @@ export const Select: SelectTypes = props => {
           entered: `${prefix}-select__popup--entered`,
           leaving: `${prefix}-select__popup--leaving`,
         }}
+        disabled={disabled}
         getPopupMountNode={getPopupMountNode}
       >
         <Selection

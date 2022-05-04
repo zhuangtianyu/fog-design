@@ -68,13 +68,6 @@ export const Trigger: React.FC<TriggerProps> = props => {
     onChange: onVisibleChangeFromProps,
   });
 
-  if (disabled) return (
-    cloneElement(React.Children.only(children), {
-      className: getTriggerClassName(children),
-      disabled,
-    })
-  );
-
   const [mountNode, setMountNode] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -270,6 +263,13 @@ export const Trigger: React.FC<TriggerProps> = props => {
       updatePopupPosition();
     }
   }, [visible, containerNode]);
+
+  if (disabled) return (
+    cloneElement(React.Children.only(children), {
+      className: getTriggerClassName(children),
+      disabled,
+    })
+  );
 
   return (
     <>
