@@ -36,8 +36,14 @@ export const Pagination: React.FC<PaginationProps> = props => {
     defaultPageSize: defaultPageSizeFromProps,
     total,
     pageSizeOptions,
-    onChange,
+    onChange: onChangeFromProps,
   } = props;
+
+  const onChange = useMemo(() =>
+    isFunction(onChangeFromProps)
+      ? onChangeFromProps
+      : () => {}
+  , [onChangeFromProps]);
 
   const {
     value: page = defaultPage,
@@ -45,9 +51,6 @@ export const Pagination: React.FC<PaginationProps> = props => {
   } = useControlled({
     value: pageFromProps,
     defaultValue: defaultPageFromProps,
-    onChange: (nextPage: number) => {
-      isFunction(onChange) && onChange(nextPage, pageSize);
-    },
   });
 
   const {
@@ -56,10 +59,20 @@ export const Pagination: React.FC<PaginationProps> = props => {
   } = useControlled({
     value: pageSizeFromProps,
     defaultValue: defaultPageSizeFromProps,
-    onChange: (nextPageSize: number) => {
-      isFunction(onChange) && onChange(page, nextPageSize);
-    },
   });
+
+  const handlePageChange = (nextPage: number) => {
+    onPageChange(nextPage);
+    onChange(nextPage, pageSize);
+  };
+
+  const handlePageSizeChange = (nextPageSize: number) => {
+    const nextPage = 1;
+
+    onPageChange(nextPage);
+    onPageSizeChange(nextPageSize);
+    onChange(nextPage, nextPageSize);
+  };
 
   const optionsWrapperRef = useRef<HTMLDivElement>(null);
 
@@ -76,7 +89,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                 className={`${prefix}-pagination__item`}
                 onClick={event => {
                   event.currentTarget.blur();
-                  page > 1 && onPageChange(page - 1);
+                  page > 1 && handlePageChange(page - 1);
                 }}
               >
                 <Icon type="left" />
@@ -88,7 +101,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                     [`${prefix}-pagination__item`]: true,
                     [`${prefix}-pagination__item--active`]: index + 1 === page,
                   })}
-                  onClick={() => onPageChange(index + 1)}
+                  onClick={() => index + 1 !== page && handlePageChange(index + 1)}
                 >
                   {index + 1}
                 </Button>
@@ -97,7 +110,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                 className={`${prefix}-pagination__item`}
                 onClick={event => {
                   event.currentTarget.blur();
-                  page < length && onPageChange(page + 1);
+                  page < length && handlePageChange(page + 1);
                 }}
               >
                 <Icon type="right" />
@@ -109,7 +122,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                 <Select
                   className={`${prefix}-pagination__options`}
                   value={pageSize}
-                  onChange={onPageSizeChange}
+                  onChange={handlePageSizeChange}
                   getPopupMountNode={() => optionsWrapperRef.current}
                 >
                   {pageSizeOptions.map(size => (
