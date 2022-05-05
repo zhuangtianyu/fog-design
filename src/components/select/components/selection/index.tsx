@@ -2,6 +2,7 @@ import React, { useState, useMemo, forwardRef } from 'react';
 import namespace from '@namespace';
 import classnames from 'classnames';
 import Input from '@components/input';
+import InputWrapper from '@components/input/components/wrapper';
 import Icon from '@components/icon';
 import Tag from '@components/tag';
 import { OptionProps } from '../option';
@@ -60,19 +61,13 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
 
   return (
     <div
-      className={classnames(`${prefix}-selection`, className, {
-        [`${prefix}-selection--single`]: !multiple,
-        [`${prefix}-selection--multiple`]: multiple,
-        [`${prefix}-selection--focused`]: multiple && focused,
-        [`${prefix}-selection--open`]: open,
-      })}
+      className={classnames(`${prefix}-selection`, className)}
       ref={ref}
       onClick={() => multiple && inputRef.current?.focus()}
     >
       {
         !multiple
           ? <Input
-              className={`${prefix}-selection__input--single`}
               ref={inputRef}
               value={inputValue}
               placeholder={placeholder}
@@ -80,37 +75,42 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
               suffix={<Icon type="down" />}
               readOnly
             />
-          : <>
-              {tags.map(tag => (
-                <Tag
-                  className={`${prefix}-selection__tag`}
-                  key={tag.value}
-                  closable
-                  onClose={event => {
-                    event.stopPropagation();
-                    isFunction(onTagDelete) && onTagDelete(tag.value);
-                  }}
-                >
-                  {tag.label}
-                </Tag>
-              ))}
-              <Input
-                className={`${prefix}-selection__input--multiple`}
-                ref={inputRef}
-                value=""
-                onFocus={() => setFocused(true)}
-                onBlur={() => setFocused(false)}
-                onKeyDown={handleKeyDown}
-              />
-              {Array.isArray(value) && !value.length && (
-                <div className={`${prefix}-selection__placeholder`}>
-                  {placeholder}
-                </div>
-              )}
-              <div className={`${prefix}-selection__arrow-down`}>
-                <Icon type="down" size={14} />
+          : <InputWrapper
+              className={`${prefix}-selection__input-wrapper`}
+              focused={focused || open}
+              disabled={disabled}
+              suffix={<Icon type="down" />}
+            >
+              <div className={`${prefix}-selection__content`}>
+                {tags.map(tag => (
+                  <Tag
+                    className={`${prefix}-selection__tag`}
+                    key={tag.value}
+                    closable
+                    onClose={event => {
+                      event.stopPropagation();
+                      isFunction(onTagDelete) && onTagDelete(tag.value);
+                    }}
+                  >
+                    {tag.label}
+                  </Tag>
+                ))}
+                <Input
+                  className={`${prefix}-selection__input-cursor`}
+                  ref={inputRef}
+                  value=""
+                  disabled={disabled}
+                  onFocus={() => setFocused(true)}
+                  onBlur={() => setFocused(false)}
+                  onKeyDown={handleKeyDown}
+                />
+                {Array.isArray(value) && !value.length && (
+                  <div className={`${prefix}-selection__placeholder`}>
+                    {placeholder}
+                  </div>
+                )}
               </div>
-            </>
+            </InputWrapper>
       }
     </div>
   );

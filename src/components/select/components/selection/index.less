@@ -10,40 +10,22 @@
   position: relative;
   cursor: pointer;
 
-  &--single &__input--single {
-    cursor: pointer;
+  &__input-wrapper {
+    padding-left: 0;
   }
 
-  &--open .@{prefix}-input-wrapper {
-    border-color: var(--fog-primary-color);
+  &__content {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
   }
 
-  &--multiple {
-    padding: 1px 30px 1px 4px;
-    font-size: 0;
-    border: 1px solid var(--fog-border-color);
-    border-radius: 2px;
-    background-color: var(--fog-panel-color);
-    cursor: text;
-
-    &:hover {
-      border-color: var(--fog-primary-color-hover);
-    }
-  }
-
-  &--multiple:active,
-  &--focused,
-  &--open {
-
-    &, &:hover {
-      border-color: var(--fog-primary-color);
-    }
-  }
-
-  &__tag,
-  &__input--multiple {
-    display: inline-block;
-    vertical-align: middle;
+  &__content &__input-cursor {
+    padding-left: 0;
+    padding-right: 0;
+    width: 2px;
+    flex-grow: 0;
+    margin-left: 12px;
   }
 
   &__tag {
@@ -51,19 +33,12 @@
     cursor: default;
   }
 
-  &__tag + &__input--multiple {
-    margin-left: 2px;
+  &__tag:first-child {
+    margin-left: 6px;
   }
 
-  &__input--multiple {
-    padding: 0;
-    width: 2px;
-    line-height: 24px;
-    border: none;
-    background-color: var(--fog-transparent);
-    margin: 2px;
-    margin-left: 8px;
-    transition: all 0.3s, margin-left 0s;
+  &__tag + &__input-cursor {
+    margin-left: 2px;
   }
 
   &__placeholder {
@@ -73,16 +48,5 @@
     color: var(--fog-placeholder-color);
     font-size: 14px;
     line-height: 22px;
-  }
-
-  &__arrow-down {
-    position: absolute;
-    top: 1px;
-    right: 1px;
-    bottom: 1px;
-    width: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
   }
 }
