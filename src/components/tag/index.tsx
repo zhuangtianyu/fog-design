@@ -12,6 +12,7 @@ export interface TagProps  {
   /** --skip */
   className?: string;
   closable?: boolean;
+  disabled?: boolean;
   onClose?: (event: React.MouseEvent) => void;
   [propName: string]: any;
 }
@@ -20,6 +21,7 @@ export const Tag: React.FC<TagProps> = props => {
   const {
     className,
     closable,
+    disabled,
     children: childrenFromProps,
     onClose,
     ...restProps
@@ -43,7 +45,10 @@ export const Tag: React.FC<TagProps> = props => {
 
   return (
     <div
-      className={classnames(`${prefix}-tag`, className)}
+      className={classnames(className, {
+        [`${prefix}-tag`]: true,
+        [`${prefix}-tag--disabled`]: disabled,
+      })}
       {...restProps}
     >
       {children}
@@ -52,7 +57,7 @@ export const Tag: React.FC<TagProps> = props => {
           className={`${prefix}-tag__close`}
           type="close"
           size={12}
-          onClick={event => isFunction(onClose) && onClose(event)}
+          onClick={event => !disabled && isFunction(onClose) && onClose(event)}
         />
       )}
     </div>

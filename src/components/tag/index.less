@@ -16,6 +16,14 @@
   background-color: var(--fog-background-color);
   transition: all 0.3s;
 
+  &--disabled {
+    color: var(--fog-color-disabled);
+  }
+
+  &--disabled &__close {
+    cursor: not-allowed;
+  }
+
   > span,
   > .@{prefix}-icon {
     display: inline-block;
