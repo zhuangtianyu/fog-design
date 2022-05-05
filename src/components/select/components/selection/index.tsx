@@ -112,6 +112,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
                     className={`${prefix}-selection__tag`}
                     key={tag.value}
                     closable
+                    disabled={disabled}
                     onClose={event => {
                       event.stopPropagation();
                       isFunction(onTagDelete) && onTagDelete(tag.value);
@@ -141,8 +142,6 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
   );
 });
 
-Selection.defaultProps = {
-  clearable: true,
-};
+Selection.defaultProps = {};
 
 export default Selection;
