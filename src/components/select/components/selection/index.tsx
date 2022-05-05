@@ -24,7 +24,9 @@ export interface SelectionProps {
   disabled?: boolean;
   inputRef?: React.RefObject<HTMLInputElement>;
   inputValue?: string;
+  clearable?: boolean;
   placeholder?: string;
+  onClear?: () => void;
   onTagDelete?: (optionValue: ValueType) => void;
 }
 
@@ -38,11 +40,14 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     disabled,
     inputRef,
     inputValue,
+    clearable,
     placeholder,
+    onClear,
     onTagDelete,
   } = props;
 
   const [focused, setFocused] = useState<boolean>(false);
+  const [entered, setEntered] = useState<boolean>(false);
 
   const tags = useMemo(() => {
     if (!multiple) return [];
@@ -51,19 +56,39 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     return options.filter(item => value.includes(item.value));
   }, [value, options, multiple]);
 
+  const isValueNonEmpty = !multiple
+    ? value !== null && value !== undefined
+    : value.length > 0;
+
+  const Suffix = () =>
+    clearable && !disabled && entered && isValueNonEmpty
+      ? <Icon
+          className={`${prefix}-selection__clear`}
+          type="close-circle-fill"
+          onClick={handleClear}
+        />
+      : <Icon type="down" />;
+
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Backspace' && value.length) {
       const lastValue = value[value.length - 1];
 
-      onTagDelete(lastValue);
+      isFunction(onTagDelete) && onTagDelete(lastValue);
     }
+  };
+
+  const handleClear = event => {
+    event.stopPropagation();
+    isFunction(onClear) && onClear();
   };
 
   return (
     <div
       className={classnames(`${prefix}-selection`, className)}
       ref={ref}
-      onClick={() => multiple && inputRef.current?.focus()}
+      onClick={() => inputRef.current?.focus()}
+      onMouseEnter={() => setEntered(true)}
+      onMouseLeave={() => setEntered(false)}
     >
       {
         !multiple
@@ -72,14 +97,14 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
               value={inputValue}
               placeholder={placeholder}
               disabled={disabled}
-              suffix={<Icon type="down" />}
+              suffix={<Suffix />}
               readOnly
             />
           : <InputWrapper
               className={`${prefix}-selection__input-wrapper`}
               focused={focused || open}
               disabled={disabled}
-              suffix={<Icon type="down" />}
+              suffix={<Suffix />}
             >
               <div className={`${prefix}-selection__content`}>
                 {tags.map(tag => (
@@ -116,6 +141,8 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
   );
 });
 
-Selection.defaultProps = {};
+Selection.defaultProps = {
+  clearable: true,
+};
 
 export default Selection;

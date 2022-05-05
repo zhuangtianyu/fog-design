@@ -260,6 +260,7 @@ export const Select: SelectTypes = props => {
           inputRef={inputRef}
           inputValue={inputValue}
           placeholder={placeholder}
+          onClear={() => onChange(undefined)}
           onTagDelete={optionValue => {
             deleteMultipleValue(optionValue);
             inputRef.current?.focus();
