@@ -18,24 +18,29 @@ const defaultPageSize = 20;
 export interface PaginationProps  {
   /** --skip */
   className?: string;
+  /** --skip */
+  style?: React.CSSProperties;
   page?: number;
   pageSize?: number;
   defaultPage?: number;
   defaultPageSize?: number;
   total?: number;
   pageSizeOptions?: number[];
+  disabled?: boolean;
   onChange?: (page: number, pageSize: number) => void;
 }
 
 export const Pagination: React.FC<PaginationProps> = props => {
   const {
     className,
+    style,
     page: pageFromProps,
     pageSize: pageSizeFromProps,
     defaultPage: defaultPageFromProps,
     defaultPageSize: defaultPageSizeFromProps,
     total,
     pageSizeOptions,
+    disabled,
     onChange: onChangeFromProps,
   } = props;
 
@@ -81,13 +86,16 @@ export const Pagination: React.FC<PaginationProps> = props => {
   , [pageSize, total]);
 
   return (
-    <div className={classnames(`${prefix}-pagination`, className)}>
+    <div
+      className={classnames(`${prefix}-pagination`, className)}
+      style={style}
+    >
       {
         length > 0
           ? <>
               <Button
                 className={`${prefix}-pagination__item`}
-                disabled={page <= 1}
+                disabled={disabled || page <= 1}
                 onClick={event => {
                   event.currentTarget.blur();
                   handlePageChange(page - 1);
@@ -102,6 +110,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                     [`${prefix}-pagination__item`]: true,
                     [`${prefix}-pagination__item--active`]: index + 1 === page,
                   })}
+                  disabled={disabled}
                   onClick={() => index + 1 !== page && handlePageChange(index + 1)}
                 >
                   {index + 1}
@@ -109,7 +118,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
               ))}
               <Button
                 className={`${prefix}-pagination__item`}
-                disabled={page >= length}
+                disabled={disabled || page >= length}
                 onClick={event => {
                   event.currentTarget.blur();
                   handlePageChange(page + 1);
@@ -125,6 +134,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                   className={`${prefix}-pagination__options`}
                   value={pageSize}
                   onChange={handlePageSizeChange}
+                  disabled={disabled}
                   getPopupMountNode={() => optionsWrapperRef.current}
                 >
                   {pageSizeOptions.map(size => (
