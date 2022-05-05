@@ -30,6 +30,15 @@ export interface SelectionProps {
   onTagDelete?: (optionValue: ValueType) => void;
 }
 
+const Suffix = ({ clearable, onClear }) =>
+  clearable
+    ? <Icon
+        className={`${prefix}-selection__clear`}
+        type="close-circle-fill"
+        onClick={onClear}
+      />
+    : <Icon type="down" />;
+
 const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, SelectionProps>((props, ref) => {
   const {
     className,
@@ -40,7 +49,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     disabled,
     inputRef,
     inputValue,
-    clearable,
+    clearable: clearableFromProps,
     placeholder,
     onClear,
     onTagDelete,
@@ -60,14 +69,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
     ? value !== null && value !== undefined
     : value.length > 0;
 
-  const Suffix = () =>
-    clearable && !disabled && entered && isValueNonEmpty
-      ? <Icon
-          className={`${prefix}-selection__clear`}
-          type="close-circle-fill"
-          onClick={handleClear}
-        />
-      : <Icon type="down" />;
+  const clearable = clearableFromProps && !disabled && entered && isValueNonEmpty;
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Backspace' && value.length) {
@@ -78,7 +80,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
   };
 
   const handleClear = event => {
-    event.stopPropagation();
+    !open && event.stopPropagation();
     isFunction(onClear) && onClear();
   };
 
@@ -97,14 +99,14 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
               value={inputValue}
               placeholder={placeholder}
               disabled={disabled}
-              suffix={<Suffix />}
+              suffix={<Suffix clearable={clearable} onClear={handleClear} />}
               readOnly
             />
           : <InputWrapper
               className={`${prefix}-selection__input-wrapper`}
               focused={focused || open}
               disabled={disabled}
-              suffix={<Suffix />}
+              suffix={<Suffix clearable={clearable} onClear={handleClear} />}
             >
               <div className={`${prefix}-selection__content`}>
                 {tags.map(tag => (

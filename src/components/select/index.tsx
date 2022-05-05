@@ -30,6 +30,7 @@ export interface SelectProps {
   multiple?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  clearable?: boolean;
   getPopupMountNode?: () => HTMLElement;
 }
 
@@ -51,6 +52,7 @@ export const Select: SelectTypes = props => {
     multiple,
     disabled,
     placeholder,
+    clearable,
     getPopupMountNode,
     children,
   } = props;
@@ -260,6 +262,7 @@ export const Select: SelectTypes = props => {
           inputRef={inputRef}
           inputValue={inputValue}
           placeholder={placeholder}
+          clearable={clearable}
           onClear={() => onChange(undefined)}
           onTagDelete={optionValue => {
             deleteMultipleValue(optionValue);
