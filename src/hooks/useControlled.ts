@@ -18,7 +18,7 @@ const useControlled = props => {
   };
 
   return isControlled
-    ? { value, onChange }
+    ? { value, onChange: uncontrolledHandler }
     : { value: innerValue, onChange: uncontrolledHandler };
 };
 
