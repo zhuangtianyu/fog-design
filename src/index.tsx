@@ -25,6 +25,7 @@ const components: string[] = [
   'checkbox',
   'date-picker',
   'drawer',
+  'grid',
   'icon',
   'input',
   'loading',

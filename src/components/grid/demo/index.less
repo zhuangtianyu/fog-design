@@ -1,0 +1,26 @@
+.grid-demo {
+
+  .fog-row {
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .fog-row .fog-col div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--fog-contrast-color);
+    line-height: 48px;
+  }
+
+  .fog-row .fog-col:nth-child(odd) div {
+    background-color: var(--fog-primary-color);
+  }
+
+  .fog-row .fog-col:nth-child(even) div {
+    background-color: var(--fog-primary-color-hover);
+  }
+}
