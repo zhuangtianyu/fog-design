@@ -21,17 +21,17 @@ const Demo = () => {
         </Col>
       </Row>
       <Row>
-        <Col span={4}>
-          <div>col-4</div>
+        <Col span={6}>
+          <div>col-6</div>
         </Col>
-        <Col span={4}>
-          <div>col-4</div>
+        <Col span={6}>
+          <div>col-6</div>
         </Col>
-        <Col span={4}>
-          <div>col-4</div>
+        <Col span={6}>
+          <div>col-6</div>
         </Col>
-        <Col span={4}>
-          <div>col-4</div>
+        <Col span={6}>
+          <div>col-6</div>
         </Col>
       </Row>
     </>
