@@ -13,6 +13,7 @@ export interface RowProps {
   /** --skip */
   style?: React.CSSProperties;
   gutter?: number;
+  align?: 'start' | 'center' | 'end' | 'stretch';
   justify?: 'start' | 'center' | 'end' | 'space-around' | 'space-between' | 'space-evenly';
   children?: React.ReactElement | React.ReactElement[];
 }
@@ -22,6 +23,7 @@ export const Row: React.FC<RowProps> = props => {
     className,
     style: styleFromProps,
     gutter,
+    align,
     justify,
     children,
   } = props;
@@ -49,6 +51,13 @@ export const Row: React.FC<RowProps> = props => {
       };
     }
 
+    if (typeof align === 'string') {
+      payload = {
+        ...payload,
+        alignItems: align,
+      };
+    }
+
     if (typeof justify === 'string') {
       payload = {
         ...payload,
@@ -57,7 +66,7 @@ export const Row: React.FC<RowProps> = props => {
     }
 
     return { ...styleFromProps, ...payload };
-  }, [styleFromProps, gutter, justify]);
+  }, [styleFromProps, gutter, align, justify]);
 
   return (
     <div
