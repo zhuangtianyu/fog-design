@@ -13,6 +13,7 @@ export interface RowProps {
   /** --skip */
   style?: React.CSSProperties;
   gutter?: number;
+  justify?: 'start' | 'center' | 'end' | 'space-around' | 'space-between' | 'space-evenly';
   children?: React.ReactElement | React.ReactElement[];
 }
 
@@ -21,6 +22,7 @@ export const Row: React.FC<RowProps> = props => {
     className,
     style: styleFromProps,
     gutter,
+    justify,
     children,
   } = props;
 
@@ -36,15 +38,26 @@ export const Row: React.FC<RowProps> = props => {
     return childrenFiltered.map(item => ({ ...item.props, gutter }));
   }, [children, gutter]);
 
-  const style = useMemo(() =>
-    typeof gutter === 'number' && gutter > 0
-      ? {
-          ...styleFromProps,
-          marginLeft: -0.5 * gutter,
-          marginRight: -0.5 * gutter,
-        }
-      : styleFromProps
-  , [styleFromProps, gutter]);
+  const style = useMemo(() => {
+    let payload: React.CSSProperties = {};
+
+    if (typeof gutter === 'number' && gutter > 0) {
+      payload = {
+        ...payload,
+        marginLeft: -0.5 * gutter,
+        marginRight: -0.5 * gutter,
+      };
+    }
+
+    if (typeof justify === 'string') {
+      payload = {
+        ...payload,
+        justifyContent: justify,
+      };
+    }
+
+    return { ...styleFromProps, ...payload };
+  }, [styleFromProps, gutter, justify]);
 
   return (
     <div
