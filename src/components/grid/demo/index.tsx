@@ -6,6 +6,7 @@ import Demo1 from './demo-1';
 import Demo2 from './demo-2';
 import Demo3 from './demo-3';
 import Demo4 from './demo-4';
+import Demo5 from './demo-5';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -37,6 +38,11 @@ const GridDemo = () => {
         title="Align"
         content={<Demo4 />}
         code={demos['demo-4']}
+      />
+      <Demo
+        title="Offset"
+        content={<Demo5 />}
+        code={demos['demo-5']}
       />
       <h2>API</h2>
       <h3>Row</h3>

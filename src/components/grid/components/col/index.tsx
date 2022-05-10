@@ -14,6 +14,7 @@ export interface ColProps {
   /** --skip */
   gutter?: number;
   span?: number;
+  offset?: number;
   children?: React.ReactElement;
 }
 
@@ -23,6 +24,7 @@ export const Col: React.FC<ColProps> = props => {
     style: styleFromProps,
     gutter,
     span,
+    offset,
     children,
   } = props;
 
@@ -41,6 +43,7 @@ export const Col: React.FC<ColProps> = props => {
       className={classnames(className, {
         [`${prefix}-col`]: true,
         [`${prefix}-col--${span}`]: span,
+        [`${prefix}-col-offset--${offset}`]: offset,
       })}
       style={style}
     >
