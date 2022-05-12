@@ -12,6 +12,7 @@ export interface RowProps {
   className?: string;
   /** --skip */
   style?: React.CSSProperties;
+  wrap?: boolean;
   gutter?: number;
   align?: 'start' | 'center' | 'end' | 'stretch';
   justify?: 'start' | 'center' | 'end' | 'space-around' | 'space-between' | 'space-evenly';
@@ -22,6 +23,7 @@ export const Row: React.FC<RowProps> = props => {
   const {
     className,
     style: styleFromProps,
+    wrap,
     gutter,
     align,
     justify,
@@ -42,6 +44,13 @@ export const Row: React.FC<RowProps> = props => {
 
   const style = useMemo(() => {
     let payload: React.CSSProperties = {};
+
+    if (wrap) {
+      payload = {
+        ...payload,
+        flexWrap: 'wrap',
+      };
+    }
 
     if (typeof gutter === 'number' && gutter > 0) {
       payload = {
@@ -66,7 +75,7 @@ export const Row: React.FC<RowProps> = props => {
     }
 
     return { ...styleFromProps, ...payload };
-  }, [styleFromProps, gutter, align, justify]);
+  }, [styleFromProps, wrap, gutter, align, justify]);
 
   return (
     <div
@@ -80,6 +89,10 @@ export const Row: React.FC<RowProps> = props => {
       ))}
     </div>
   );
+};
+
+Row.defaultProps = {
+  wrap: true,
 };
 
 export default Row;
