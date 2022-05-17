@@ -28,6 +28,7 @@ const components: string[] = [
   'grid',
   'icon',
   'input',
+  'input-number',
   'loading',
   'menu',
   'message',

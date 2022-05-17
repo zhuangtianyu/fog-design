@@ -1,0 +1,35 @@
+.@{prefix}-input-number {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  &__triggers {
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--fog-border-color);
+    transition: border-color 0.3s;
+  }
+
+  &__triggers &__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 15px;
+    font-size: 10px;
+    transition: border-color 0.3s;
+    cursor: pointer;
+
+    &:first-child {
+      border-bottom: 0.5px solid var(--fog-border-color);
+    }
+
+    &:last-child {
+      border-top: 0.5px solid var(--fog-border-color);
+    }
+  }
+}
