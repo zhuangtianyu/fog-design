@@ -11,6 +11,8 @@ import './index.less';
 
 const prefixClassName = namespace.prefix;
 
+const getInputTextByValue = value => isNumberText(value) ? `${value}` : '';
+
 export type InputNumberValue = string | number | undefined | null;
 
 export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>, 'prefix'> {
@@ -57,11 +59,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   const [inputText, setInputText] = useState<string>('');
 
   useEffect(() => {
-    if (isNumberText(value)) {
-      setInputText(value);
-    } else {
-      setInputText('');
-    }
+    setInputText(getInputTextByValue(value));
   }, [value]);
 
   const handleInputChange = event => {
@@ -71,18 +69,13 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   };
 
   const handleInputBlur = event => {
-    const isEmptyString = event.target.value === '';
+    const nextValue = event.target.value !== '' && !isNaN(Number(event.target.value))
+      ? Number(event.target.value)
+      : null;
 
-    if (isNumberText(event.target.value) || isEmptyString) {
-      const nextValue = !isEmptyString
-        ? Number(event.target.value)
-        : null;
+    nextValue !== value && onChange(nextValue);
 
-      if (nextValue !== value) {
-        onChange(nextValue);
-      }
-    }
-
+    setInputText(getInputTextByValue(nextValue));
     setFocused(false);
   };
 
