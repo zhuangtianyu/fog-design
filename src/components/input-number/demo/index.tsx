@@ -5,6 +5,7 @@ import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
 import Demo3 from './demo-3';
+import Demo4 from './demo-4';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -31,6 +32,11 @@ const InputNumberDemo = () => {
         title="Suffix"
         content={<Demo3 />}
         code={demos['demo-3']}
+      />
+      <Demo
+        title="KeepControl"
+        content={<Demo4 />}
+        code={demos['demo-4']}
       />
       <h2>API</h2>
       <Table columns={apiColumns} data={apiRows.default} />

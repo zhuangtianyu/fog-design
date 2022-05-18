@@ -7,18 +7,28 @@
     box-sizing: border-box;
   }
 
-  &__triggers {
+  &__control {
     display: flex;
     flex-direction: column;
     border-left: 1px solid var(--fog-border-color);
-    transition: border-color 0.3s;
+    transition: all 0.3s;
+    opacity: 0;
   }
 
-  &__triggers--border-right {
+  &--focused &__control,
+  &--entered &__control {
+    opacity: 1;
+  }
+
+  &--keep-control &__control {
+    opacity: 1;
+  }
+
+  &__control--border-right {
     border-right: 1px solid var(--fog-border-color);
   }
 
-  &__triggers &__trigger {
+  &__control &__step {
     display: flex;
     align-items: center;
     justify-content: center;

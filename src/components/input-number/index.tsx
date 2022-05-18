@@ -32,6 +32,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   step?: number;
+  keepControl?: boolean;
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
@@ -51,6 +52,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     prefix,
     suffix,
     step,
+    keepControl,
     ...restProps
   } = props;
 
@@ -61,6 +63,8 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   });
 
   const [focused, setFocused] = useState<boolean>(false);
+
+  const [entered, setEntered] = useState<boolean>(false);
 
   const defaultRef = useRef<HTMLInputElement>(null);
 
@@ -97,20 +101,24 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
 
   return (
     <InputWrapper
+      className={classnames(className, {
+        [`${prefixClassName}-input-number`]: true,
+        [`${prefixClassName}-input-number--focused`]: focused,
+        [`${prefixClassName}-input-number--entered`]: entered,
+        [`${prefixClassName}-input-number--keep-control`]: keepControl,
+      })}
       focused={focused}
       disabled={disabled}
       readOnly={readOnly}
       prefix={prefix}
       suffix={suffix}
       onClick={() => inputRef.current.focus()}
+      onMouseEnter={() => setEntered(true)}
+      onMouseLeave={() => setEntered(false)}
       {...restProps}
     >
       <input
-        className={classnames(
-          className,
-          `${prefixClassName}-input`,
-          `${prefixClassName}-input-number`,
-        )}
+        className={`${prefixClassName}-input`}
         ref={inputRef}
         value={inputText}
         disabled={disabled}
@@ -122,18 +130,18 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
       />
       <div
         className={classnames({
-          [`${prefixClassName}-input-number__triggers`]: true,
-          [`${prefixClassName}-input-number__triggers--border-right`]: suffix,
+          [`${prefixClassName}-input-number__control`]: true,
+          [`${prefixClassName}-input-number__control--border-right`]: suffix,
         })}
       >
         <Icon
-          className={`${prefixClassName}-input-number__trigger`}
+          className={`${prefixClassName}-input-number__step`}
           onMouseDown={event => event.preventDefault()}
           onClick={() => handleStepChange(1)}
           type="up"
         />
         <Icon
-          className={`${prefixClassName}-input-number__trigger`}
+          className={`${prefixClassName}-input-number__step`}
           onMouseDown={event => event.preventDefault()}
           onClick={() => handleStepChange(-1)}
           type="down"
@@ -145,6 +153,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
 
 InputNumber.defaultProps = {
   step: 1,
+  keepControl: true,
 };
 
 InputNumber.displayName = 'InputNumber';
