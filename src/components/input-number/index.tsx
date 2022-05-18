@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { forwardRef, HTMLAttributes, useState, useRef } from 'react';
+import { forwardRef, HTMLAttributes, useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import InputWrapper from '@components/input/components/wrapper';
 import Icon from '@components/icon';
 import useControlled from '@hooks/useControlled';
-import { isNumberLikeText } from '@utils/index';
+import { isNumberLikeText, isNumberText } from '@utils/index';
 import '@components/input/index.less';
 import './index.less';
 
@@ -54,10 +54,36 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
 
   const inputRef = ref as React.RefObject<HTMLInputElement> || defaultRef;
 
-  const handleChange = event => {
-    if (isNumberLikeText(event.target.value)) {
-      onChange(event.target.value);
+  const [inputText, setInputText] = useState<string>('');
+
+  useEffect(() => {
+    if (isNumberText(value)) {
+      setInputText(value);
+    } else {
+      setInputText('');
     }
+  }, [value]);
+
+  const handleInputChange = event => {
+    if (isNumberLikeText(event.target.value)) {
+      setInputText(event.target.value);
+    }
+  };
+
+  const handleInputBlur = event => {
+    const isEmptyString = event.target.value === '';
+
+    if (isNumberText(event.target.value) || isEmptyString) {
+      const nextValue = !isEmptyString
+        ? Number(event.target.value)
+        : null;
+
+      if (nextValue !== value) {
+        onChange(nextValue);
+      }
+    }
+
+    setFocused(false);
   };
 
   return (
@@ -77,13 +103,13 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
           `${prefixClassName}-input-number`,
         )}
         ref={inputRef}
-        value={value || ''}
+        value={inputText}
         disabled={disabled}
         readOnly={readOnly}
         placeholder={placeholder}
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        onChange={handleChange}
+        onBlur={handleInputBlur}
+        onChange={handleInputChange}
       />
       <div className={`${prefixClassName}-input-number__triggers`}>
         <Icon

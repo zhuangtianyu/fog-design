@@ -39,3 +39,5 @@ export const isMobile = () => /mobile/i.test(window.navigator.userAgent);
 // -1.    -> true
 // -1.2   -> true
 export const isNumberLikeText = text => /^-?(\d+|\d+\.)?(\d+)?$/.test(text);
+
+export const isNumberText = text => /^-?\d+(.\d+)?$/.test(text);
