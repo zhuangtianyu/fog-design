@@ -11,7 +11,15 @@ import './index.less';
 
 const prefixClassName = namespace.prefix;
 
-const getInputTextByValue = value => isNumberText(value) ? `${value}` : '';
+const getInputTextByValue = value =>
+  isNumberText(value)
+    ? `${value}`
+    : '';
+
+const getValueByInputValue = (inputValue, defaultValue) =>
+  inputValue !== '' && !isNaN(Number(inputValue))
+    ? Number(inputValue)
+    : defaultValue;
 
 export type InputNumberValue = string | number | undefined | null;
 
@@ -23,6 +31,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   readOnly?: boolean;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
+  step?: number;
   placeholder?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
@@ -41,6 +50,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     readOnly,
     prefix,
     suffix,
+    step,
     ...restProps
   } = props;
 
@@ -69,14 +79,20 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   };
 
   const handleInputBlur = event => {
-    const nextValue = event.target.value !== '' && !isNaN(Number(event.target.value))
-      ? Number(event.target.value)
-      : null;
+    const nextValue = getValueByInputValue(event.target.value, null);
 
     nextValue !== value && onChange(nextValue);
 
     setInputText(getInputTextByValue(nextValue));
     setFocused(false);
+  };
+
+  const handleStepChange = (direction: -1 | 1) => {
+    !focused && inputRef.current.focus();
+
+    const nextValue = getValueByInputValue(inputText, 0) + direction * step;
+
+    onChange(nextValue);
   };
 
   return (
@@ -107,10 +123,14 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
       <div className={`${prefixClassName}-input-number__triggers`}>
         <Icon
           className={`${prefixClassName}-input-number__trigger`}
+          onMouseDown={event => event.preventDefault()}
+          onClick={() => handleStepChange(1)}
           type="up"
         />
         <Icon
           className={`${prefixClassName}-input-number__trigger`}
+          onMouseDown={event => event.preventDefault()}
+          onClick={() => handleStepChange(-1)}
           type="down"
         />
       </div>
@@ -118,7 +138,9 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   );
 }) as InputNumberTypes;
 
-InputNumber.defaultProps = {};
+InputNumber.defaultProps = {
+  step: 1,
+};
 
 InputNumber.displayName = 'InputNumber';
 
