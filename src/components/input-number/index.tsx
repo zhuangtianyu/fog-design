@@ -120,7 +120,12 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
         onBlur={handleInputBlur}
         onChange={handleInputChange}
       />
-      <div className={`${prefixClassName}-input-number__triggers`}>
+      <div
+        className={classnames({
+          [`${prefixClassName}-input-number__triggers`]: true,
+          [`${prefixClassName}-input-number__triggers--border-right`]: suffix,
+        })}
+      >
         <Icon
           className={`${prefixClassName}-input-number__trigger`}
           onMouseDown={event => event.preventDefault()}
