@@ -5,6 +5,7 @@ import namespace from '@namespace';
 import InputWrapper from '@components/input/components/wrapper';
 import Icon from '@components/icon';
 import useControlled from '@hooks/useControlled';
+import { isNumberLikeText } from '@utils/index';
 import '@components/input/index.less';
 import './index.less';
 
@@ -45,7 +46,6 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
-    innerValueGetter: event => event.target.value,
   });
 
   const [focused, setFocused] = useState<boolean>(false);
@@ -53,6 +53,12 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   const defaultRef = useRef<HTMLInputElement>(null);
 
   const inputRef = ref as React.RefObject<HTMLInputElement> || defaultRef;
+
+  const handleChange = event => {
+    if (isNumberLikeText(event.target.value)) {
+      onChange(event.target.value);
+    }
+  };
 
   return (
     <InputWrapper
@@ -77,7 +83,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
         placeholder={placeholder}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
-        onChange={onChange}
+        onChange={handleChange}
       />
       <div className={`${prefixClassName}-input-number__triggers`}>
         <Icon

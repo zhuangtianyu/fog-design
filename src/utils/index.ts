@@ -30,3 +30,12 @@ export const cancelRafTimeout = timer => {
 export const isFunction: (fn: any) => boolean = fn => typeof fn === 'function';
 
 export const isMobile = () => /mobile/i.test(window.navigator.userAgent);
+
+// check if typing text will be a number, eg:
+// x      -> false
+// 1      -> true
+// -      -> true
+// -1     -> true
+// -1.    -> true
+// -1.2   -> true
+export const isNumberLikeText = text => /^-?(\d+|\d+\.)?(\d+)?$/.test(text);
