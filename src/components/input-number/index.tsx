@@ -99,6 +99,15 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     onChange(nextValue);
   };
 
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'ArrowUp') {
+      handleStepChange(1);
+    }
+    if (event.key === 'ArrowDown') {
+      handleStepChange(-1);
+    }
+  };
+
   return (
     <InputWrapper
       className={classnames(className, {
@@ -127,6 +136,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
         onFocus={() => setFocused(true)}
         onBlur={handleInputBlur}
         onChange={handleInputChange}
+        onKeyDown={handleInputKeyDown}
       />
       <div
         className={classnames({
