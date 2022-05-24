@@ -3,6 +3,7 @@ import { useState, useEffect, useMemo, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Input from '@components/input';
+import InputWrapper from '@components/input/components/wrapper';
 import Trigger from '@components/trigger';
 import Icon from '@components/icon';
 import DatePanel from './components/date-panel';
@@ -219,9 +220,7 @@ export const DatePicker: DatePickerTypes = props => {
 
   return (
     <div
-      className={classnames(`${prefix}-date-picker`, className, {
-        [`${prefix}-date-picker--open`]: open,
-      })}
+      className={classnames(`${prefix}-date-picker`, className)}
       style={style}
     >
       <Trigger
@@ -238,11 +237,10 @@ export const DatePicker: DatePickerTypes = props => {
         disabled={disabled}
       >
         <div ref={triggerRef}>
-          <Input
+          <InputWrapper
             className={`${prefix}-date-picker__input`}
-            ref={inputRef}
-            value={inputValue}
-            placeholder={placeholder}
+            focused={open}
+            disabled={disabled}
             suffix={
               value && clearable && !disabled && entered
                 ? <Icon
@@ -252,11 +250,17 @@ export const DatePicker: DatePickerTypes = props => {
                   />
                 : <Icon type="calendar" />
             }
-            disabled={disabled}
-            readOnly
             onMouseEnter={() => setEntered(true)}
             onMouseLeave={() => setEntered(false)}
-          />
+          >
+            <Input
+              ref={inputRef}
+              value={inputValue}
+              placeholder={placeholder}
+              disabled={disabled}
+              readOnly
+            />
+          </InputWrapper>
         </div>
       </Trigger>
     </div>
