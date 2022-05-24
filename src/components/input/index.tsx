@@ -5,6 +5,7 @@ import namespace from '@namespace';
 import InputWrapper from './components/wrapper';
 import TextArea from './components/textarea';
 import useControlled from '@hooks/useControlled';
+import { isFunction } from '@utils/index';
 import './index.less';
 
 const prefixClassName = namespace.prefix;
@@ -21,7 +22,9 @@ export interface InputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'pref
   suffix?: React.ReactNode;
   clearable?: boolean;
   placeholder?: string;
+  onEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   [propName: string]: any;
 }
 
@@ -41,6 +44,8 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
     readOnly,
     prefix,
     suffix,
+    onEnter,
+    onKeyDown,
     ...restProps
   } = props;
 
@@ -63,6 +68,14 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
 
   const handleWrapperClear = () => {
     onChange({ target: { value: '' } });
+  };
+
+  const handleKeyDown = event => {
+    if (event.key === 'Enter') {
+      isFunction(onEnter) && onEnter(event);
+    }
+
+    isFunction(onKeyDown) && onKeyDown(event);
   };
 
   const getWrappedInput = InputElement => shouldWrap
@@ -92,6 +105,7 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
       onFocus={() => setFocused(true)}
       onBlur={() => setFocused(false)}
       onChange={onChange}
+      onKeyDown={handleKeyDown}
     />
   );
 }) as InputTypes;

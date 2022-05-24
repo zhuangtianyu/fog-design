@@ -10,6 +10,7 @@ import Demo5 from './demo-5';
 import Demo6 from './demo-6';
 import Demo7 from './demo-7';
 import Demo8 from './demo-8';
+import Demo9 from './demo-9';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -56,6 +57,11 @@ const InputDemo = () => {
         title="Password"
         content={<Demo7 />}
         code={demos['demo-7']}
+      />
+      <Demo
+        title="Enter"
+        content={<Demo9 />}
+        code={demos['demo-9']}
       />
       <Demo
         title="TextArea"
