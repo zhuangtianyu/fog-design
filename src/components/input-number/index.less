@@ -46,4 +46,10 @@
       border-top: 0.5px solid var(--fog-border-color);
     }
   }
+
+  &__control--disabled,
+  &__control--disabled &__step {
+    pointer-events: none;
+    cursor: not-allowed;
+  }
 }

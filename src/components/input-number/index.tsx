@@ -173,19 +173,20 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
       <div
         className={classnames({
           [`${prefixClassName}-input-number__control`]: true,
+          [`${prefixClassName}-input-number__control--disabled`]: disabled,
           [`${prefixClassName}-input-number__control--border-right`]: suffix,
         })}
       >
         <Icon
           className={`${prefixClassName}-input-number__step`}
           onMouseDown={event => event.preventDefault()}
-          onClick={() => handleStepChange(1)}
+          onClick={() => !disabled && handleStepChange(1)}
           type="up"
         />
         <Icon
           className={`${prefixClassName}-input-number__step`}
           onMouseDown={event => event.preventDefault()}
-          onClick={() => handleStepChange(-1)}
+          onClick={() => !disabled && handleStepChange(-1)}
           type="down"
         />
       </div>
