@@ -34,6 +34,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   min?: number;
   max?: number;
   step?: number;
+  showControl?: boolean;
   keepControl?: boolean;
   placeholder?: string;
   onEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
@@ -57,6 +58,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     min,
     max,
     step,
+    showControl,
     keepControl,
     onEnter,
     ...restProps
@@ -170,32 +172,35 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
         onChange={handleInputChange}
         onKeyDown={handleInputKeyDown}
       />
-      <div
-        className={classnames({
-          [`${prefixClassName}-input-number__control`]: true,
-          [`${prefixClassName}-input-number__control--disabled`]: disabled,
-          [`${prefixClassName}-input-number__control--border-right`]: suffix,
-        })}
-      >
-        <Icon
-          className={`${prefixClassName}-input-number__step`}
-          onMouseDown={event => event.preventDefault()}
-          onClick={() => !disabled && handleStepChange(1)}
-          type="up"
-        />
-        <Icon
-          className={`${prefixClassName}-input-number__step`}
-          onMouseDown={event => event.preventDefault()}
-          onClick={() => !disabled && handleStepChange(-1)}
-          type="down"
-        />
-      </div>
+      {showControl && (
+        <div
+          className={classnames({
+            [`${prefixClassName}-input-number__control`]: true,
+            [`${prefixClassName}-input-number__control--disabled`]: disabled,
+            [`${prefixClassName}-input-number__control--border-right`]: suffix,
+          })}
+        >
+          <Icon
+            className={`${prefixClassName}-input-number__step`}
+            onMouseDown={event => event.preventDefault()}
+            onClick={() => !disabled && handleStepChange(1)}
+            type="up"
+          />
+          <Icon
+            className={`${prefixClassName}-input-number__step`}
+            onMouseDown={event => event.preventDefault()}
+            onClick={() => !disabled && handleStepChange(-1)}
+            type="down"
+          />
+        </div>
+      )}
     </InputWrapper>
   );
 }) as InputNumberTypes;
 
 InputNumber.defaultProps = {
   step: 1,
+  showControl: true,
   keepControl: true,
 };
 

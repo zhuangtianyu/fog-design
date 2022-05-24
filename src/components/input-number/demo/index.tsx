@@ -9,6 +9,7 @@ import Demo4 from './demo-4';
 import Demo5 from './demo-5';
 import Demo6 from './demo-6';
 import Demo7 from './demo-7';
+import Demo8 from './demo-8';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -40,6 +41,11 @@ const InputNumberDemo = () => {
         title="Suffix"
         content={<Demo3 />}
         code={demos['demo-3']}
+      />
+      <Demo
+        title="ShowControl"
+        content={<Demo8 />}
+        code={demos['demo-8']}
       />
       <Demo
         title="KeepControl"
