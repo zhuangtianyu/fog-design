@@ -31,6 +31,8 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   readOnly?: boolean;
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
+  min?: number;
+  max?: number;
   step?: number;
   keepControl?: boolean;
   placeholder?: string;
@@ -51,6 +53,8 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     readOnly,
     prefix,
     suffix,
+    min,
+    max,
     step,
     keepControl,
     ...restProps
@@ -76,6 +80,17 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     setInputText(getInputTextByValue(value));
   }, [value]);
 
+  const getRangedValue = nextValue => {
+    if (typeof min !== 'number' && typeof max !== 'number') return nextValue;
+    if (typeof min === 'number' && typeof max !== 'number') return Math.max(min, nextValue);
+    if (typeof min !== 'number' && typeof max === 'number') return Math.min(max, nextValue);
+    if (min > max) return nextValue;
+    if (nextValue < min) return min;
+    if (nextValue > max) return max;
+
+    return nextValue;
+  };
+
   const handleInputChange = event => {
     if (isNumberLikeText(event.target.value)) {
       setInputText(event.target.value);
@@ -84,10 +99,11 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
 
   const handleInputBlur = event => {
     const nextValue = getValueByInputValue(event.target.value, null);
+    const nextValueRanged = getRangedValue(nextValue);
 
-    nextValue !== value && onChange(nextValue);
+    nextValueRanged !== value && onChange(nextValueRanged);
 
-    setInputText(getInputTextByValue(nextValue));
+    setInputText(getInputTextByValue(nextValueRanged));
     setFocused(false);
   };
 
@@ -95,15 +111,18 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     !focused && inputRef.current.focus();
 
     const nextValue = getValueByInputValue(inputText, 0) + direction * step;
+    const nextValueRanged = getRangedValue(nextValue);
 
-    onChange(nextValue);
+    onChange(nextValueRanged);
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowUp') {
+      event.preventDefault();
       handleStepChange(1);
     }
     if (event.key === 'ArrowDown') {
+      event.preventDefault();
       handleStepChange(-1);
     }
   };
