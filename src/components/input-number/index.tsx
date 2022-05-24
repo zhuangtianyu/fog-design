@@ -5,7 +5,7 @@ import namespace from '@namespace';
 import InputWrapper from '@components/input/components/wrapper';
 import Icon from '@components/icon';
 import useControlled from '@hooks/useControlled';
-import { isNumberLikeText, isNumberText } from '@utils/index';
+import { isFunction, isNumberLikeText, isNumberText } from '@utils/index';
 import '@components/input/index.less';
 import './index.less';
 
@@ -36,6 +36,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   step?: number;
   keepControl?: boolean;
   placeholder?: string;
+  onEnter?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
 }
@@ -57,6 +58,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     max,
     step,
     keepControl,
+    onEnter,
     ...restProps
   } = props;
 
@@ -116,7 +118,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     onChange(nextValueRanged);
   };
 
-  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleInputKeyDown = event => {
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       handleStepChange(1);
@@ -124,6 +126,17 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       handleStepChange(-1);
+    }
+    if (event.key === 'Enter') {
+      const nextValue = getValueByInputValue(event.target.value, null);
+      const nextValueRanged = getRangedValue(nextValue);
+
+      nextValueRanged !== value && onChange(nextValueRanged);
+
+      setInputText(getInputTextByValue(nextValueRanged));
+
+      event.target.value = nextValueRanged;
+      isFunction(onEnter) && onEnter(event);
     }
   };
 
