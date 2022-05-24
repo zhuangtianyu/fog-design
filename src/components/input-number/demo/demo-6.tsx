@@ -14,7 +14,7 @@ const Demo = () => {
         max={10}
         onEnter={event => {
           Message.info({
-            content: `Entered value: ${event.target.value}`,
+            content: `Entered value: ${event.currentTarget.value}`,
           });
         }}
       />

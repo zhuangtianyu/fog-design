@@ -36,7 +36,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   step?: number;
   keepControl?: boolean;
   placeholder?: string;
-  onEnter?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
 }
@@ -128,14 +128,14 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
       handleStepChange(-1);
     }
     if (event.key === 'Enter') {
-      const nextValue = getValueByInputValue(event.target.value, null);
+      const nextValue = getValueByInputValue(event.currentTarget.value, null);
       const nextValueRanged = getRangedValue(nextValue);
 
       nextValueRanged !== value && onChange(nextValueRanged);
 
       setInputText(getInputTextByValue(nextValueRanged));
 
-      event.target.value = nextValueRanged;
+      event.currentTarget.value = nextValueRanged;
       isFunction(onEnter) && onEnter(event);
     }
   };
