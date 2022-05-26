@@ -37,6 +37,7 @@ export interface InputNumberProps extends Omit<HTMLAttributes<HTMLInputElement>,
   showControl?: boolean;
   keepControl?: boolean;
   placeholder?: string;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
   onEnter?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   [propName: string]: any;
@@ -60,6 +61,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     step,
     showControl,
     keepControl,
+    onBlur,
     onEnter,
     ...restProps
   } = props;
@@ -85,6 +87,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   }, [value]);
 
   const getRangedValue = nextValue => {
+    if (nextValue === null) return null;
     if (typeof min !== 'number' && typeof max !== 'number') return nextValue;
     if (typeof min === 'number' && typeof max !== 'number') return Math.max(min, nextValue);
     if (typeof min !== 'number' && typeof max === 'number') return Math.min(max, nextValue);
@@ -109,6 +112,9 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
 
     setInputText(getInputTextByValue(nextValueRanged));
     setFocused(false);
+
+    event.currentTarget.value = nextValueRanged;
+    isFunction(onBlur) && onBlur(event);
   };
 
   const handleStepChange = (direction: -1 | 1) => {

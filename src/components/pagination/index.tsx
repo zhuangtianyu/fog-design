@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useRef, useMemo } from 'react';
+import { useState, useRef, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import useControlled from '@hooks/useControlled';
@@ -7,6 +7,7 @@ import { isFunction } from '@utils/index';
 import Button from '@components/button';
 import Select from '@components/select';
 import Icon from '@components/icon';
+import InputNumber from '@components/input-number';
 import './index.less';
 
 const { prefix } = namespace;
@@ -27,6 +28,7 @@ export interface PaginationProps  {
   total?: number;
   pageSizeOptions?: number[];
   disabled?: boolean;
+  showJumper?: boolean;
   onChange?: (page: number, pageSize: number) => void;
 }
 
@@ -41,8 +43,11 @@ export const Pagination: React.FC<PaginationProps> = props => {
     total,
     pageSizeOptions,
     disabled,
+    showJumper,
     onChange: onChangeFromProps,
   } = props;
+
+  const [jumperPage, setJumperPage] = useState<number | null>(null);
 
   const onChange = useMemo(() =>
     isFunction(onChangeFromProps)
@@ -77,6 +82,32 @@ export const Pagination: React.FC<PaginationProps> = props => {
     onPageChange(nextPage);
     onPageSizeChange(nextPageSize);
     onChange(nextPage, nextPageSize);
+  };
+
+  // why update in next loop?
+  // jumper's initial value is null.
+  // if set jumper's next value to null directly,
+  // then null === null, won't trigger jumper update inputText.
+  const updateJumperPageInNextLoop = (tempValue: number | null, nextValue: number | null) => {
+    setJumperPage(tempValue);
+
+    setTimeout(() => {
+      setJumperPage(nextValue);
+    });
+  };
+
+  const handleJumperBlur = (event: React.FocusEvent<HTMLInputElement>) => {
+    updateJumperPageInNextLoop(Number(event.target.value), null);
+  };
+
+  const handleJumperEnter = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.currentTarget.value === '') return;
+
+    const nextPage = Number(event.currentTarget.value);
+
+    onPageChange(nextPage);
+    onChange(nextPage, pageSize);
+    updateJumperPageInNextLoop(Number(event.currentTarget.value), null);
   };
 
   const optionsWrapperRef = useRef<HTMLDivElement>(null);
@@ -144,6 +175,23 @@ export const Pagination: React.FC<PaginationProps> = props => {
                   ))}
                 </Select>
               </div>
+              {showJumper && (
+                <div className={`${prefix}-pagination__jumper`}>
+                  <span className={`${prefix}-pagination__jumper-text`}>
+                    Go to
+                  </span>
+                  <InputNumber
+                    className={`${prefix}-pagination__jumper-input`}
+                    placeholder="Page"
+                    value={jumperPage}
+                    min={1}
+                    max={length}
+                    showControl={false}
+                    onBlur={handleJumperBlur}
+                    onEnter={handleJumperEnter}
+                  />
+                </div>
+              )}
             </>
           : 'empty'
       }

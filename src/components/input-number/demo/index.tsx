@@ -33,6 +33,16 @@ const InputNumberDemo = () => {
         code={demos['demo-7']}
       />
       <Demo
+        title="Range"
+        content={<Demo5 />}
+        code={demos['demo-5']}
+      />
+      <Demo
+        title="Enter"
+        content={<Demo6 />}
+        code={demos['demo-6']}
+      />
+      <Demo
         title="Prefix"
         content={<Demo2 />}
         code={demos['demo-2']}
@@ -51,16 +61,6 @@ const InputNumberDemo = () => {
         title="KeepControl"
         content={<Demo4 />}
         code={demos['demo-4']}
-      />
-      <Demo
-        title="Range"
-        content={<Demo5 />}
-        code={demos['demo-5']}
-      />
-      <Demo
-        title="Enter"
-        content={<Demo6 />}
-        code={demos['demo-6']}
       />
       <h2>API</h2>
       <Table columns={apiColumns} data={apiRows.default} />
