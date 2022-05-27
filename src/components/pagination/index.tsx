@@ -28,6 +28,7 @@ export interface PaginationProps  {
   total?: number;
   pageSizeOptions?: number[];
   disabled?: boolean;
+  showTotal?: boolean | ((total: number, range: number[]) => React.ReactNode);
   showJumper?: boolean;
   onChange?: (page: number, pageSize: number) => void;
 }
@@ -43,6 +44,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
     total,
     pageSizeOptions,
     disabled,
+    showTotal,
     showJumper,
     onChange: onChangeFromProps,
   } = props;
@@ -112,9 +114,32 @@ export const Pagination: React.FC<PaginationProps> = props => {
 
   const optionsWrapperRef = useRef<HTMLDivElement>(null);
 
-  const length = useMemo(() =>
+  const pageCount = useMemo(() =>
     total > 0 && pageSize > 0 ? Math.ceil(total / pageSize) : 0
   , [pageSize, total]);
+
+  const totalNode = useMemo(() => {
+    if (!showTotal) return null;
+
+    let totalText = null;
+
+    if (typeof showTotal === 'function') {
+      const range = [];
+
+      range[0] = (page - 1) * pageSize + 1;
+      range[1] = Math.min(page * pageSize, total);
+
+      totalText = showTotal(total, range);
+    } else {
+      totalText = `Total ${total} items`;
+    }
+
+    return (
+      <span className={`${prefix}-pagination__total`}>
+        {totalText}
+      </span>
+    );
+  }, [showTotal, total, page, pageSize]);
 
   return (
     <div
@@ -122,8 +147,9 @@ export const Pagination: React.FC<PaginationProps> = props => {
       style={style}
     >
       {
-        length > 0
+        pageCount > 0
           ? <>
+              {totalNode}
               <Button
                 className={`${prefix}-pagination__item`}
                 disabled={disabled || page <= 1}
@@ -134,7 +160,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
               >
                 <Icon type="left" />
               </Button>
-              {Array.from({ length }).map((_, index) => (
+              {Array.from({ length: pageCount }).map((_, index) => (
                 <Button
                   key={index}
                   className={classnames({
@@ -149,7 +175,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
               ))}
               <Button
                 className={`${prefix}-pagination__item`}
-                disabled={disabled || page >= length}
+                disabled={disabled || page >= pageCount}
                 onClick={event => {
                   event.currentTarget.blur();
                   handlePageChange(page + 1);
@@ -185,7 +211,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
                     placeholder="Page"
                     value={jumperPage}
                     min={1}
-                    max={length}
+                    max={pageCount}
                     showControl={false}
                     onBlur={handleJumperBlur}
                     onEnter={handleJumperEnter}
