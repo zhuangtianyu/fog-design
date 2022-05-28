@@ -9,6 +9,7 @@ const Demo = () => (
       showJumper
       showTotal
     />
+    <br />
     <Pagination
       total={100}
       showJumper
