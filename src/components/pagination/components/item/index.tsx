@@ -70,7 +70,12 @@ const PaginationItem: React.FC<PaginationItemProps> = props => {
       disabled={disabled}
       onMouseEnter={() => setBackwardEntered(true)}
       onMouseLeave={() => setBackwardEntered(false)}
-      onClick={() => onPageChange(Math.max(1, page - 5))}
+      onFocus={() => setBackwardEntered(true)}
+      onBlur={() => setBackwardEntered(false)}
+      onClick={event => {
+        event.currentTarget.blur();
+        onPageChange(Math.max(1, page - 5));
+      }}
     >
       <Icon type={backwardEntered ? 'double-left' : 'more'} />
     </Button>
@@ -85,7 +90,12 @@ const PaginationItem: React.FC<PaginationItemProps> = props => {
       disabled={disabled}
       onMouseEnter={() => setForwardEntered(true)}
       onMouseLeave={() => setForwardEntered(false)}
-      onClick={() => onPageChange(Math.min(pageCount, page + 5))}
+      onFocus={() => setForwardEntered(true)}
+      onBlur={() => setForwardEntered(false)}
+      onClick={event => {
+        event.currentTarget.blur();
+        onPageChange(Math.min(pageCount, page + 5));
+      }}
     >
       <Icon type={forwardEntered ? 'double-right' : 'more'} />
     </Button>

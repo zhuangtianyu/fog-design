@@ -163,7 +163,7 @@ export const Pagination: React.FC<PaginationProps> = props => {
               </Button>
               {Array.from({ length: pageCount }).map((_, index) => (
                 <PaginationItem
-                  key={`${Date.now()}-${index}`}
+                  key={index}
                   index={index}
                   page={page}
                   pageCount={pageCount}
