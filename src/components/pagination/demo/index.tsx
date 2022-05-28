@@ -6,6 +6,7 @@ import Demo1 from './demo-1';
 import Demo2 from './demo-2';
 import Demo3 from './demo-3';
 import Demo4 from './demo-4';
+import Demo5 from './demo-5';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -32,6 +33,11 @@ const PaginationDemo = () => {
         title="Jumper"
         content={<Demo3 />}
         code={demos['demo-3']}
+      />
+      <Demo
+        title="Ellipsis"
+        content={<Demo5 />}
+        code={demos['demo-5']}
       />
       <Demo
         title="Total"

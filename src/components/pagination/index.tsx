@@ -8,6 +8,7 @@ import Button from '@components/button';
 import Select from '@components/select';
 import Icon from '@components/icon';
 import InputNumber from '@components/input-number';
+import PaginationItem from './components/item';
 import './index.less';
 
 const { prefix } = namespace;
@@ -161,17 +162,14 @@ export const Pagination: React.FC<PaginationProps> = props => {
                 <Icon type="left" />
               </Button>
               {Array.from({ length: pageCount }).map((_, index) => (
-                <Button
-                  key={index}
-                  className={classnames({
-                    [`${prefix}-pagination__item`]: true,
-                    [`${prefix}-pagination__item--active`]: index + 1 === page,
-                  })}
+                <PaginationItem
+                  key={`${Date.now()}-${index}`}
+                  index={index}
+                  page={page}
+                  pageCount={pageCount}
                   disabled={disabled}
-                  onClick={() => index + 1 !== page && handlePageChange(index + 1)}
-                >
-                  {index + 1}
-                </Button>
+                  onPageChange={handlePageChange}
+                />
               ))}
               <Button
                 className={`${prefix}-pagination__item`}
