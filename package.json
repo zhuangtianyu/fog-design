@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack serve --config ./scripts/config/webpack.dev.ts",
-    "build": "webpack --config ./scripts/config/webpack.prod.ts",
-    "docs": "tsnd --respawn --quiet --watch src ./scripts/docs/index.ts"
+    "build": "webpack --config ./scripts/config/webpack.prod.ts"
   },
   "repository": {
     "type": "git",
