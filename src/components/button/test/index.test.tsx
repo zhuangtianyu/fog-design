@@ -8,4 +8,10 @@ describe('button', () => {
 
     expect(wrapper.text()).toBe('button');
   });
+
+  it('should render match snapshot', () => {
+    const wrapper = mount(<Button>button</Button>);
+
+    expect(wrapper.render()).toMatchSnapshot();
+  });
 });

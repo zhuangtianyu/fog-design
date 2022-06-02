@@ -14,4 +14,5 @@ module.exports = {
     '^@layouts(.*)$': '<rootDir>/src/layouts$1',
     '^@static(.*)$': '<rootDir>/static$1',
   },
+  snapshotResolver: './test/snapshot-resolver.js',
 };
