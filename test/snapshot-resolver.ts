@@ -1,6 +1,6 @@
-const path = require('path');
+import path from 'path';
 
-module.exports = {
+export default {
   resolveSnapshotPath: (testPath, snapshotExtension) =>
     path.join(path.dirname(testPath), 'snapshots', path.basename(testPath) + snapshotExtension),
   resolveTestPath: (snapshotFilePath, snapshotExtension) =>

@@ -1,5 +1,5 @@
-module.exports = {
-  setupFiles: ['./test/setup.js'],
+export default {
+  setupFiles: ['./test/setup.ts'],
   testEnvironment: 'jsdom',
   testPathIgnorePatterns: ['/node_modules/'],
   moduleFileExtensions: ['js', 'ts', 'tsx'],
@@ -14,5 +14,5 @@ module.exports = {
     '^@layouts(.*)$': '<rootDir>/src/layouts$1',
     '^@static(.*)$': '<rootDir>/static$1',
   },
-  snapshotResolver: './test/snapshot-resolver.js',
+  snapshotResolver: './test/snapshot-resolver.ts',
 };
