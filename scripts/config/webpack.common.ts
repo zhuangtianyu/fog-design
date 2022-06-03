@@ -15,7 +15,8 @@ const config: Configuration = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../../src/index.html'),
+      title: 'Fog Design',
+      templateContent: '<div class="root"></div>',
     }),
     new DocsParsePlugin(),
   ],
