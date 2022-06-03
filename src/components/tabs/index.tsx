@@ -111,7 +111,10 @@ export const Tabs: TabsTypes = props => {
             })}
             key={item.value}
             ref={refs[index]}
+            role="tab"
+            tabIndex={0}
             onClick={() => handleTabClick(item.value)}
+            onKeyDown={event => event.key === 'Enter' && handleTabClick(item.value)}
           >
             {item.label}
           </div>
