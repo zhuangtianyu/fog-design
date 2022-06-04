@@ -42,6 +42,7 @@ const components: string[] = [
   'tabs',
   'tag',
   'transition',
+  'tree',
   'trigger',
 ];
 
