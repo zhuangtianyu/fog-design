@@ -21,7 +21,7 @@ const TreeNode: React.FC<TreeNodeProps> = props => {
 
   const hasChildren = Array.isArray(node.children) && !!node.children.length;
 
-  const marginLeft = (floorIndex - 1 + (hasChildren ? 0 : 1)) * 20;
+  const marginLeft = (floorIndex - 1 + (hasChildren ? 0 : 1)) * 22;
 
   return (
     <div className={`${prefix}-tree-node`}>
