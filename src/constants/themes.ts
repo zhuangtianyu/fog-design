@@ -14,7 +14,7 @@ export const getTransformedColor = (HEX: string, percent: number) => {
 export const themeColors = {
   cloudless: '#0066ff',
   tangerine: '#ff6600',
-  lemontree: '#eeaa00',
+  lemonsuit: '#eeaa00',
   spearmint: '#00aa33',
   lavenders: '#9966ff',
   raspberry: '#ff5050',
