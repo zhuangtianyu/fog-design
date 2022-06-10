@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -14,7 +15,7 @@ const SwitchDemo = () => {
 
   return (
     <div className="switch-demo">
-      <h1>Switch</h1>
+      <LinkHeader>Switch</LinkHeader>
       <p>Switch is used to check or uncheck item.</p>
       <h2>Demo</h2>
       <Demo

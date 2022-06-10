@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -16,7 +17,7 @@ const MessageDemo = () => {
 
   return (
     <div className="message-demo">
-      <h1>Message</h1>
+      <LinkHeader>Message</LinkHeader>
       <p>Message is used for push message notifications.</p>
       <h2>Demo</h2>
       <Demo

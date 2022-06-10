@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -15,7 +16,7 @@ const LoadingDemo = () => {
 
   return (
     <div className="loading-demo">
-      <h1>Loading</h1>
+      <LinkHeader>Loading</LinkHeader>
       <p>Loading is used to indicate the in progress state.</p>
       <h2>Demo</h2>
       <Demo

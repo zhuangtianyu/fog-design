@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -16,7 +17,7 @@ const PaginationDemo = () => {
 
   return (
     <div className="pagination-demo">
-      <h1>Pagination</h1>
+      <LinkHeader>Pagination</LinkHeader>
       <p>Pagination displays corresponding data by page and pageSize.</p>
       <h2>Demo</h2>
       <Demo

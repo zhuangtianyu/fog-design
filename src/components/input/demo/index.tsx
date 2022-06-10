@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -20,7 +21,7 @@ const InputDemo = () => {
 
   return (
     <div className="input-demo">
-      <h1>Input</h1>
+      <LinkHeader>Input</LinkHeader>
       <p>Input is used to type text.</p>
       <h2>Demo</h2>
       <Demo

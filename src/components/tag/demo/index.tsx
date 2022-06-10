@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -15,7 +16,7 @@ const TagDemo = () => {
 
   return (
     <div className="tag-demo">
-      <h1>Tag</h1>
+      <LinkHeader>Tag</LinkHeader>
       <p>Tag is used to display the content properties.</p>
       <h2>Demo</h2>
       <Demo

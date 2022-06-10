@@ -3,6 +3,7 @@ import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
 import Icon from '@components/icon';
 import Message from '@components/message';
+import LinkHeader from '@layouts/link-header';
 import { TYPE_PATH_MAP } from '@components/icon/constants';
 import './index.less';
 
@@ -20,7 +21,7 @@ const IconDemo = () => {
 
   return (
     <div className="icon-demo">
-      <h1>Icon</h1>
+      <LinkHeader>Icon</LinkHeader>
       <p>Icon is pictogram or ideogram, is used to guide interactions.</p>
       <h2>Demo</h2>
       {Object.keys(TYPE_PATH_MAP).map((type: keyof typeof TYPE_PATH_MAP) => (

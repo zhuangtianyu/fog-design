@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import './index.less';
@@ -12,7 +13,7 @@ const TabsDemo = () => {
 
   return (
     <div className="tabs-demo">
-      <h1>Tabs</h1>
+      <LinkHeader>Tabs</LinkHeader>
       <p>Tabs is used to display a set of navigation options.</p>
       <h2>Demo</h2>
       <Demo

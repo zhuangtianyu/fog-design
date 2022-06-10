@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -13,7 +14,7 @@ const TableDemo = () => {
 
   return (
     <div className="table-demo">
-      <h1>Table</h1>
+      <LinkHeader>Table</LinkHeader>
       <p>Table is used to display a set of data horizontally.</p>
       <h2>Demo</h2>
       <Demo

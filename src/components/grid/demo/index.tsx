@@ -1,6 +1,7 @@
 import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
+import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
@@ -17,7 +18,7 @@ const GridDemo = () => {
 
   return (
     <div className="grid-demo">
-      <h1>Grid</h1>
+      <LinkHeader>Grid</LinkHeader>
       <p>Grid is used to layout elements proportionally.</p>
       <h2>Demo</h2>
       <Demo
