@@ -2,6 +2,7 @@ import React from 'react';
 import docsConfig from '@static/docs-config.json';
 import Table from '@components/table';
 import Demo from '@layouts/demo';
+import LinkHeader from '@layouts/link-header';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
 import Demo3 from './demo-3';
@@ -18,7 +19,7 @@ const ButtonDemo = () => {
 
   return (
     <div className="button-demo">
-      <h1>Button</h1>
+      <LinkHeader>Button</LinkHeader>
       <p>Button is used to trigger events, such as click events, etc.</p>
       <h2>Demo</h2>
       <Demo
