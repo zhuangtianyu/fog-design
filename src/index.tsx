@@ -36,6 +36,7 @@ const components: string[] = [
   'pagination',
   'radio',
   'select',
+  'slider',
   'steps',
   'switch',
   'table',

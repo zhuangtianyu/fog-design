@@ -1,0 +1,49 @@
+.@{prefix}-slider {
+
+  &,
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+
+  padding: 2px 0;
+
+  &__track {
+    position: relative;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background-color: var(--fog-internal-color);
+  }
+
+  &__passed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 2px;
+    background-color: var(--fog-primary-color);
+  }
+
+  &__handle {
+    position: absolute;
+    top: 50%;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--fog-primary-color);
+    background-color: var(--fog-background-color);
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      bottom: -2px;
+      left: -2px;
+    }
+  }
+}
