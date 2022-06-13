@@ -93,6 +93,7 @@ export const Slider: React.FC<SliderProps> = props => {
         <div
           className={`${prefix}-slider__handle`}
           style={{ left }}
+          tabIndex={-1}
           draggable={false}
           onMouseDown={handleDragStart}
         />
