@@ -15,6 +15,16 @@
     height: 4px;
     border-radius: 2px;
     background-color: var(--fog-internal-color);
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      right: 0;
+      bottom: -4px;
+      left: 0;
+    }
   }
 
   &__passed {
@@ -35,8 +45,9 @@
     border: 2px solid var(--fog-primary-color);
     background-color: var(--fog-background-color);
     transform: translate(-50%, -50%);
-    transition: box-shadow 0.3s;
+    transition: box-shadow 0.3s, background-color 0.3s;
     cursor: pointer;
+    z-index: 1;
 
     &:focus {
       box-shadow: 0 0 1px 1px var(--fog-primary-color);

@@ -17,6 +17,19 @@ const { prefix } = namespace;
 
 const getRoundedValue = (value: number) => Math.round(value * 100) / 100;
 
+const getRangedValue = (value: number) => {
+  switch (true) {
+    case value > 1:
+      return 1;
+    case value < 0:
+      return 0;
+    default:
+      return value;
+  }
+};
+
+const getRangedRoundedValue = (value: number) => getRoundedValue(getRangedValue(value));
+
 export const Slider: React.FC<SliderProps> = props => {
   const {
     className,
@@ -33,14 +46,19 @@ export const Slider: React.FC<SliderProps> = props => {
 
   const trackRef = useRef<HTMLDivElement>(null);
 
+  const handleRef = useRef<HTMLDivElement>(null);
+
   const [dragging, setDragging] = useState<boolean>(false);
 
   const [dragValue, setDragValue] = useState<number>(0);
 
   const left = `${dragValue * 100}%`;
 
+  const getSlideWidth = (event: React.MouseEvent<HTMLDivElement>) =>
+    event.clientX - trackRef.current.getBoundingClientRect().left;
+
   useEffect(() => {
-    setDragValue(getRoundedValue(value));
+    setDragValue(getRangedRoundedValue(value));
   }, [value]);
 
   const handleDragStart = () => {
@@ -49,25 +67,16 @@ export const Slider: React.FC<SliderProps> = props => {
 
   useEffect(() => {
     if (dragging) {
-      const handleDrag = (event: MouseEvent) => {
-        const width = event.clientX - trackRef.current.getBoundingClientRect().left;
-        const nextDragValue = width / trackRef.current.offsetWidth;
+      const handleDrag = (event: React.MouseEvent<HTMLDivElement>) => {
+        const width = getSlideWidth(event);
+        const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
 
-        switch (true) {
-          case nextDragValue > 1:
-            setDragValue(1);
-            break;
-          case nextDragValue < 0:
-            setDragValue(0);
-            break;
-          default:
-            setDragValue(getRoundedValue(nextDragValue));
-        }
+        setDragValue(nextDragValue);
       };
 
-      window.addEventListener('mousemove', handleDrag);
+      window.addEventListener('mousemove', handleDrag as unknown as EventListenerOrEventListenerObject);
 
-      return () => window.removeEventListener('mousemove', handleDrag);
+      return () => window.removeEventListener('mousemove', handleDrag as unknown as EventListenerOrEventListenerObject);
     }
   }, [dragging]);
 
@@ -85,11 +94,22 @@ export const Slider: React.FC<SliderProps> = props => {
     }
   }, [dragging, dragValue, value]);
 
+  const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === handleRef.current) return;
+
+    const width = getSlideWidth(event);
+    const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
+
+    setDragValue(nextDragValue);
+    onChange(nextDragValue);
+  };
+
   return (
     <div className={classnames(`${prefix}-slider`, className)}>
       <div
         className={`${prefix}-slider__track`}
         ref={trackRef}
+        onClick={handleTrackClick}
       >
         <div
           className={`${prefix}-slider__passed`}
@@ -97,6 +117,7 @@ export const Slider: React.FC<SliderProps> = props => {
         />
         <div
           className={`${prefix}-slider__handle`}
+          ref={handleRef}
           style={{ left }}
           tabIndex={-1}
           draggable={false}
