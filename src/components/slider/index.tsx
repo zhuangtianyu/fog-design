@@ -55,8 +55,15 @@ export const Slider: React.FC<SliderProps> = props => {
         const diff = event.clientX - trackOffsetX.current;
         const nextDragValue = diff / trackRef.current.offsetWidth;
 
-        if (nextDragValue >= 0 && nextDragValue <= 1) {
-          setDragValue(nextDragValue);
+        switch (true) {
+          case nextDragValue > 1:
+            setDragValue(1);
+            break;
+          case nextDragValue < 0:
+            setDragValue(0);
+            break;
+          default:
+            setDragValue(nextDragValue);
         }
       };
 
