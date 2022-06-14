@@ -15,6 +15,8 @@ export interface SliderProps  {
 
 const { prefix } = namespace;
 
+const getRoundedValue = (value: number) => Math.round(value * 100) / 100;
+
 export const Slider: React.FC<SliderProps> = props => {
   const {
     className,
@@ -40,7 +42,7 @@ export const Slider: React.FC<SliderProps> = props => {
   const left = `${dragValue * 100}%`;
 
   useEffect(() => {
-    setDragValue(value);
+    setDragValue(getRoundedValue(value));
   }, [value]);
 
   const handleDragStart = (event: React.MouseEvent<HTMLDivElement>) => {
@@ -63,7 +65,7 @@ export const Slider: React.FC<SliderProps> = props => {
             setDragValue(0);
             break;
           default:
-            setDragValue(nextDragValue);
+            setDragValue(getRoundedValue(nextDragValue));
         }
       };
 
