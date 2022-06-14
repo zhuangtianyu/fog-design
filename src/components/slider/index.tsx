@@ -33,8 +33,6 @@ export const Slider: React.FC<SliderProps> = props => {
 
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const trackOffsetX = useRef<number>(0);
-
   const [dragging, setDragging] = useState<boolean>(false);
 
   const [dragValue, setDragValue] = useState<number>(0);
@@ -45,17 +43,15 @@ export const Slider: React.FC<SliderProps> = props => {
     setDragValue(getRoundedValue(value));
   }, [value]);
 
-  const handleDragStart = (event: React.MouseEvent<HTMLDivElement>) => {
+  const handleDragStart = () => {
     setDragging(true);
-
-    trackOffsetX.current = event.clientX - event.currentTarget.offsetLeft;
   };
 
   useEffect(() => {
     if (dragging) {
       const handleDrag = (event: MouseEvent) => {
-        const diff = event.clientX - trackOffsetX.current;
-        const nextDragValue = diff / trackRef.current.offsetWidth;
+        const width = event.clientX - trackRef.current.getBoundingClientRect().left;
+        const nextDragValue = width / trackRef.current.offsetWidth;
 
         switch (true) {
           case nextDragValue > 1:
@@ -104,6 +100,7 @@ export const Slider: React.FC<SliderProps> = props => {
           style={{ left }}
           tabIndex={-1}
           draggable={false}
+          onDragStart={() => false}
           onMouseDown={handleDragStart}
         />
       </div>
