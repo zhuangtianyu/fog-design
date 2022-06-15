@@ -54,50 +54,84 @@ export const Slider: React.FC<SliderProps> = props => {
 
   const left = `${dragValue * 100}%`;
 
-  const getSlideWidth = (event: React.MouseEvent<HTMLDivElement>) =>
-    event.clientX - trackRef.current.getBoundingClientRect().left;
+  const getSlideWidth = (clientX: number) => clientX - trackRef.current.getBoundingClientRect().left;
 
   useEffect(() => {
     setDragValue(getRangedRoundedValue(value));
   }, [value]);
 
-  const handleDragStart = () => {
+  const handleMouseDown = () => {
     setDragging(true);
   };
 
   useEffect(() => {
     if (dragging) {
-      const handleDrag = (event: React.MouseEvent<HTMLDivElement>) => {
-        const width = getSlideWidth(event);
+      const handleMouseMove = (event: MouseEvent) => {
+        const width = getSlideWidth(event.clientX);
         const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
 
         setDragValue(nextDragValue);
       };
 
-      window.addEventListener('mousemove', handleDrag as unknown as EventListenerOrEventListenerObject);
+      window.addEventListener('mousemove', handleMouseMove);
 
-      return () => window.removeEventListener('mousemove', handleDrag as unknown as EventListenerOrEventListenerObject);
+      return () => window.removeEventListener('mousemove', handleMouseMove);
     }
   }, [dragging]);
 
   useEffect(() => {
     if (dragging) {
-      const handleDragEnd = () => {
+      const handleMouseUp = () => {
         dragValue !== value && onChange(dragValue);
 
         setDragging(false);
       };
 
-      window.addEventListener('mouseup', handleDragEnd);
+      window.addEventListener('mouseup', handleMouseUp);
 
-      return () => window.removeEventListener('mouseup', handleDragEnd);
+      return () => window.removeEventListener('mouseup', handleMouseUp);
+    }
+  }, [dragging, dragValue, value]);
+
+  const handleTouchStart = () => {
+    setDragging(true);
+  };
+
+  useEffect(() => {
+    if (dragging) {
+      const handleTouchMove = (event: TouchEvent) => {
+        if (event.touches.length === 1) {
+          const width = getSlideWidth(event.touches[0].clientX);
+          const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
+
+          setDragValue(nextDragValue);
+        }
+      };
+
+      window.addEventListener('touchmove', handleTouchMove);
+
+      return () => window.removeEventListener('mousemove', handleTouchMove);
+    }
+  }, [dragging]);
+
+  useEffect(() => {
+    if (dragging) {
+      const handleTouchEnd = () => {
+        dragValue !== value && onChange(dragValue);
+
+        setDragging(false);
+      };
+
+      window.addEventListener('touchend', handleTouchEnd);
+
+      return () => window.removeEventListener('touchend', handleTouchEnd);
     }
   }, [dragging, dragValue, value]);
 
   const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === handleRef.current) return;
 
-    const width = getSlideWidth(event);
+    const width = getSlideWidth(event.clientX);
     const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
 
     setDragValue(nextDragValue);
@@ -122,7 +156,8 @@ export const Slider: React.FC<SliderProps> = props => {
           tabIndex={-1}
           draggable={false}
           onDragStart={() => false}
-          onMouseDown={handleDragStart}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
         />
       </div>
     </div>
