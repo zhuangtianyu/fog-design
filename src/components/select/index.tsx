@@ -250,6 +250,7 @@ export const Select: SelectTypes = props => {
           entered: `${prefix}-select__popup--entered`,
           leaving: `${prefix}-select__popup--leaving`,
         }}
+        popupMinWidthFromTrigger
         disabled={disabled}
         getPopupMountNode={getPopupMountNode}
       >

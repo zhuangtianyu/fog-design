@@ -36,6 +36,7 @@ export const lightColors = {
   'background-color-active': '#bfbfbf',
   'background-color-preset': '#f2f2f2',
   'background-color-disabled': '#f2f2f2',
+  'background-color-profound': '#1a1a1a',
 
   'placeholder-color': '#bfbfbf',
 
@@ -87,6 +88,7 @@ export const darkColors = {
   'background-color-active': '#595959',
   'background-color-preset': '#4d4d4d',
   'background-color-disabled': '#333333',
+  'background-color-profound': '#262626',
 
   'placeholder-color': '#666666',
 

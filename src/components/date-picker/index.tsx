@@ -234,6 +234,7 @@ export const DatePicker: DatePickerTypes = props => {
           entered: `${prefix}-date-picker__popup--entered`,
           leaving: `${prefix}-date-picker__popup--leaving`,
         }}
+        popupMinWidthFromTrigger
         disabled={disabled}
       >
         <div ref={triggerRef}>

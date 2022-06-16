@@ -20,7 +20,7 @@ const getTriggerClassName = children =>
 
 type TriggerType = 'click' | 'hover';
 
-type Trigger = TriggerType | TriggerType[];
+type TriggerTypes = TriggerType | TriggerType[];
 
 type TriggerPlacement =
   'topLeft' | 'top' | 'topRight' |
@@ -32,10 +32,11 @@ export interface TriggerProps {
   visible?: boolean;
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
-  trigger?: Trigger;
+  trigger?: TriggerTypes;
   popup?: React.ReactElement;
   popupClassName?: string;
   popupTransitionProps?: TransitionProps;
+  popupMinWidthFromTrigger?: boolean;
   children?: React.ReactElement;
   disabled?: boolean;
   placement?: TriggerPlacement;
@@ -53,6 +54,7 @@ export const Trigger: React.FC<TriggerProps> = props => {
     popup,
     popupClassName,
     popupTransitionProps,
+    popupMinWidthFromTrigger,
     children,
     disabled,
     showArrow,
@@ -160,6 +162,10 @@ export const Trigger: React.FC<TriggerProps> = props => {
           height: triggerHeight,
         } = triggerRef.current.getBoundingClientRect();
 
+        if (popupMinWidthFromTrigger) {
+          popupRef.current.style.minWidth = `${triggerWidth}px`;
+        }
+
         const {
           x: containerNodeX,
           y: containerNodeY,
@@ -225,7 +231,6 @@ export const Trigger: React.FC<TriggerProps> = props => {
 
         popupRef.current.style.top = `${popupTop}px`;
         popupRef.current.style.left = `${popupLeft}px`;
-        popupRef.current.style.minWidth = `${triggerWidth}px`;
       }
     });
   };
