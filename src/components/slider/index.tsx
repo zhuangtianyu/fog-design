@@ -110,7 +110,7 @@ export const Slider: React.FC<SliderProps> = props => {
 
       window.addEventListener('touchmove', handleTouchMove);
 
-      return () => window.removeEventListener('mousemove', handleTouchMove);
+      return () => window.removeEventListener('touchmove', handleTouchMove);
     }
   }, [dragging]);
 
