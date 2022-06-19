@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
+import Tooltip from '@components/tooltip';
 import useControlled from '@hooks/useControlled';
 import './index.less';
 
@@ -149,16 +150,22 @@ export const Slider: React.FC<SliderProps> = props => {
           className={`${prefix}-slider__passed`}
           style={{ width: left }}
         />
-        <div
-          className={`${prefix}-slider__handle`}
-          ref={handleRef}
-          style={{ left }}
-          tabIndex={-1}
-          draggable={false}
-          onDragStart={() => false}
-          onMouseDown={handleMouseDown}
-          onTouchStart={handleTouchStart}
-        />
+        <Tooltip
+          visible={dragging}
+          content={left}
+          getPopupMountNode={() => handleRef.current}
+        >
+          <div
+            className={`${prefix}-slider__handle`}
+            ref={handleRef}
+            style={{ left }}
+            tabIndex={-1}
+            draggable={false}
+            onDragStart={() => false}
+            onMouseDown={handleMouseDown}
+            onTouchStart={handleTouchStart}
+          />
+        </Tooltip>
       </div>
     </div>
   );
