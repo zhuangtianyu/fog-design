@@ -9,6 +9,7 @@ import './index.less';
 export interface SliderProps  {
   /** --skip */
   className?: string;
+  step?: number;
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
@@ -16,7 +17,7 @@ export interface SliderProps  {
 
 const { prefix } = namespace;
 
-const getRoundedValue = (value: number) => Math.round(value * 100) / 100;
+const getRoundedValue = (value: number) => Math.round(value * 10000) / 10000;
 
 const getRangedValue = (value: number) => {
   switch (true) {
@@ -31,9 +32,22 @@ const getRangedValue = (value: number) => {
 
 const getRangedRoundedValue = (value: number) => getRoundedValue(getRangedValue(value));
 
+const getDragValueByStep = (value: number, step?: number) => {
+  if (!step) return getRangedRoundedValue(value);
+
+  const remainder = value % step;
+
+  if (remainder < step * 0.5) {
+    return getRangedRoundedValue(Math.max(0, value - remainder));
+  } else {
+    return getRangedRoundedValue(Math.min(1, value - remainder + step));
+  }
+};
+
 export const Slider: React.FC<SliderProps> = props => {
   const {
     className,
+    step,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -69,7 +83,8 @@ export const Slider: React.FC<SliderProps> = props => {
     if (dragging) {
       const handleMouseMove = (event: MouseEvent) => {
         const width = getSlideWidth(event.clientX);
-        const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
+        const trackWidth = trackRef.current.offsetWidth;
+        const nextDragValue = getDragValueByStep(width / trackWidth, step);
 
         setDragValue(nextDragValue);
       };
@@ -78,7 +93,7 @@ export const Slider: React.FC<SliderProps> = props => {
 
       return () => window.removeEventListener('mousemove', handleMouseMove);
     }
-  }, [dragging]);
+  }, [dragging, step]);
 
   useEffect(() => {
     if (dragging) {
@@ -103,7 +118,8 @@ export const Slider: React.FC<SliderProps> = props => {
       const handleTouchMove = (event: TouchEvent) => {
         if (event.touches.length === 1) {
           const width = getSlideWidth(event.touches[0].clientX);
-          const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
+          const trackWidth = trackRef.current.offsetWidth;
+          const nextDragValue = getDragValueByStep(width / trackWidth, step);
 
           setDragValue(nextDragValue);
         }
@@ -113,7 +129,7 @@ export const Slider: React.FC<SliderProps> = props => {
 
       return () => window.removeEventListener('touchmove', handleTouchMove);
     }
-  }, [dragging]);
+  }, [dragging, step]);
 
   useEffect(() => {
     if (dragging) {
