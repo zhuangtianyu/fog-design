@@ -257,15 +257,29 @@ export const Trigger: React.FC<TriggerProps> = props => {
 
   useLayoutEffect(() => {
     if (visible && containerNode) {
-      if (ResizeObserver && triggerRef.current) {
-        const resizeObserver = new ResizeObserver(updatePopupPosition);
+      let triggerObserver;
+      let popupObserver;
 
-        resizeObserver.observe(triggerRef.current);
+      if (ResizeObserver) {
+        if (triggerRef.current) {
+          const resizeObserver = new ResizeObserver(updatePopupPosition);
 
-        return () => resizeObserver.disconnect();
+          triggerObserver = resizeObserver.observe(triggerRef.current);
+        }
+
+        if (popupRef.current) {
+          const resizeObserver = new ResizeObserver(updatePopupPosition);
+
+          popupObserver = resizeObserver.observe(popupRef.current);
+        }
+
+        return () => {
+          triggerObserver && triggerObserver.disconnect();
+          popupObserver && popupObserver.disconnect();
+        };
+      } else {
+        updatePopupPosition();
       }
-
-      updatePopupPosition();
     }
   }, [visible, containerNode]);
 
