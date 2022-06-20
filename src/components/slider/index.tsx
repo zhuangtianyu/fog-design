@@ -149,7 +149,8 @@ export const Slider: React.FC<SliderProps> = props => {
     if (event.target === handleRef.current) return;
 
     const width = getSlideWidth(event.clientX);
-    const nextDragValue = getRangedRoundedValue(width / trackRef.current.offsetWidth);
+    const trackWidth = trackRef.current.offsetWidth;
+    const nextDragValue = getDragValueByStep(width / trackWidth, step);
 
     setDragValue(nextDragValue);
     onChange(nextDragValue);
