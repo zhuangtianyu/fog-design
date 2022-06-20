@@ -41,3 +41,5 @@ export const isMobile = () => /mobile/i.test(window.navigator.userAgent);
 export const isNumberLikeText = text => /^-?(\d+|\d+\.)?(\d+)?$/.test(text);
 
 export const isNumberText = text => /^-?\d+(.\d+)?$/.test(text);
+
+export const getPrecisionValue = (value: number) => Number(value.toPrecision(12));

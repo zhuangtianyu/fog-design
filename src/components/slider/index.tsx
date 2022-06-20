@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import namespace from '@namespace';
 import Tooltip from '@components/tooltip';
 import useControlled from '@hooks/useControlled';
+import { getPrecisionValue } from '@utils/index';
 import './index.less';
 
 export interface SliderProps  {
@@ -69,7 +70,7 @@ export const Slider: React.FC<SliderProps> = props => {
 
   const [dragValue, setDragValue] = useState<number>(0);
 
-  const left = `${dragValue * 100}%`;
+  const left = `${getPrecisionValue(dragValue * 100)}%`;
 
   const getSlideWidth = (clientX: number) => clientX - trackRef.current.getBoundingClientRect().left;
 

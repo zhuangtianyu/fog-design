@@ -5,7 +5,7 @@ import namespace from '@namespace';
 import InputWrapper from '@components/input/components/wrapper';
 import Icon from '@components/icon';
 import useControlled from '@hooks/useControlled';
-import { isFunction, isNumberLikeText, isNumberText } from '@utils/index';
+import { isFunction, isNumberLikeText, isNumberText, getPrecisionValue } from '@utils/index';
 import '@components/input/index.less';
 import './index.less';
 
@@ -120,7 +120,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
   const handleStepChange = (direction: -1 | 1) => {
     !focused && inputRef.current.focus();
 
-    const nextValue = getValueByInputValue(inputText, 0) + direction * step;
+    const nextValue = getPrecisionValue(getValueByInputValue(inputText, 0) + direction * step);
     const nextValueRanged = getRangedValue(nextValue);
 
     onChange(nextValueRanged);
