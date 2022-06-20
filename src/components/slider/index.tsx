@@ -63,6 +63,8 @@ export const Slider: React.FC<SliderProps> = props => {
 
   const handleRef = useRef<HTMLDivElement>(null);
 
+  const [entered, setEntered] = useState<boolean>(false);
+
   const [dragging, setDragging] = useState<boolean>(false);
 
   const [dragValue, setDragValue] = useState<number>(0);
@@ -168,7 +170,7 @@ export const Slider: React.FC<SliderProps> = props => {
           style={{ width: left }}
         />
         <Tooltip
-          visible={dragging}
+          visible={dragging || entered}
           content={left}
           getPopupMountNode={() => handleRef.current}
         >
@@ -181,6 +183,8 @@ export const Slider: React.FC<SliderProps> = props => {
             onDragStart={() => false}
             onMouseDown={handleMouseDown}
             onTouchStart={handleTouchStart}
+            onMouseEnter={() => setEntered(true)}
+            onMouseLeave={() => setEntered(false)}
           />
         </Tooltip>
       </div>

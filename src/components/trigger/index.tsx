@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import Transition, { TransitionProps } from '@components/transition';
 import useControlled from '@hooks/useControlled';
 import { POPUP_DEFAULT_MARGIN, ARROW_MARGIN, PLACEMENT_MAP } from './constants';
+import { isFunction } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
@@ -113,8 +114,20 @@ export const Trigger: React.FC<TriggerProps> = props => {
 
   const mouseEvents = useMemo(() => {
     if (propertyIncludes(trigger, 'hover')) {
-      const onMouseEnter = () => onVisibleChange(true);
-      const onMouseLeave = () => onVisibleChange(false);
+      const {
+        onMouseEnter: onMouseEnterFromChildren,
+        onMouseLeave: onMouseLeaveFromChildren,
+      } = React.Children.only(children).props;
+
+      const onMouseEnter = (event: React.MouseEvent<HTMLDivElement>) => {
+        onVisibleChange(true);
+        isFunction(onMouseEnterFromChildren) && onMouseEnterFromChildren(event);
+      };
+
+      const onMouseLeave = (event: React.MouseEvent<HTMLDivElement>) => {
+        onVisibleChange(false);
+        isFunction(onMouseLeaveFromChildren) && onMouseLeaveFromChildren(event);
+      };
 
       return { onMouseEnter, onMouseLeave };
     }
