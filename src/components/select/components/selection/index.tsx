@@ -95,6 +95,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
       {
         !multiple
           ? <Input
+              className={`${prefix}-selection__input`}
               ref={inputRef}
               value={inputValue}
               placeholder={placeholder}
