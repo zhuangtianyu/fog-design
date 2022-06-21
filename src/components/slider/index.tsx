@@ -14,6 +14,7 @@ export interface SliderProps  {
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
+  disabled?: boolean;
 }
 
 const { prefix } = namespace;
@@ -52,6 +53,7 @@ export const Slider: React.FC<SliderProps> = props => {
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
+    disabled,
   } = props;
 
   const { value, onChange } = useControlled({
@@ -79,6 +81,8 @@ export const Slider: React.FC<SliderProps> = props => {
   }, [value]);
 
   const handleMouseDown = () => {
+    if (disabled) return;
+
     setDragging(true);
   };
 
@@ -113,6 +117,8 @@ export const Slider: React.FC<SliderProps> = props => {
   }, [dragging, dragValue, value]);
 
   const handleTouchStart = () => {
+    if (disabled) return;
+
     setDragging(true);
   };
 
@@ -149,6 +155,7 @@ export const Slider: React.FC<SliderProps> = props => {
   }, [dragging, dragValue, value]);
 
   const handleTrackClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (disabled) return;
     if (event.target === handleRef.current) return;
 
     const width = getSlideWidth(event.clientX);
@@ -160,7 +167,10 @@ export const Slider: React.FC<SliderProps> = props => {
   };
 
   return (
-    <div className={classnames(`${prefix}-slider`, className)}>
+    <div className={classnames(className, {
+      [`${prefix}-slider`]: true,
+      [`${prefix}-slider--disabled`]: disabled,
+    })}>
       <div
         className={`${prefix}-slider__track`}
         ref={trackRef}
@@ -179,7 +189,7 @@ export const Slider: React.FC<SliderProps> = props => {
             className={`${prefix}-slider__handle`}
             ref={handleRef}
             style={{ left }}
-            tabIndex={-1}
+            tabIndex={disabled ? undefined : -1}
             draggable={false}
             onDragStart={() => false}
             onMouseDown={handleMouseDown}

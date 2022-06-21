@@ -9,12 +9,28 @@
 
   padding: 2px 0;
 
+  &--disabled &__track {
+    background-color: var(--fog-internal-color-disabled);
+    cursor: not-allowed;
+  }
+
+  &--disabled &__passed {
+    background-color: var(--fog-background-color-active);
+    cursor: not-allowed;
+  }
+
+  &--disabled &__handle {
+    border-color: var(--fog-background-color-active);
+    cursor: not-allowed;
+  }
+
   &__track {
     position: relative;
     width: 100%;
     height: 4px;
     border-radius: 2px;
     background-color: var(--fog-internal-color);
+    transition: background-color 0.3s;
     cursor: pointer;
 
     &::after {
@@ -34,6 +50,7 @@
     height: 100%;
     border-radius: 2px;
     background-color: var(--fog-primary-color);
+    transition: background-color 0.3s;
   }
 
   &__handle {
@@ -45,7 +62,7 @@
     border: 2px solid var(--fog-primary-color);
     background-color: var(--fog-background-color);
     transform: translate(-50%, -50%);
-    transition: box-shadow 0.3s, background-color 0.3s;
+    transition: box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
     cursor: pointer;
     z-index: 1;
 
