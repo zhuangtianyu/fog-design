@@ -21,6 +21,7 @@ const previousThemeName = localStorage.getItem('themeName');
 export const DarkContext = React.createContext(false);
 
 const components: string[] = [
+  'breadcrumb',
   'button',
   'checkbox',
   'date-picker',
