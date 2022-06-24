@@ -9,7 +9,7 @@ export interface BreadcrumbItemProps {
   /** --skip */
   className?: string;
   children?: React.ReactChild;
-  onClick?: React.MouseEventHandler<HTMLInputElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = props => {
@@ -21,7 +21,7 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = props => {
 
   return (
     <div
-      className={classnames(className, `${prefix}-breadcrumb-item`)}
+      className={classnames(className, `${prefix}-breadcrumb__item`)}
       onClick={onClick}
     >
       {children}

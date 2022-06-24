@@ -3,8 +3,9 @@ import Breadcrumb from '@components/breadcrumb';
 
 const Demo = () => (
   <Breadcrumb>
-    <Breadcrumb.Item>Breadcrumb.Item</Breadcrumb.Item>
-    <Breadcrumb.Item>Breadcrumb.Item</Breadcrumb.Item>
+    <Breadcrumb.Item>Home</Breadcrumb.Item>
+    <Breadcrumb.Item>App</Breadcrumb.Item>
+    <Breadcrumb.Item>Memory</Breadcrumb.Item>
   </Breadcrumb>
 );
 
