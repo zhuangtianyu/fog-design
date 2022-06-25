@@ -10,6 +10,8 @@ const { prefix } = namespace;
 export interface BreadcrumbProps {
   /** --skip */
   className?: string;
+  /** --skip */
+  style?: React.CSSProperties;
   separator?: React.ReactNode;
   children?: React.ReactChild[];
 }
@@ -21,6 +23,7 @@ export interface BreadcrumbTypes extends React.FC<BreadcrumbProps> {
 export const Breadcrumb: BreadcrumbTypes = props => {
   const {
     className,
+    style,
     separator: separatorFromProps,
     children: childrenFromProps,
   } = props;
@@ -45,7 +48,10 @@ export const Breadcrumb: BreadcrumbTypes = props => {
   }, [childrenFromProps, separatorFromProps]);
 
   return (
-    <div className={classnames(className, `${prefix}-breadcrumb`)}>
+    <div
+      className={classnames(`${prefix}-breadcrumb`, className)}
+      style={style}
+    >
       {children}
     </div>
   );
