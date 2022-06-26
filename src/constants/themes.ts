@@ -24,6 +24,7 @@ export const lightColors = {
   'transparent': 'transparent',
 
   'color': '#0d0d0d',
+  'color-preset': '#808080',
   'color-disabled': '#a6a6a6',
 
   'contrast-color': '#ffffff',
@@ -76,6 +77,7 @@ export const darkColors = {
   'transparent': 'transparent',
 
   'color': '#d9d9d9',
+  'color-preset': '#808080',
   'color-disabled': '#8c8c8c',
 
   'contrast-color': '#ffffff',
