@@ -5,6 +5,7 @@ import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
 import Demo2 from './demo-2';
+import Demo3 from './demo-3';
 
 const { components, apiColumns } = docsConfig;
 const { demos, apiRows } = components.breadcrumb;
@@ -25,6 +26,11 @@ const BreadcrumbDemo = () => {
         title="With Icon"
         content={<Demo2 />}
         code={demos['demo-2']}
+      />
+      <Demo
+        title="Interactive"
+        content={<Demo3 />}
+        code={demos['demo-3']}
       />
       <h2>API</h2>
       <h3>Breadcrumb</h3>

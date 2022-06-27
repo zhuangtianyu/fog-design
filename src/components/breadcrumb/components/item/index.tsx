@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
+import { isFunction } from '@utils/index';
 import './index.less';
 
 const { prefix } = namespace;
@@ -9,15 +10,19 @@ const { prefix } = namespace;
 export interface BreadcrumbItemProps {
   /** --skip */
   className?: string;
+  href?: string;
   children?: React.ReactChild | React.ReactChild[];
-  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  onClick?: React.MouseEventHandler<HTMLDivElement | HTMLAnchorElement>;
+  [propName: string]: any;
 }
 
 export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = props => {
   const {
-    className,
+    className: classNameFromProps,
+    href,
     children: childrenFromProps,
     onClick,
+    ...restProps
   } = props;
 
   const children = useMemo(() => {
@@ -36,14 +41,28 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = props => {
     return children;
   }, [childrenFromProps]);
 
-  return (
-    <div
-      className={classnames(`${prefix}-breadcrumb__item`, className)}
-      onClick={onClick}
-    >
-      {children}
-    </div>
-  );
+  return typeof href !== 'string'
+    ? <div
+        className={classnames(classNameFromProps, {
+          [`${prefix}-breadcrumb__item`]: true,
+          [`${prefix}-breadcrumb__item--interactive`]: isFunction(onClick),
+        })}
+        onClick={onClick}
+        {...restProps}
+      >
+        {children}
+      </div>
+    : <a
+        className={classnames(classNameFromProps, {
+          [`${prefix}-breadcrumb__item`]: true,
+          [`${prefix}-breadcrumb__item--interactive`]: true,
+        })}
+        href={href}
+        onClick={onClick}
+        {...restProps}
+      >
+        {children}
+      </a>;
 };
 
 export default BreadcrumbItem;
