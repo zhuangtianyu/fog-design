@@ -31,14 +31,16 @@ export const Breadcrumb: BreadcrumbTypes = props => {
   const children = useMemo(() => {
     const children = [];
 
-    const separator = (
-      <div className={`${prefix}-breadcrumb__separator`}>
-        {separatorFromProps}
-      </div>
-    );
+    React.Children.forEach(childrenFromProps, (item, index) => {
+      const child = item as React.ReactElement;
 
-    React.Children.forEach(childrenFromProps, (child, index) => {
-      if ((child as React.ReactElement).type === Item) {
+      if (child.type === Item) {
+        const separator = (
+          <div className={`${prefix}-breadcrumb__separator`}>
+            {child.props.separator || separatorFromProps}
+          </div>
+        );
+
         children.push(child);
         children.push(React.cloneElement(separator, { key: index }));
       }

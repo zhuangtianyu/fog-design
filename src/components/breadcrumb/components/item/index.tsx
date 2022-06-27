@@ -11,6 +11,7 @@ export interface BreadcrumbItemProps {
   /** --skip */
   className?: string;
   href?: string;
+  separator?: React.ReactNode;
   children?: React.ReactChild | React.ReactChild[];
   onClick?: React.MouseEventHandler<HTMLDivElement | HTMLAnchorElement>;
   [propName: string]: any;
@@ -20,6 +21,7 @@ export const BreadcrumbItem: React.FC<BreadcrumbItemProps> = props => {
   const {
     className: classNameFromProps,
     href,
+    separator,
     children: childrenFromProps,
     onClick,
     ...restProps
