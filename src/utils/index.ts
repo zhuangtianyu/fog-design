@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const kebabCaseToPascalCase: (name: string) => string = name => {
   if (typeof name !== 'string') return '';
 
@@ -43,3 +45,27 @@ export const isNumberLikeText = text => /^-?(\d+|\d+\.)?(\d+)?$/.test(text);
 export const isNumberText = text => /^-?\d+(.\d+)?$/.test(text);
 
 export const getPrecisionValue = (value: number) => Number(value.toPrecision(12));
+
+export const getWrappedChildren: (params: {
+  children: React.ReactChild | React.ReactChild[];
+  wrapperType: string;
+  wrapperProps?: Record<string, any>;
+}) => React.ReactElement = ({
+  children,
+  wrapperType,
+  wrapperProps,
+}) => {
+  const childrenIsArray = Array.isArray(children);
+  const childrenIsFragment = !childrenIsArray && (children as React.ReactElement).type === React.Fragment;
+
+  const shouldWrapped =
+    childrenIsArray ||
+    childrenIsFragment ||
+    typeof children === 'string' ||
+    typeof children === 'number';
+
+  if (shouldWrapped) return React.createElement(wrapperType, wrapperProps, children);
+  if (wrapperProps) return React.cloneElement(children, wrapperProps);
+
+  return children;
+};

@@ -34,7 +34,7 @@ export interface TriggerProps {
   defaultVisible?: boolean;
   onVisibleChange?: (visible: boolean) => void;
   trigger?: TriggerTypes;
-  popup?: React.ReactElement;
+  popup?: React.ReactChild;
   popupClassName?: string;
   popupTransitionProps?: TransitionProps;
   popupMinWidthFromTrigger?: boolean;
