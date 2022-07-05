@@ -8,7 +8,7 @@ import './index.less';
 
 const { prefix } = namespace;
 
-export interface PaginationItemProps  {
+export interface PaginationItemProps {
   index: number;
   page: number;
   pageCount: number;

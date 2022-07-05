@@ -1,0 +1,45 @@
+.@{prefix}-form {
+
+  &__item {
+
+    &,
+    *,
+    *:before,
+    *:after {
+      box-sizing: border-box;
+    }
+
+    margin-bottom: 24px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__item-label {
+    font-size: 14px;
+    line-height: 32px;
+  }
+
+  &--horizontal &__item {
+    display: flex;
+    align-items: flex-start;
+
+    &-label {
+      flex-shrink: 0;
+      text-align: right;
+      margin-right: 12px;
+    }
+
+    &-content {
+      flex-grow: 1;
+    }
+  }
+
+  &--vertical &__item {
+
+    &-label {
+      // margin-bottom: 12px;
+    }
+  }
+}

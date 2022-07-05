@@ -4,6 +4,7 @@ import Table from '@components/table';
 import LinkHeader from '@layouts/link-header';
 import Demo from '@layouts/demo';
 import Demo1 from './demo-1';
+import './index.less';
 
 const { components, apiColumns } = docsConfig;
 const { demos, apiRows } = components.form;
@@ -21,7 +22,10 @@ const FormDemo = () => {
         code={demos['demo-1']}
       />
       <h2>API</h2>
+      <h3>Form</h3>
       <Table columns={apiColumns} data={apiRows.default} />
+      <h3>Form.Item</h3>
+      <Table columns={apiColumns} data={apiRows.item} />
     </div>
   );
 };
