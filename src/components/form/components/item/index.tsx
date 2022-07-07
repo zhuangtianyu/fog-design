@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useMemo } from 'react';
+import { useContext, useRef, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import { FormContext } from '../../context';
@@ -12,6 +12,8 @@ export interface FormItemProps {
   className?: string;
   label?: React.ReactChild;
   labelWidth?: number;
+  name?: string;
+  initialValue?: any;
   children?: React.ReactChild | React.ReactChild[];
 }
 
@@ -20,10 +22,26 @@ const FormItem: React.FC<FormItemProps> = props => {
     className,
     label,
     labelWidth,
+    name,
+    initialValue,
     children,
   } = props;
 
+  const initializedRef = useRef<boolean>(false);
+
   const formContext = useContext(FormContext);
+
+  useEffect(() => {
+    if (
+      name &&
+      initialValue !== undefined &&
+      !initializedRef.current
+    ) {
+      formContext.setFieldValue(name, initialValue);
+    }
+
+    initializedRef.current = true;
+  }, [name, initialValue]);
 
   const labelStyle = useMemo<React.CSSProperties>(() => {
     if (formContext.layout === 'vertical') return {};
