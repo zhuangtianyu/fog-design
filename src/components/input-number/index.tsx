@@ -70,6 +70,7 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
+    innerValueGetter: event => event.target.value,
   });
 
   const [focused, setFocused] = useState<boolean>(false);
@@ -104,16 +105,16 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     }
   };
 
-  const handleInputBlur = event => {
+  const handleInputBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     const nextValue = getValueByInputValue(event.target.value, null);
     const nextValueRanged = getRangedValue(nextValue);
 
-    nextValueRanged !== value && onChange(nextValueRanged);
+    event.target.value = nextValueRanged;
+
+    nextValueRanged !== value && onChange(event);
 
     setInputText(getInputTextByValue(nextValueRanged));
     setFocused(false);
-
-    event.currentTarget.value = nextValueRanged;
     isFunction(onBlur) && onBlur(event);
   };
 
@@ -123,10 +124,10 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
     const nextValue = getPrecisionValue(getValueByInputValue(inputText, 0) + direction * step);
     const nextValueRanged = getRangedValue(nextValue);
 
-    onChange(nextValueRanged);
+    onChange({ target: { value: nextValueRanged } });
   };
 
-  const handleInputKeyDown = event => {
+  const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       handleStepChange(1);
@@ -139,11 +140,11 @@ export const InputNumber: InputNumberTypes = forwardRef<HTMLInputElement, InputN
       const nextValue = getValueByInputValue(event.currentTarget.value, null);
       const nextValueRanged = getRangedValue(nextValue);
 
-      nextValueRanged !== value && onChange(nextValueRanged);
+      event.currentTarget.value = nextValueRanged;
+
+      nextValueRanged !== value && onChange(event);
 
       setInputText(getInputTextByValue(nextValueRanged));
-
-      event.currentTarget.value = nextValueRanged;
       isFunction(onEnter) && onEnter(event);
     }
   };
