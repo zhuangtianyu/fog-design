@@ -15,44 +15,43 @@ const Demo = () => {
 
   const layouts = ['horizontal', 'vertical'];
 
+  const handleLayoutChange = (nextLayout: string) => {
+    setLayout(nextLayout as FormLayout);
+  };
+
   return (
-    <>
-      <Form layout={layout}>
-        <Form.Item label="Layout">
-          <Radio.Group
-            defaultValue="horizontal"
-            onChange={nextLayout => setLayout(nextLayout as FormLayout)}
-          >
-            {layouts.map(item => (
-              <Radio.Button key={item} value={item} checked={item === layout}>
-                {kebabCaseToPascalCase(item)}
-              </Radio.Button>
-            ))}
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="Name" name="name">
-          <Input placeholder="Please input" clearable />
-        </Form.Item>
-        <Form.Item label="Remain" name="remain">
-          <InputNumber placeholder="Please input" />
-        </Form.Item>
-        <Form.Item label="Category" name="category">
-          <Select placeholder="Please select" multiple clearable>
-            <Option value="Foodstuff">Foodstuff</Option>
-            <Option value="Groceries">Groceries</Option>
-            <Option value="Others">Others</Option>
-          </Select>
-        </Form.Item>
-        <Form.Item label="Launch Date" name="launchDate">
-          <DatePicker placeholder="Please select" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary">
-            Submit
-          </Button>
-        </Form.Item>
-      </Form>
-    </>
+    <Form layout={layout}>
+      <Form.Item label="Layout" name="layout" initialValue="horizontal">
+        <Radio.Group onChange={handleLayoutChange}>
+          {layouts.map(item => (
+            <Radio.Button key={item} value={item} checked={item === layout}>
+              {kebabCaseToPascalCase(item)}
+            </Radio.Button>
+          ))}
+        </Radio.Group>
+      </Form.Item>
+      <Form.Item label="Name" name="name">
+        <Input placeholder="Please input" clearable />
+      </Form.Item>
+      <Form.Item label="Remain" name="remain">
+        <InputNumber placeholder="Please input" />
+      </Form.Item>
+      <Form.Item label="Category" name="category">
+        <Select placeholder="Please select" multiple clearable>
+          <Option value="Foodstuff">Foodstuff</Option>
+          <Option value="Groceries">Groceries</Option>
+          <Option value="Others">Others</Option>
+        </Select>
+      </Form.Item>
+      <Form.Item label="Launch Date" name="launchDate">
+        <DatePicker placeholder="Please select" />
+      </Form.Item>
+      <Form.Item>
+        <Button type="primary">
+          Submit
+        </Button>
+      </Form.Item>
+    </Form>
   );
 };
 

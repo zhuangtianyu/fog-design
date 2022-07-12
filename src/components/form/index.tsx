@@ -48,7 +48,7 @@ export const Form: FormTypes = props => {
     return formValue[name];
   };
 
-  const getFieldsValue = (names: string[]) => {
+  const getFieldsValue = (names: string[] = Object.keys(formValue)) => {
     return names.reduce<FormValue>((accumulator: FormValue, name: string) => {
       return { ...accumulator, [name]: formValue[name] };
     }, {});
