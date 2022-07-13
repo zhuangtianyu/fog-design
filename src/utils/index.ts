@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 
 export const kebabCaseToPascalCase: (name: string) => string = name => {
   if (typeof name !== 'string') return '';
@@ -64,8 +65,18 @@ export const getWrappedChildren: (params: {
     typeof children === 'string' ||
     typeof children === 'number';
 
-  if (shouldWrapped) return React.createElement(wrapperType, wrapperProps, children);
-  if (wrapperProps) return React.cloneElement(children, wrapperProps);
+  if (shouldWrapped) {
+    return React.createElement(wrapperType, wrapperProps, children);
+  }
+
+  if (wrapperProps) {
+    const { className, ...restWrapperProps } = wrapperProps;
+
+    return React.cloneElement(children, {
+      className: classnames(children.props.className, className),
+      ...restWrapperProps,
+    });
+  }
 
   return children;
 };
