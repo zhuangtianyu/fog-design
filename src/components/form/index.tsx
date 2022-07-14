@@ -37,11 +37,11 @@ export const Form: FormTypes = props => {
   const [formValue, setFormValue] = useState<FormValue>(() => initialValues || {});
 
   const setFieldValue = (name: string, value: any) => {
-    setFormValue({ ...formValue, [name]: value });
+    setFormValue(formValue => ({ ...formValue, [name]: value }));
   };
 
   const setFieldsValue = (payload: FormValue) => {
-    setFormValue({ ...formValue, ...payload });
+    setFormValue(formValue => ({ ...formValue, ...payload }));
   };
 
   const getFieldValue = (name: string) => {
