@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useContext, useRef, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
+import Transition from '@components/transition';
 import { isFunction } from '@utils/index';
 import { FormContext } from '../../context';
 import { getFormItemValueGetter } from '../../adapter';
@@ -84,6 +85,8 @@ const FormItem: React.FC<FormItemProps> = props => {
     return [enhanceElement(firstChild as React.ReactElement), ...restChildren];
   };
 
+  const errorVisible = name && !formContext.getFieldValue(name);
+
   return (
     <div className={classnames(`${prefix}-form__item`, className)}>
       <div
@@ -94,6 +97,19 @@ const FormItem: React.FC<FormItemProps> = props => {
       </div>
       <div className={`${prefix}-form__item-content`}>
         {renderChildren(children)}
+        <Transition
+          visible={errorVisible}
+          timeout={300}
+          beforeEnter={`${prefix}-form__item-error--before-enter`}
+          entering={`${prefix}-form__item-error--entering`}
+          entered={`${prefix}-form__item-error--entered`}
+          leaving={`${prefix}-form__item-error--leaving`}
+          unmountNodeAfterLeave
+        >
+          <div className={`${prefix}-form__item-error`}>
+            Please input {name}
+          </div>
+        </Transition>
       </div>
     </div>
   );
