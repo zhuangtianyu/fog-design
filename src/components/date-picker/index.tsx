@@ -37,6 +37,7 @@ export interface DatePickerProps  {
   className?: string;
   /** --skip */
   style?: React.CSSProperties;
+  error?: boolean;
   value?: number;
   defaultValue?: number;
   onChange?: (value: number) => void;
@@ -60,6 +61,7 @@ export const DatePicker: DatePickerTypes = props => {
   const {
     className,
     style,
+    error,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -240,6 +242,7 @@ export const DatePicker: DatePickerTypes = props => {
         <div ref={triggerRef}>
           <InputWrapper
             className={`${prefix}-date-picker__input`}
+            error={error}
             focused={open}
             disabled={disabled}
             suffix={

@@ -20,6 +20,7 @@ export interface SelectProps {
   className?: string;
   /** --skip */
   style?: React.CSSProperties;
+  error?: boolean;
   value?: SelectValueType;
   defaultValue?: SelectValueType;
   onChange?: (value: ValueType) => void;
@@ -42,6 +43,7 @@ export const Select: SelectTypes = props => {
   const {
     className,
     style,
+    error,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -237,7 +239,10 @@ export const Select: SelectTypes = props => {
 
   return (
     <div
-      className={classnames(`${prefix}-select`, className)}
+      className={classnames(className, {
+        [`${prefix}-select`]: true,
+        [`${prefix}-select--error`]: error,
+      })}
       style={style}
     >
       <Trigger
@@ -257,6 +262,7 @@ export const Select: SelectTypes = props => {
         <Selection
           className={`${prefix}-select__selection`}
           open={open}
+          error={error}
           value={value}
           options={options}
           multiple={multiple}

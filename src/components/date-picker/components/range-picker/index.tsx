@@ -49,6 +49,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
   const {
     className,
     style,
+    error,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -405,6 +406,7 @@ const RangePicker: React.FC<RangePickerProps> = props => {
       >
         <div ref={triggerRef}>
           <InputWrapper
+            error={error}
             focused={!!focused || open}
             disabled={disabled}
             suffix={

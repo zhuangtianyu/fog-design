@@ -19,11 +19,11 @@
   transition: all 0.3s;
   outline: none;
 
-  &:hover {
+  &:hover:not(&--error) {
     border-color: var(--fog-primary-color-hover);
   }
 
-  &:focus {
+  &:focus:not(&--error) {
     border-color: var(--fog-primary-color);
   }
 
@@ -32,6 +32,10 @@
     border-color: var(--fog-border-color);
     background-color: var(--fog-panel-color-disabled);
     cursor: not-allowed;
+  }
+
+  &--error:not(&[disabled]) {
+    border-color: var(--fog-danger-color);
   }
 
   &::placeholder {

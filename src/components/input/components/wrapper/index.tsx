@@ -8,6 +8,7 @@ const prefixClassName = namespace.prefix;
 
 export interface InputWrapperProps {
   className?: string;
+  error?: boolean;
   focused?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
@@ -24,6 +25,7 @@ export interface InputWrapperProps {
 const InputWrapper: React.FC<InputWrapperProps> = props => {
   const {
     className,
+    error,
     focused,
     disabled,
     readOnly,
@@ -42,6 +44,7 @@ const InputWrapper: React.FC<InputWrapperProps> = props => {
     <div
       className={classnames(className, {
         [`${prefixClassName}-input-wrapper`]: true,
+        [`${prefixClassName}-input-wrapper--error`]: error,
         [`${prefixClassName}-input-wrapper--focused`]: focused,
         [`${prefixClassName}-input-wrapper--disabled`]: disabled,
         [`${prefixClassName}-input-wrapper--readOnly`]: readOnly,

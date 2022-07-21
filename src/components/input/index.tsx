@@ -15,6 +15,7 @@ export type InputValue = string | undefined | null;
 export interface InputProps extends Omit<HTMLAttributes<HTMLInputElement>, 'prefix'> {
   /** --skip */
   className?: string;
+  error?: boolean;
   value?: InputValue;
   disabled?: boolean;
   readOnly?: boolean;
@@ -35,6 +36,7 @@ export interface InputTypes extends React.ForwardRefExoticComponent<InputProps &
 export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props, ref) => {
   const {
     className,
+    error,
     value: valueFromProps,
     defaultValue: defaultValueFromProps,
     onChange: onChangeFromProps,
@@ -80,6 +82,8 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
 
   const getWrappedInput = InputElement => shouldWrap
     ? <InputWrapper
+        className={className}
+        error={error}
         focused={focused}
         disabled={disabled}
         readOnly={readOnly}
@@ -92,11 +96,16 @@ export const Input: InputTypes = forwardRef<HTMLInputElement, InputProps>((props
       >
         {InputElement}
       </InputWrapper>
-    : React.cloneElement(InputElement, restProps);
+    : React.cloneElement(InputElement, {
+        className: classnames(InputElement.props.className, className, {
+          [`${prefixClassName}-input--error`]: error,
+        }),
+        ...restProps,
+      });
 
   return getWrappedInput(
     <input
-      className={classnames(`${prefixClassName}-input`, className)}
+      className={`${prefixClassName}-input`}
       ref={inputRef}
       value={value || ''}
       disabled={disabled}

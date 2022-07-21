@@ -30,20 +30,20 @@ const Demo = () => {
           ))}
         </Radio.Group>
       </Form.Item>
-      <Form.Item label="Name" name="name">
+      <Form.Item label="Name" name="name" initialValue="Milk">
         <Input placeholder="Please input" clearable />
       </Form.Item>
-      <Form.Item label="Remain" name="remain">
+      <Form.Item label="Remain" name="remain" initialValue={10}>
         <InputNumber placeholder="Please input" />
       </Form.Item>
-      <Form.Item label="Category" name="category">
-        <Select placeholder="Please select" multiple clearable>
+      <Form.Item label="Category" name="category" initialValue="Foodstuff">
+        <Select placeholder="Please select" clearable>
           <Option value="Foodstuff">Foodstuff</Option>
           <Option value="Groceries">Groceries</Option>
           <Option value="Others">Others</Option>
         </Select>
       </Form.Item>
-      <Form.Item label="Launch Date" name="launchDate">
+      <Form.Item label="Launch Date" name="launchDate" initialValue={Date.now()}>
         <DatePicker placeholder="Please select" />
       </Form.Item>
       <Form.Item>

@@ -18,6 +18,7 @@ export type SelectValueType = ValueType | ValueType[];
 export interface SelectionProps {
   className?: string;
   open?: boolean;
+  error?: boolean;
   value?: SelectValueType;
   options?: OptionProps[];
   multiple?: boolean;
@@ -43,6 +44,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
   const {
     className,
     open,
+    error,
     value,
     options,
     multiple,
@@ -97,6 +99,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
           ? <Input
               className={`${prefix}-selection__input`}
               ref={inputRef}
+              error={error}
               value={inputValue}
               placeholder={placeholder}
               disabled={disabled}
@@ -105,6 +108,7 @@ const Selection: React.FC<SelectionProps> = forwardRef<HTMLDivElement, Selection
             />
           : <InputWrapper
               className={`${prefix}-selection__input-wrapper`}
+              error={error}
               focused={focused || open}
               disabled={disabled}
               suffix={<Suffix clearable={clearable} onClear={handleClear} />}

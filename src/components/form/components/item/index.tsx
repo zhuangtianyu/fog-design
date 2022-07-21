@@ -34,6 +34,8 @@ const FormItem: React.FC<FormItemProps> = props => {
 
   const formContext = useContext(FormContext);
 
+  const errorVisible = name && !formContext.getFieldValue(name);
+
   useEffect(() => {
     if (
       name &&
@@ -61,6 +63,7 @@ const FormItem: React.FC<FormItemProps> = props => {
 
     return React.cloneElement(element, {
       key: element.key,
+      error: errorVisible,
       value: formContext.getFieldValue(name),
       onChange: (...args) => {
         const nextValue = getFormItemValue(...args);
@@ -84,8 +87,6 @@ const FormItem: React.FC<FormItemProps> = props => {
 
     return [enhanceElement(firstChild as React.ReactElement), ...restChildren];
   };
-
-  const errorVisible = name && !formContext.getFieldValue(name);
 
   return (
     <div className={classnames(`${prefix}-form__item`, className)}>
