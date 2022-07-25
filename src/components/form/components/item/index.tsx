@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { useContext, useRef, useEffect, useMemo } from 'react';
+import { useState, useContext, useRef, useEffect, useMemo } from 'react';
 import classnames from 'classnames';
 import namespace from '@namespace';
 import Transition from '@components/transition';
 import { isFunction } from '@utils/index';
 import { FormContext } from '../../context';
-import { getFormItemValueGetter } from '../../adapter';
+import { getFormItemValueGetter, getFormItemValueEmpty } from '../../adapter';
 import './index.less';
 
 const { prefix } = namespace;
@@ -30,11 +30,22 @@ const FormItem: React.FC<FormItemProps> = props => {
     children,
   } = props;
 
+  const [element, setElement] = useState<React.ReactElement | null>(null);
+
   const initializedRef = useRef<boolean>(false);
 
   const formContext = useContext(FormContext);
 
-  const errorVisible = name && !formContext.getFieldValue(name);
+  const errorVisible = useMemo(() => {
+    if (name && element) {
+      const value = formContext.getFieldValue(name);
+      const empty = getFormItemValueEmpty(element, value);
+
+      return empty;
+    }
+
+    return false;
+  }, [name, element, formContext]);
 
   useEffect(() => {
     if (
@@ -74,6 +85,30 @@ const FormItem: React.FC<FormItemProps> = props => {
     });
   };
 
+  useEffect(() => {
+    const getElement = (children: React.ReactChild | React.ReactChild[]) => {
+      if (!name) return null;
+
+      if (Array.isArray(children)) {
+        if (!children.length) return null;
+
+        return getElement(children[0]);
+      }
+
+      if (!React.isValidElement(children)) return null;
+
+      if ((children as React.ReactElement).type === FormItem) {
+        return getElement((children as React.ReactElement).props.children);
+      }
+
+      return children;
+    };
+
+    const nextElement = getElement(children);
+
+    setElement(nextElement);
+  }, [children, name]);
+
   const renderChildren = (children: React.ReactChild | React.ReactChild[]) => {
     if (!name) return children;
     if (!Array.isArray(children)) return renderChildren([children]);
@@ -82,7 +117,7 @@ const FormItem: React.FC<FormItemProps> = props => {
     const [firstChild, ...restChildren] = children;
 
     if (Array.isArray(firstChild)) return [renderChildren(firstChild), ...restChildren];
-    if (['string', 'number'].includes(typeof firstChild)) return children;
+    if (!React.isValidElement(firstChild)) return firstChild;
     if ((firstChild as React.ReactElement).type === FormItem) return children;
 
     return [enhanceElement(firstChild as React.ReactElement), ...restChildren];

@@ -39,10 +39,13 @@ export const getFormItemValueEmpty: GetFormItemValueEmpty = (element, value) => 
     case Switch:
     case Checkbox:
     case DatePicker:
-    case InputNumber:
     case Radio.Group:
     case Checkbox.Group:
       return empties.includes(value);
+    case InputNumber:
+      return typeof value !== 'string'
+        ? empties.includes(value)
+        : !value;
     case Input:
       return !value;
     case Select:
