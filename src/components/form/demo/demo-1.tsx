@@ -21,29 +21,58 @@ const Demo = () => {
 
   return (
     <Form layout={layout}>
-      <Form.Item label="Layout" name="layout" initialValue="horizontal">
+      <Form.Item
+        label="Layout"
+        name="layout"
+        initialValue="horizontal"
+        rules={[{ required: true }]}
+      >
         <Radio.Group onChange={handleLayoutChange}>
           {layouts.map(item => (
-            <Radio.Button key={item} value={item} checked={item === layout}>
+            <Radio.Button
+              key={item}
+              value={item}
+              checked={item === layout}
+            >
               {kebabCaseToPascalCase(item)}
             </Radio.Button>
           ))}
         </Radio.Group>
       </Form.Item>
-      <Form.Item label="Name" name="name" initialValue="Milk">
+      <Form.Item
+        label="Name"
+        name="name"
+        initialValue="Milk"
+        rules={[{ required: true }]}
+      >
         <Input placeholder="Please input" clearable />
       </Form.Item>
-      <Form.Item label="Remain" name="remain" initialValue={10}>
+      <Form.Item
+        label="Remain"
+        name="remain"
+        initialValue={10}
+        rules={[{ required: true }]}
+      >
         <InputNumber placeholder="Please input" />
       </Form.Item>
-      <Form.Item label="Category" name="category" initialValue="Foodstuff">
+      <Form.Item
+        label="Category"
+        name="category"
+        initialValue="Foodstuff"
+        rules={[{ required: true }]}
+      >
         <Select placeholder="Please select" clearable>
           <Option value="Foodstuff">Foodstuff</Option>
           <Option value="Groceries">Groceries</Option>
           <Option value="Others">Others</Option>
         </Select>
       </Form.Item>
-      <Form.Item label="Launch Date" name="launchDate" initialValue={Date.now()}>
+      <Form.Item
+        label="Launch Date"
+        name="launchDate"
+        initialValue={Date.now()}
+        rules={[{ required: true }]}
+      >
         <DatePicker placeholder="Please select" />
       </Form.Item>
       <Form.Item>

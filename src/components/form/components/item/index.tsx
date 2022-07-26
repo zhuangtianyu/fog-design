@@ -10,12 +10,20 @@ import './index.less';
 
 const { prefix } = namespace;
 
+export interface FormItemRule {
+  regExp?: RegExp;
+  message?: string;
+  required?: boolean;
+  validator?: (value: any) => Promise<void | Error>;
+}
+
 export interface FormItemProps {
   /** --skip */
   className?: string;
   label?: React.ReactChild;
   labelWidth?: number;
   name?: string;
+  rules?: FormItemRule[];
   initialValue?: any;
   children?: React.ReactChild | React.ReactChild[];
 }
@@ -26,26 +34,57 @@ const FormItem: React.FC<FormItemProps> = props => {
     label,
     labelWidth,
     name,
+    rules,
     initialValue,
     children,
   } = props;
 
   const [element, setElement] = useState<React.ReactElement | null>(null);
 
+  const [error, setError] = useState<Error | null>(null);
+
   const initializedRef = useRef<boolean>(false);
 
   const formContext = useContext(FormContext);
 
-  const errorVisible = useMemo(() => {
-    if (name && element) {
+  useEffect(() => {
+    if (name && Array.isArray(rules) && element) {
       const value = formContext.getFieldValue(name);
-      const empty = getFormItemValueEmpty(element, value);
 
-      return empty;
+      const validators = rules.map(rule => {
+        if (rule.required) {
+          return new Promise<void>((resolve, reject) => {
+            const empty = getFormItemValueEmpty(element, value);
+
+            if (!empty) return resolve();
+
+            const error = new Error(rule.message || `Please input ${name}`);
+
+            return reject(error);
+          });
+        }
+
+        if (rule.regExp) {
+          const result = rule.regExp.test(value);
+
+          if (result) return Promise.resolve();
+
+          const error = new Error(rule.message || `Please correct according to ${rule.regExp}`);
+
+          return Promise.reject(error);
+        }
+
+        if (rule.validator) return rule.validator(value);
+
+        return Promise.resolve();
+      });
+
+      Promise
+        .all(validators)
+        .then(() => setError(null))
+        .catch(firstError => setError(firstError));
     }
-
-    return false;
-  }, [name, element, formContext]);
+  }, [name, rules, element, formContext]);
 
   useEffect(() => {
     if (
@@ -74,7 +113,7 @@ const FormItem: React.FC<FormItemProps> = props => {
 
     return React.cloneElement(element, {
       key: element.key,
-      error: errorVisible,
+      error: !!error,
       value: formContext.getFieldValue(name),
       onChange: (...args) => {
         const nextValue = getFormItemValue(...args);
@@ -134,7 +173,7 @@ const FormItem: React.FC<FormItemProps> = props => {
       <div className={`${prefix}-form__item-content`}>
         {renderChildren(children)}
         <Transition
-          visible={errorVisible}
+          visible={!!error}
           timeout={300}
           beforeEnter={`${prefix}-form__item-error--before-enter`}
           entering={`${prefix}-form__item-error--entering`}
@@ -143,7 +182,7 @@ const FormItem: React.FC<FormItemProps> = props => {
           unmountNodeAfterLeave
         >
           <div className={`${prefix}-form__item-error`}>
-            Please input {name}
+            {error && error.message}
           </div>
         </Transition>
       </div>
