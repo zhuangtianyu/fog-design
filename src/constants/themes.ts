@@ -17,6 +17,7 @@ export const themeColors = {
   lemonsuit: '#eeaa00',
   spearmint: '#00aa33',
   lavenders: '#9966ff',
+  fragrancy: '#3da99c',
   raspberry: '#ff5050',
 };
 
