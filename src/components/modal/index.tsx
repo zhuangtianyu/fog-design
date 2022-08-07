@@ -86,6 +86,7 @@ export const Modal: ModalTypes = props => {
   } = props;
 
   const modalRef = useRef<HTMLDivElement>(null);
+  const lastActiveElementRef = useRef<Element>(null);
 
   const [innerCancelLoading, setInnerCancelLoading] = useState<boolean>(false);
   const [innerConfirmLoading, setInnerConfirmLoading] = useState<boolean>(false);
@@ -119,10 +120,18 @@ export const Modal: ModalTypes = props => {
   }, [visible, escClosable]);
 
   useEffect(() => {
-    setTimeout(() => {
-      visible && modalRef.current?.focus();
-    });
-  }, [visible, modalRef.current]);
+    if (visible) {
+      lastActiveElementRef.current = document.activeElement || null;
+
+      setTimeout(() => {
+        modalRef.current?.focus();
+      });
+    } else {
+      if (lastActiveElementRef.current) {
+        (lastActiveElementRef.current as any)?.focus();
+      }
+    }
+  }, [visible]);
 
   return (
     <Transition
