@@ -14,6 +14,7 @@ export interface SwitchProps  {
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
   loading?: boolean;
+  children?: React.ReactChild;
 }
 
 const { prefix } = namespace;
@@ -26,6 +27,7 @@ export const Switch: React.FC<SwitchProps> = props => {
     onChange: onChangeFromProps,
     disabled,
     loading,
+    children,
   } = props;
 
   const { value: checked, onChange } = useControlled({
@@ -63,6 +65,7 @@ export const Switch: React.FC<SwitchProps> = props => {
           />
         )}
       </div>
+      {children}
     </button>
   );
 };
