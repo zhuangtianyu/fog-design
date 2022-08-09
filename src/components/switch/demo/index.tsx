@@ -7,6 +7,7 @@ import Demo1 from './demo-1';
 import Demo2 from './demo-2';
 import Demo3 from './demo-3';
 import Demo4 from './demo-4';
+import Demo5 from './demo-5';
 import './index.less';
 
 const { components, apiColumns } = docsConfig;
@@ -38,6 +39,12 @@ const SwitchDemo = () => {
         title="Children"
         content={<Demo4 />}
         code={demos['demo-4']}
+      />
+      <Demo
+        title="CheckedChildren/UncheckedChildren"
+        description="Better for children switching in uncontrolled mode."
+        content={<Demo5 />}
+        code={demos['demo-5']}
       />
       <h2>API</h2>
       <Table columns={apiColumns} data={apiRows.default} />
