@@ -45,7 +45,7 @@ const InputWrapper: React.FC<InputWrapperProps> = props => {
       className={classnames(className, {
         [`${prefixClassName}-input-wrapper`]: true,
         [`${prefixClassName}-input-wrapper--error`]: error,
-        [`${prefixClassName}-input-wrapper--focused`]: focused,
+        [`${prefixClassName}-input-wrapper--focused`]: !disabled && focused,
         [`${prefixClassName}-input-wrapper--disabled`]: disabled,
         [`${prefixClassName}-input-wrapper--readOnly`]: readOnly,
       })}
