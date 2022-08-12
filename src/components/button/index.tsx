@@ -98,4 +98,6 @@ export const Button: ButtonTypes = forwardRef<HTMLButtonElement, ButtonProps>((p
 
 Button.Group = Group;
 
+Button.displayName = 'Button';
+
 export default Button;
