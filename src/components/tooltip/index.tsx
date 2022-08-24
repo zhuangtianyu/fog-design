@@ -8,7 +8,7 @@ import './index.less';
 
 const { prefix } = namespace;
 
-export interface TooltipProps extends Omit<TriggerProps, 'children'>  {
+export interface TooltipProps extends Omit<TriggerProps, 'children'> {
   popupClassName?: string;
   children?: React.ReactChild | React.ReactChild[];
   content?: React.ReactChild;

@@ -12,7 +12,7 @@ const Demo = () => (
       </span>
     </Tooltip>
     <Tooltip content="Tooltip content.">
-      <>Hover me</>
+      Hover me
     </Tooltip>
   </>
 );
