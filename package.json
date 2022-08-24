@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "webpack serve --config ./scripts/config/webpack.dev.ts",
     "build": "webpack --config ./scripts/config/webpack.prod.ts",
-    "test": "jest --config .jest.ts"
+    "test": "jest --config .jest.ts",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -45,12 +46,14 @@
     "eslint": "^8.21.0",
     "eslint-plugin-react": "^7.30.1",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^28.1.0",
     "jest-environment-jsdom": "^28.1.0",
     "jsdom": "^19.0.0",
     "less": "^4.1.2",
     "less-loader": "^10.2.0",
+    "lint-staged": "^13.0.3",
     "react-docgen-typescript": "^2.2.2",
     "react-router-dom": "^6.2.1",
     "react-syntax-highlighter": "^15.5.0",
