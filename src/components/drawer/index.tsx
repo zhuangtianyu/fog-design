@@ -15,6 +15,8 @@ interface DrawerProps {
   visible?: boolean;
   width?: number | string;
   height?: number | string;
+  minWidth?: number | string;
+  minHeight?: number | string;
   title?: React.ReactChild;
   placement?: string;
   showClose?: boolean;
@@ -31,6 +33,8 @@ export const Drawer: React.FC<DrawerProps> = props => {
     visible,
     width,
     height,
+    minWidth,
+    minHeight,
     title,
     children,
     placement,
@@ -87,6 +91,13 @@ export const Drawer: React.FC<DrawerProps> = props => {
     return undefined;
   }, [placement]);
 
+  const contentStyle = useMemo(() => {
+    if (direction === 'horizontal') return { width, minWidth };
+    if (direction === 'vertical') return { height, minHeight };
+
+    return {};
+  }, [direction, width, height, minWidth, minHeight]);
+
   return (
     <Transition
       visible={visible}
@@ -116,10 +127,7 @@ export const Drawer: React.FC<DrawerProps> = props => {
         />
         <div
           className={`${prefix}-drawer__content`}
-          style={{
-            width: direction === 'horizontal' ? width : 'auto',
-            height: direction === 'vertical' ? height : 'auto',
-          }}
+          style={contentStyle}
         >
           {
             typeof title !== 'undefined'
@@ -155,8 +163,10 @@ export const Drawer: React.FC<DrawerProps> = props => {
 };
 
 Drawer.defaultProps = {
-  width: 300,
-  height: 300,
+  width: '30%',
+  height: '70%',
+  minWidth: 300,
+  minHeight: 300,
   visible: false,
   placement: 'right',
   showClose: true,
