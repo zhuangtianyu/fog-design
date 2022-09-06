@@ -95,7 +95,7 @@ export const Trigger: React.FC<TriggerProps> = props => {
     container.style.position = 'absolute';
     container.style.top = '0px';
     container.style.left = '0px';
-    container.style.width = '100%';
+    container.style.whiteSpace = 'nowrap';
 
     mountNode.appendChild(container);
 
