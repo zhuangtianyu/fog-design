@@ -20,7 +20,7 @@ const Demo = () => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
-      <Trigger popup={popup} visible={visible}>
+      <Trigger popup={popup} visible={visible} popupMinWidthFromTrigger>
         <TextArea
           style={{ width: 320, marginRight: 12 }}
           defaultValue="Resize textarea to update popup position"
