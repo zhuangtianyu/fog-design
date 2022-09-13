@@ -109,21 +109,24 @@ const writeDocsConfig = (componentNames?: string[]) => {
 
   if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir);
+  }
+
+  if (!fs.existsSync(outputPath)) {
     fs.writeFileSync(outputPath, configString);
-  } else {
-    const existedString = fs.readFileSync(outputPath).toString();
-    const existedJson = JSON.parse(existedString);
+  }
 
-    if (existedString !== configString) {
-      const components = { ...existedJson.components, ...configJson.components };
+  const existedString = fs.readFileSync(outputPath).toString();
+  const existedJson = JSON.parse(existedString);
 
-      fs.writeFileSync(outputPath, JSON.stringify({ components, apiColumns }));
-    }
+  if (existedString !== configString) {
+    const components = { ...existedJson.components, ...configJson.components };
+
+    fs.writeFileSync(outputPath, JSON.stringify({ components, apiColumns }));
   }
 };
 
 class DocsParsePlugin {
-  apply(compiler) {
+  apply (compiler) {
     compiler.hooks.entryOption.tap('DocsParsePlugin', () => {
       writeDocsConfig();
     });
